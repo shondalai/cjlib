@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<extension method="upgrade" type="package" version="3.6">
+    <name>CjLib Package</name>
+    <author>Maverick</author>
+    <creationDate>2021-Aug-16</creationDate>
+    <packagename>cjlib</packagename>
+    <version>3.2.0</version>
+    <url>https://shondalai.com/</url>
+    <packager>Maverick</packager>
+    <packagerurl>https://shondalai.com/</packagerurl>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <description></description>
+    <scriptfile>pkg_script.php</scriptfile>
+    <files folder="packages">
+        <file group="corejoomla" id="cjlib" type="library">lib_cjlib.zip</file>
+        <file group="corejoomla" id="cjlib" type="component">com_cjlib.zip</file>
+        <file group="installer" id="cjlib" type="plugin">plg_installer_cjupdater.zip</file>
+        <file group="corejoomla" id="cjlib" type="plugin">plg_corejoomla_socials.zip</file>
+    </files>
+    <updateservers>
+        <server name="CjLib Update Site" priority="1" type="collection">https://www.corejoomla.com/media/autoupdates/cjlib/package.xml</server>
+    </updateservers>
+</extension>
+

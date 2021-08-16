@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<extension group="corejoomla" method="upgrade" type="plugin" version="3.6">
+    <name>corejoomla - socials</name>
+	<creationDate>2019-Jun-12</creationDate>
+    <author>Maverick</author>
+    <authorEmail>support@corejoomla.com</authorEmail>
+    <authorUrl>https://shondalai.com</authorUrl>
+	<copyright>All rights reserved by www.corejoomla.com 2009-15.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>1.0.1</version>
+    <description>corejoomla social sharing plugin.</description>
+    <files>
+        <filename>socials.xml</filename>
+        <filename plugin="socials">socials.php</filename>
+        <filename>index.html</filename>
+    </files>
+     <languages folder="language/en-GB">
+        <language tag="en-GB">en-GB.plg_corejoomla_socials.ini</language>
+    </languages>
+	
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="jssocials_theme" type="list" default="flat" 
+					label="PLG_COREJOOMLA_SOCIALS_FIELD_JSSOCIALS_THEME_LABEL" description="PLG_COREJOOMLA_SOCIALS_FIELD_JSSOCIALS_THEME_DESC" >
+					<option value="flat">flat</option>
+					<option value="classic">classic</option>
+					<option value="plain">plain</option>
+					<option value="minima">minima</option>
+				</field>
+				
+				<field name="jssocials_size" type="text" filter="integer" default="12" 
+					label="PLG_COREJOOMLA_SOCIALS_FIELD_JSSOCIALS_SIZE_LABEL" description="PLG_COREJOOMLA_SOCIALS_FIELD_JSSOCIALS_SIZE_LABEL" />
+				
+				<field name="allowed_services" type="list" default="email,twitter,facebook,linkedin,pinterest" multiple="true">
+					<option value="email">Email</option>
+					<option value="twitter">Twitter</option>
+					<option value="facebook">Facebook</option>
+					<option value="linkedin">Linkedin</option>
+					<option value="pinterest">Pinterest</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
