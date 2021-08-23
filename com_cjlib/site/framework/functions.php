@@ -1166,7 +1166,7 @@ class CJFunctions {
 	 */
 	public static function get_component_update_check($component, $current_version)
 	{
-		$url = 'https://www.corejoomla.com/extensions.xml';
+		$url = 'https://shondalai.com/wp-content/uploads/autoupdates/extensions.xml';
 		$data = '';
 		$check = array();
 		$check['connect'] = 0;

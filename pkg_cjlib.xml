@@ -19,7 +19,7 @@
         <file group="corejoomla" id="cjlib" type="plugin">plg_corejoomla_socials.zip</file>
     </files>
     <updateservers>
-        <server name="CjLib Update Site" priority="1" type="collection">https://www.corejoomla.com/media/autoupdates/cjlib/package.xml</server>
+        <server name="CjLib Update Site" priority="1" type="collection">https://shondalai.com/wp-content/uploads/autoupdates/cjlib/package.xml</server>
     </updateservers>
 </extension>
 
