@@ -9,7 +9,7 @@
         <version>3.2.1</version>
         <infourl title="CoreJoomla Home">https://shondalai.com</infourl>
         <downloads>
-            <downloadurl format="zip" type="full">https://github.com/shondalai/cjlib/releases/download/v3.2.1/cjlib_v3.2.1.zip</downloadurl>
+            <downloadurl format="zip" type="full">https://github.com/shondalai/cjlib/releases/download/3.2.1/cjlib_v3.2.1.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -28,7 +28,7 @@
         <version>3.2.1</version>
         <infourl title="CoreJoomla Home">https://shondalai.com</infourl>
         <downloads>
-            <downloadurl format="zip" type="full">https://github.com/shondalai/cjlib/releases/download/v3.2.1/cjlib_v3.2.1.zip</downloadurl>
+            <downloadurl format="zip" type="full">https://github.com/shondalai/cjlib/releases/download/3.2.1/cjlib_v3.2.1.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
