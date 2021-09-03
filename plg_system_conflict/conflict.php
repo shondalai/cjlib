@@ -13,7 +13,7 @@ class PlgSystemConflict extends JPlugin
 
 	public function onBeforeCompileHead()
     {
-    	if (JFactory::getApplication()->isAdmin())
+    	if (JFactory::getApplication()->isClient('administrator'))
     	{
     		return true;
     	}
