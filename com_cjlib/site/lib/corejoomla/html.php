@@ -51,7 +51,12 @@ class CjHtml
 			$shares = '"' . implode('","', $options['shares']) . '"';
 		}
 			
-		$content = 'jQuery(document).ready(function($){$("#cjshare").jsSocials({shares: ['.$shares.']});});';
+		$content = 'jQuery(document).ready(function($){'.
+		  'jsSocials.setDefaults("twitter", {logo: "fa fab fa-twitter"});'.
+		  'jsSocials.setDefaults("facebook", {logo: "fa fab fa-facebook"});'.
+		  'jsSocials.setDefaults("linkedin", {logo: "fa fab fa-linkedin"});'.
+		  'jsSocials.setDefaults("pinterest", {logo: "fa fab fa-pinterest"});'.
+	   '$("#cjshare").jsSocials({shares: ['.$shares.']});});';
 		JFactory::getDocument()->addScriptDeclaration($content);
 		$size = isset($options['size']) ? $options['size'] : 12;
 		
