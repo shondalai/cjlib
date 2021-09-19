@@ -104,7 +104,7 @@ define ('PDF_CREATOR', 'TCPDF');
 /**
  * Document author.
  */
-define ('PDF_AUTHOR', 'corejoomla.com');
+define ('PDF_AUTHOR', 'shondalai.com');
 
 /**
  * Header title.
@@ -114,7 +114,7 @@ define ('PDF_HEADER_TITLE', '');
 /**
  * Header description string.
  */
-define ('PDF_HEADER_STRING', "By corejoomla.com");
+define ('PDF_HEADER_STRING', "By shondalai.com");
 
 /**
  * Document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch].

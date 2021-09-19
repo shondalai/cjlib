@@ -1157,7 +1157,7 @@ class CJFunctions {
 	 * <li>released - release date of the version on server</li>
 	 * <li>changelog - for future use</li>
 	 * <li>status - boolean true if the version is equal, false otherwise</li>
-	 * <li>connect - true if corejoomla.com is connected with the function, false otherwise.</li></ul>
+	 * <li>connect - true if shondalai.com is connected with the function, false otherwise.</li></ul>
 	 * 
 	 * @param string $component component to check for update
 	 * @param version $current_version current version of the component to compare

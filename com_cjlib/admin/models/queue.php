@@ -3,7 +3,7 @@
  * @version		$Id: queue.php 2013-07-29 11:37:09Z maverick $
  * @package		CoreJoomla.Cjlib
  * @subpackage	Components.models
- * @copyright	Copyright (C) 2009 - 2012 corejoomla.com, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2021 BulaSikku Technologies Private Limited.
  * @author		Maverick
  * @link		https://shondalai.com/
  * @license		License GNU General Public License version 2 or later

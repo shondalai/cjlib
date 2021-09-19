@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- *  Originally developed by Stefan Gabos, modified by Maverick for corejoomla.com
+ *  Originally developed by Stefan Gabos, modified by Maverick for shondalai.com
  * 
  *  NestedTree is a PHP class that provides an implementation of the modified preorder tree traversal algorithm making
  *  it easy for you to use MPTT in your PHP applications.
