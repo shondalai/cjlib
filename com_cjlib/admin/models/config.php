@@ -45,7 +45,7 @@ class CjLibModelConfig extends JModelLegacy {
         
         $db->setQuery($query);
 
-        if(!$db->query()) {
+        if(!$db->execute()) {
         	
             return false;
         }
