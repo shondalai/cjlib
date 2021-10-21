@@ -12,7 +12,7 @@ class pkg_cjlibInstallerScript
 {
 	function preflight( $type, $parent )
 	{
-		return version_compare(PHP_VERSION, '5.6', '>=');
+		return version_compare(PHP_VERSION, '7.2', '>=');
 	}
 	
 	function postflight($type, $parent)

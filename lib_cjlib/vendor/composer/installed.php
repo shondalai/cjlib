@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '115ba435800e34283a0ac5fb09597ecd532cd48b',
+        'reference' => NULL,
         'name' => '__root__',
         'dev' => true,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '115ba435800e34283a0ac5fb09597ecd532cd48b',
+            'reference' => NULL,
             'dev_requirement' => false,
         ),
         'akeeba/s3' => array(
@@ -200,12 +200,12 @@
             'dev_requirement' => false,
         ),
         'psr/cache' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/cache',
             'aliases' => array(),
-            'reference' => '213f9dbc5b9bfbc4f8db86d2838dc968752ce13b',
+            'reference' => 'd11b50ad223250cf17b86e38383413f5a6764bf8',
             'dev_requirement' => false,
         ),
         'psr/http-client' => array(
@@ -254,12 +254,12 @@
             ),
         ),
         'psr/log' => array(
-            'pretty_version' => '3.0.0',
-            'version' => '3.0.0.0',
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/log',
             'aliases' => array(),
-            'reference' => 'fe5ea303b0887d5caefd3d431c3e61ad47037001',
+            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
             'dev_requirement' => false,
         ),
         'psr/log-implementation' => array(
