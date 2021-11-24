@@ -8,14 +8,15 @@
  */
 defined('_JEXEC') or die();
 
-use Joomla\CMS\Uri\Uri;
+use GuzzleHttp\Exception\ClientException;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Uri\Uri;
 
 class CjLibControllerLicense extends FormController {
-    private $activation_url = 'https://shondalai.com/';
+    private $activation_url = 'https://shondalai.com';
     
 	public function __construct ($config = array()) {
 		parent::__construct($config);
@@ -32,6 +33,7 @@ class CjLibControllerLicense extends FormController {
 		
 		// Build the arguments
 		$args = array(
+		    'wc-api'      => 'software-api',
 		    'request'     => 'activation',
 		    'email'       => $license_email,
 		    'license_key' => $license_key,
@@ -40,21 +42,23 @@ class CjLibControllerLicense extends FormController {
 		    'secret_key'  => '',
 		);
 		
-		$base_url = $this->activation_url . '?wc-api=software-api';
-		$base_url = $base_url . '&' . http_build_query( $args );
-		
-		$fopen = ini_set("allow_url_fopen", 1);
-		$data = file_get_contents( $base_url );
-		
-		if($fopen !== false) {
-		    ini_set("allow_url_fopen", $fopen);
+		$data = null;
+		try {
+		    $client = new GuzzleHttp\Client();
+		    $response = $client->request('GET', $this->activation_url, [
+		        'query' => $args,
+		        'verify' => false
+		    ]);
+		    $data = $response->getBody();
+		} catch (Exception $e) {
+		    $this->setRedirect('index.php?option=com_cjlib', Text::_('COM_CJLIB_ERROR_WHILE_ACTIVATING_LICENSE') . ' Exception: ' . $e->getMessage());
 		}
 		
 		if( !empty($data) ) {
-		    $response = json_decode( $data );
+		    $json = json_decode( $data );
 
 		    // If the license is successfully activated, we need to add it to local database
-		    if( !empty( $response->activated ) && $response->activated ) {
+		    if( !empty( $json->activated ) && $json->activated ) {
 		        // getting the component params registry object
 		        $params = ComponentHelper::getParams('com_cjlib');
 		        $params->set('license_key', $license_key);
@@ -72,13 +76,13 @@ class CjLibControllerLicense extends FormController {
 		            $this->setRedirect('index.php?option=com_cjlib', Text::_('COM_CJLIB_ACTIVATION_SUCCESS'));
 		            return;
 		        }
-		    } else if( !empty( $response->error ) ){
-		        $this->setRedirect('index.php?option=com_cjlib', $response->error);
+		    } else if( !empty( $json->error ) ){
+		        $this->setRedirect('index.php?option=com_cjlib', $json->error);
 		        return;
 		    }
 		}
 		
-		$this->setRedirect('index.php?option=com_cjlib', Text::_('COM_CJLIB_ERROR_WHILE_ACTIVATING_LICENSE'));
+		$this->setRedirect('index.php?option=com_cjlib', Text::_('COM_CJLIB_ERROR_WHILE_ACTIVATING_LICENSE') . " Response: " . $data);
 	}
 	
 	public function deactivate() {
@@ -105,10 +109,10 @@ class CjLibControllerLicense extends FormController {
 	        }
 	        
 	        if( !empty($data) ) {
-	            $response = json_decode( $data );
+	            $json = json_decode( $data );
 	            
 	            // If the license is successfully activated, we need to add it to local database
-	            if( !empty( $response->reset ) && $response->reset  ) {
+	            if( !empty( $json->reset ) && $json->reset  ) {
 	                // getting the component params registry object
 	                $params = ComponentHelper::getParams('com_cjlib');
 	                $params->set('license_key', '');

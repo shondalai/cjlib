@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 
 <extensionset description="CjLib Extensions List" name="CjLib">
-    <extension client="site" description="CjLib Package" detailsurl="https://shondalai.com/wp-content/uploads/autoupdates/cjlib/details.xml" element="pkg_cjlib" name="CjLib Package" type="package" version="3.2.4"></extension>
+    <extension client="site" description="CjLib Package" detailsurl="https://shondalai.com/wp-content/uploads/autoupdates/cjlib/details.xml" element="pkg_cjlib" name="CjLib Package" type="package" version="3.2.5"></extension>
 </extensionset>
 
