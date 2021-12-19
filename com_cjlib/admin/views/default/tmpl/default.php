@@ -56,6 +56,12 @@ $span = !empty( $this->sidebar) ? 'col-md-10' : 'col-md-12';
     							<button type="submit" class="btn btn-primary"><?php echo JText::_('COM_CJLIB_ACTIVATE_LICENSE');?></button>
     							<?php endif;?>
     							
+    							<h4 class="mt-3"><?php echo JText::_('COM_CJLIB_FORGOT_LICENSE');?></h4>
+    							<p>
+    								<?php echo JText::_('COM_CJLIB_GET_YOUR_LICENSE_KEY');?> 
+    								<a href="https://shondalai.com/my-account/lost-license" target="_blank">https://shondalai.com/my-account/lost-license</a>
+    							</p>
+    							
                         		<input type="hidden" name="option" value="com_cjlib" />
                         		<input type="hidden" name="task" value="<?php echo !empty($params->get('license_key')) ? 'license.deactivate' : 'license.activate';?>" />
                         		<input type="hidden" name="view" value="default" />

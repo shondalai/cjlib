@@ -909,8 +909,8 @@ class CJFunctions {
 
 		JPluginHelper::importPlugin( $group );
 
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger($event, $params);
+		$app = JFactory::getApplication();
+		$app->triggerEvent($event, $params);
 	}
 	
 	/**
