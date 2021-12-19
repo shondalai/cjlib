@@ -1,17 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<extension type="library" version="3.5" method="upgrade">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<extension method="upgrade" type="library" version="3.5">
     <name>CjLib Library</name>
     <libraryname>cjlib</libraryname>
-	<author>Maverick</author>
-	<creationDate>2017-Dec-05</creationDate>
-	<copyright>Copyright (C) 2011 BulaSikku Technologies Private Limited. All rights reserved.</copyright>
+    <author>Maverick</author>
+    <creationDate>2021-Dec-19</creationDate>
+    <copyright>Copyright (C) 2011 BulaSikku Technologies Private Limited. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<authorEmail>support@shondalai.com</authorEmail>
+    <authorEmail>support@shondalai.com</authorEmail>
     <authorUrl>https://shondalai.com</authorUrl>
-	<version>2.8.4</version>
+    <version>3.2.6</version>
     <description>Addon to enable JDocument to render PDF</description>
     <files>
         <folder>vendor</folder>
         <file>loader.php</file>
     </files>
 </extension>
+
