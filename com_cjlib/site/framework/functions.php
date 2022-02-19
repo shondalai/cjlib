@@ -1429,6 +1429,11 @@ class CJFunctions {
 	        JFile::delete($path.'GeoLite2-City.mmdb');
 	    }
 	    
+	    if(!file_exists($path)) 
+	    {
+	        JFolder::create($path);
+	    }
+	    
 		if(file_exists($path.'GeoLite2-City.mmdb'))
 		{
 			$filemtime = filemtime($path.'GeoLite2-City.mmdb');
