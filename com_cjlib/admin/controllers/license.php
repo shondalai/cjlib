@@ -107,12 +107,12 @@ class CjLibControllerLicense extends FormController {
 	        if($fopen !== false) {
 	            ini_set("allow_url_fopen", $fopen);
 	        }
-	        
+
 	        if( !empty($data) ) {
 	            $json = json_decode( $data );
 	            
 	            // If the license is successfully activated, we need to add it to local database
-	            if( !empty( $json->reset ) && $json->reset  ) {
+	            if( ( !empty( $json->reset ) && $json->reset ) || $json->code == 104 ) {
 	                // getting the component params registry object
 	                $params = ComponentHelper::getParams('com_cjlib');
 	                $params->set('license_key', '');
