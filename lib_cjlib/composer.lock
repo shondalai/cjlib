@@ -1768,16 +1768,16 @@
         },
         {
             "name": "stefangabos/zebra_image",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stefangabos/Zebra_Image.git",
-                "reference": "f23bafa20be9e930b47c6fd62a52914dd9cc1444"
+                "reference": "5be437d7f18c0a94bf1a3a8650eba9f1af1b57f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stefangabos/Zebra_Image/zipball/f23bafa20be9e930b47c6fd62a52914dd9cc1444",
-                "reference": "f23bafa20be9e930b47c6fd62a52914dd9cc1444",
+                "url": "https://api.github.com/repos/stefangabos/Zebra_Image/zipball/5be437d7f18c0a94bf1a3a8650eba9f1af1b57f4",
+                "reference": "5be437d7f18c0a94bf1a3a8650eba9f1af1b57f4",
                 "shasum": ""
             },
             "require": {
@@ -1814,9 +1814,15 @@
             ],
             "support": {
                 "issues": "https://github.com/stefangabos/Zebra_Image/issues",
-                "source": "https://github.com/stefangabos/Zebra_Image/tree/2.6.0"
+                "source": "https://github.com/stefangabos/Zebra_Image/tree/2.7.0"
             },
-            "time": "2020-06-01T05:47:14+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/stefangabos",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-29T19:37:49+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
