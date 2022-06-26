@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '04a3301406b1a0eeeb88026cc239374aac5fa27d',
+        'reference' => '3c64477d4475b61dc8a9320674085bc14345436d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '04a3301406b1a0eeeb88026cc239374aac5fa27d',
+            'reference' => '3c64477d4475b61dc8a9320674085bc14345436d',
             'dev_requirement' => false,
         ),
         'akeeba/s3' => array(
