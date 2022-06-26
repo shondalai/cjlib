@@ -3,7 +3,7 @@
  * Akeeba Engine
  *
  * @package   akeebaengine
- * @copyright Copyright (c)2006-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2006-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -14,7 +14,7 @@ use Akeeba\Engine\Postproc\Connector\S3v4\Response\Error;
 use SimpleXMLElement;
 
 // Protection against direct access
-defined('AKEEBAENGINE') or die();
+defined('AKEEBAENGINE') || die();
 
 /**
  * Amazon S3 API response object
@@ -332,8 +332,8 @@ class Response
 		)
 		{
 			$this->error = new Error(
-				(string) $this->body->Code,
-				(string) $this->body->Message
+				500,
+				(string) $this->body->Code . ':' . (string) $this->body->Message
 			);
 
 			if (isset($this->body->Resource))

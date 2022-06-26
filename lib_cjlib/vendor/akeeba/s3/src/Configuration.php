@@ -3,14 +3,14 @@
  * Akeeba Engine
  *
  * @package   akeebaengine
- * @copyright Copyright (c)2006-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2006-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
 namespace Akeeba\Engine\Postproc\Connector\S3v4;
 
 // Protection against direct access
-defined('AKEEBAENGINE') or die();
+defined('AKEEBAENGINE') || die();
 
 /**
  * Holds the Amazon S3 confiugration credentials
@@ -199,6 +199,8 @@ class Configuration
 			throw new Exception\InvalidSignatureMethod;
 		}
 
+		$this->signatureMethod = $signatureMethod;
+
 		// If you switch to v2 signatures we unset the region.
 		if ($signatureMethod == 'v2')
 		{
@@ -215,8 +217,6 @@ class Configuration
 			}
 
 		}
-
-		$this->signatureMethod = $signatureMethod;
 	}
 
 	/**
