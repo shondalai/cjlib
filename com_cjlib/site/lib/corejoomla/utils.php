@@ -155,6 +155,7 @@ class CjLibUtils
 	    }
 	    else
 	    {
+		    Joomla\Utilities\IpHelper::setAllowIpOverrides(true);
 	        return Joomla\Utilities\IpHelper::getIp();
 	    }
 	}

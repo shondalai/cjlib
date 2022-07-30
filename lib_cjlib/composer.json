@@ -5,7 +5,7 @@
 		"geoip2/geoip2" : "~2.0",
 		"league/oauth2-client" : "^2.2",
 		"djchen/oauth2-fitbit" : "^1.0",
-		"stefangabos/zebra_image" : "^2.2",
+		"stefangabos/zebra_image" : "^2.7",
 		"intervention/image" : "^2.4",
 		"hybridauth/hybridauth" : "^3.6",
 		"akeeba/s3" : "^2.0",
