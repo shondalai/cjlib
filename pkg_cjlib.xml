@@ -3,9 +3,9 @@
 <extension method="upgrade" type="package" version="3.6">
     <name>CjLib Package</name>
     <author>Maverick</author>
-    <creationDate>2022-May-07</creationDate>
+    <creationDate>2022-Jul-30</creationDate>
     <packagename>cjlib</packagename>
-    <version>3.2.7</version>
+    <version>3.2.8</version>
     <url>https://shondalai.com/</url>
     <packager>Maverick</packager>
     <packagerurl>https://shondalai.com/</packagerurl>
