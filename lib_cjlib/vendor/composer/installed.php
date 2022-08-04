@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '3c66759aaa96cfd302e5c57bead19f578ead9d11',
+        'reference' => 'e08347f25378c0d4fb11538274e003fe09403535',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '3c66759aaa96cfd302e5c57bead19f578ead9d11',
+            'reference' => 'e08347f25378c0d4fb11538274e003fe09403535',
             'dev_requirement' => false,
         ),
         'akeeba/s3' => array(
@@ -74,12 +74,12 @@
             'dev_requirement' => false,
         ),
         'google/apiclient-services' => array(
-            'pretty_version' => 'v0.259.0',
-            'version' => '0.259.0.0',
+            'pretty_version' => 'v0.260.0',
+            'version' => '0.260.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../google/apiclient-services',
             'aliases' => array(),
-            'reference' => '3f68a8b8f825974bc0318b8f7268a09216d5fee1',
+            'reference' => '8c519ddfd2458fda02dc10d10b142973e578516a',
             'dev_requirement' => false,
         ),
         'google/auth' => array(
