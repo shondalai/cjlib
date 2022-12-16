@@ -166,9 +166,6 @@ class CjLibDateUtils
 			return JText::_('COM_CJLIB_NA');
 		}
 	
-		jimport('joomla.utilities.date');
-		$date = JFactory::getDate($strdate);
-	
-		return $date->format($format, true);
+		return JHtml::date($strdate, $format);
 	}
 }
