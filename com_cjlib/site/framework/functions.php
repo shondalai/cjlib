@@ -1033,7 +1033,7 @@ class CJFunctions {
 						}(document, "script", "facebook-jssdk"));
 					</script>
 					<div class="fb-comments" data-href="'.$url.'" data-num-posts="5" data-width="640"></div>';
-				
+
 			case 'disqus':
 				return '
 					<div id="disqus_thread"></div>
@@ -1052,7 +1052,7 @@ class CJFunctions {
 						})();
 					</script>
 					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>';
-				
+
 			case 'intensedebate':
 				return '
 					<script>
@@ -1062,8 +1062,7 @@ class CJFunctions {
 					</script>
 					<span id="IDCommentsPostTitle" style="display:none"></span>
 					<script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>';
-				break;
-			
+
 			case 'jacomment':
 				if(!$app->input->getInt('print') && file_exists(JPATH_SITE.'/components/com_jacomment/jacomment.php') && file_exists(JPATH_SITE.'/plugins/system/jacomment.php')){
 					
@@ -1076,7 +1075,6 @@ class CJFunctions {
 						return '{jacomment contentid='.$id.' option='.$app_name.' contenttitle='.$title.'}';
 					}
 				}
-				
 				break;
 
 			case 'jomcomment':
@@ -1087,30 +1085,29 @@ class CJFunctions {
 					include_once( $path );
 					return jomcomment($id, $app_name);
 				}
-				
 				break;
 				
 			case 'kommento':
 				$api = JPATH_ROOT.'/components/com_komento/bootstrap.php';
-				
 				if(file_exists($api))
 				{
 					require_once $api;
 					$item->text = $item->introtext = !empty($item->description) ? $item->description : '';
-					return Komento::commentify( $app_name, $item );
+					if(class_exists('KT')) {
+						return KT::commentify( $app_name, $item );
+					} else {
+						return Komento::commentify( $app_name, $item );
+					}
 				}
-				
 				break;
 				
 			case 'ccomment':
 				$utils = JPATH_ROOT . '/components/com_comment/helpers/utils.php';
-				
-				if(file_exists($utils)) 
+				if(file_exists($utils))
 				{
 					JLoader::discover('ccommentHelper', JPATH_ROOT . '/components/com_comment/helpers');
 					return ccommentHelperUtils::commentInit($app_name, $item);
 				}
-				
 				break;
 		}
 	}
