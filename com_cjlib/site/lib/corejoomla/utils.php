@@ -315,14 +315,14 @@ class CjLibUtils
 		
 		// Get the options.
 		$db->setQuery($query);
-		
+
 		try
 		{
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			throw new Exception($e->getMessage(), 500);
 		}
 		
 		// Pad the option text with spaces using depth level as a multiplier.
