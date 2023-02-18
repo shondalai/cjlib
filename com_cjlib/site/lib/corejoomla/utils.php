@@ -106,7 +106,7 @@ class CjLibUtils
 	 */
 	public static function escape($var)
 	{
-		return $var ? htmlspecialchars($var, ENT_COMPAT, 'UTF-8') : null;
+		return !empty($var) ? htmlspecialchars($var, ENT_COMPAT, 'UTF-8') : null;
 	}
 	
 	/**
