@@ -199,8 +199,8 @@ class CJFunctions {
 
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
-		
-		$plugins = !empty($app->get('jqueryplugins')) ? $app->get('jqueryplugins') : array();
+
+		$plugins = !empty($app->jqueryplugins) ? $app->jqueryplugins : array();
 		$custom_tag = isset($params['custom_tag']) ? true : false;
 
 		if(!in_array('baseloc', $plugins)){
@@ -277,8 +277,8 @@ class CJFunctions {
                     CjScript::_($plugin, array('custom'=>$custom_tag));
                     break;
 		    }
-		    
-		    $app->set('jqueryplugins', $plugins);
+
+			$app->jqueryplugins = $plugins;
 		}
 	}
 	

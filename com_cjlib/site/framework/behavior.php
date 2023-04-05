@@ -19,7 +19,7 @@ class CjLibBehavior {
 		$doc = JFactory::getDocument();
 
 		// Load jQuery if it is not already loaded
-		if ( $app->get( 'jquery' ) )
+		if ( ! isset( $app->jquery ) )
 		{
 			if ( APP_VERSION < 3 )
 			{
@@ -31,7 +31,7 @@ class CjLibBehavior {
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.noconflict.js', $custom_tag );
-			$app->set( 'jquery', true );
+			$app->jquery = true;
 		}
 	}
 
@@ -39,7 +39,7 @@ class CjLibBehavior {
 		$app = JFactory::getApplication();
 
 		// Load Bootstrap JavaScript
-		if ( $load_bsjs && $app->get( 'cjbsjs' ) )
+		if ( $load_bsjs && ! isset( $app->cjbsjs ) )
 		{
 			if ( APP_VERSION < 3 )
 			{
@@ -55,16 +55,16 @@ class CjLibBehavior {
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/bootstrap/js/respond.min.js', $custom_tag );
-			$app->set( 'cjbsjs', true );
+			$app->cjbsjs = true;
 		}
 
 		// Load Bootstrap CSS
-		if ( $load_bscss && $app->get( 'cjbscss' ) )
+		if ( $load_bscss && ! isset( $app->cjbscss ) )
 		{
 			$doc = JFactory::getDocument();
 			CJFunctions::add_css_to_document( $doc, JUri::root( true ) . '/media/jui/css/bootstrap.min.css', $custom_tag );
 			CJFunctions::add_css_to_document( $doc, JUri::root( true ) . '/media/jui/css/bootstrap-responsive.min.css', $custom_tag );
-			$app->set( 'cjbscss', true );
+			$app->cjbscss = true;
 		}
 	}
 
@@ -79,10 +79,10 @@ class CjLibBehavior {
 		$doc = JFactory::getDocument();
 
 		// Load FontAwesome if it not already loaded
-		if ( $app->get( 'cjfa' ) )
+		if ( ! isset( $app->cjfa ) )
 		{
 			$doc->addStyleSheet( CJLIB_MEDIA_URI . '/plugins/fontawesome/css/font-awesome.min.css' );
-			$app->set( 'cjfa', true );
+			$app->cjfa = true;
 		}
 	}
 
