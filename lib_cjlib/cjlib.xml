@@ -4,12 +4,12 @@
     <name>CjLib Library</name>
     <libraryname>cjlib</libraryname>
     <author>Maverick</author>
-    <creationDate>2023-Apr-02</creationDate>
+    <creationDate>2023-Apr-05</creationDate>
     <copyright>Copyright (C) 2011 BulaSikku Technologies Private Limited. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>support@shondalai.com</authorEmail>
     <authorUrl>https://shondalai.com</authorUrl>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
     <description>Addon to enable JDocument to render PDF</description>
     <files>
         <folder>vendor</folder>
