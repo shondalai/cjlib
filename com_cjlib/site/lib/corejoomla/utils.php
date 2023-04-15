@@ -260,7 +260,7 @@ class CjLibUtils
 		$tmpPath 	= $tmpFile['tmp_name'];
 		$tmpName 	= $tmpFile['name'];
 		$fileSize	= (float) $tmpFile['size'];
-		$tmpExt		= strtolower(JFile::getExt($tmpName));
+		$tmpExt		= strtolower(\Joomla\CMS\Filesystem\File::getExt($tmpName));
 	
 		if(!empty($allowedExts))
 		{
@@ -280,7 +280,7 @@ class CjLibUtils
 		$fileName 	= $targetName ? $targetName : CjLibUtils::getRandomKey(25, 'abcdefghijklmnopqrstuvwxyz1234567890').'.'.$tmpExt;
 		$fileDir	= $targetDir ? $targetDir : JPATH_ROOT . '/media';
 	
-		if(JFile::upload($tmpPath, $fileDir.'/'.$fileName))
+		if(\Joomla\CMS\Filesystem\File::upload($tmpPath, $fileDir.'/'.$fileName))
 		{
 			return $fileName;
 		}

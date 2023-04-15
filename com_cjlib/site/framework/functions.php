@@ -503,7 +503,7 @@ class CJFunctions {
 
 		if(file_exists($path)){
 				
-			$themes = JFolder::folders($path);
+			$themes = \Joomla\CMS\Filesystem\Folder::folders($path);
 		}
 
 		return $themes;
@@ -1423,12 +1423,12 @@ class CJFunctions {
 	    $path = JPATH_ROOT.'/media/com_cjlib/geoip/';
 	    if($force && file_exists($path.'GeoLite2-City.mmdb'))
 	    {
-	        JFile::delete($path.'GeoLite2-City.mmdb');
+	        \Joomla\CMS\Filesystem\File::delete($path.'GeoLite2-City.mmdb');
 	    }
 	    
 	    if(!file_exists($path)) 
 	    {
-	        JFolder::create($path);
+	        \Joomla\CMS\Filesystem\Folder::create($path);
 	    }
 	    
 		if(file_exists($path.'GeoLite2-City.mmdb'))
@@ -1436,7 +1436,7 @@ class CJFunctions {
 			$filemtime = filemtime($path.'GeoLite2-City.mmdb');
 			if((time() - $filemtime) >= 30*86400)
 			{
-				JFile::delete($path.'GeoLite2-City.mmdb');
+				\Joomla\CMS\Filesystem\File::delete($path.'GeoLite2-City.mmdb');
 			} 
 			else 
 			{
@@ -1496,7 +1496,7 @@ class CJFunctions {
 	    $archivename = $p_filename;
 	    
 	    // Clean the paths to use for archive extraction
-	    $tarFileName = JFile::stripExt($srcFile);
+	    $tarFileName = \Joomla\CMS\Filesystem\File::stripExt($srcFile);
 	    $extractname = \JPath::clean(dirname($p_filename) . '/' . $tarFileName);
 	    $archivename = \JPath::clean($archivename);
 	    
@@ -1531,12 +1531,12 @@ class CJFunctions {
 	        return false;
 	    }
 	    
-	    $sourceFileName = \JPath::clean($extractdir.JFile::stripExt($tarFileName).'/'.$destFile);
+	    $sourceFileName = \JPath::clean($extractdir.\Joomla\CMS\Filesystem\File::stripExt($tarFileName).'/'.$destFile);
 	    $destFileName = \JPath::clean($destDir . $destFile);
-	    JFile::move($sourceFileName, $destFileName);
+	    \Joomla\CMS\Filesystem\File::move($sourceFileName, $destFileName);
 	    
-	    JFolder::delete($extractdir);
-	    JFile::delete($extractname);
+	    \Joomla\CMS\Filesystem\Folder::delete($extractdir);
+	    \Joomla\CMS\Filesystem\File::delete($extractname);
 	    
 	    return true;
 	}
@@ -1552,11 +1552,11 @@ class CJFunctions {
 	{
 		if(file_exists($target_file))
 		{
-			JFile::delete($target_file);
+			\Joomla\CMS\Filesystem\File::delete($target_file);
 		} 
 		else 
 		{
-			JFolder::create($target_folder);
+			\Joomla\CMS\Filesystem\Folder::create($target_folder);
 		}
 		
 		//try to connect via fopen

@@ -169,7 +169,7 @@ class CJLib {
 				$lib = CJLIB_PATH.'/dummy.php';
 		}
 		
-		if(JFile::exists($lib)) {
+		if(\Joomla\CMS\Filesystem\File::exists($lib)) {
 			
 			require_once $lib;
 		}

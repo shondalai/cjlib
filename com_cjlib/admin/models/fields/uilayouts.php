@@ -200,7 +200,7 @@ class JFormFieldUILayouts extends JFormFieldList
 		}
 
 		// Get a list of folders in the search path with the given filter.
-		$folders = JFolder::folders($path, $this->filter, $this->recursive, false);
+		$folders = \Joomla\CMS\Filesystem\Folder::folders($path, $this->filter, $this->recursive, false);
 
 		// Build the options list from the list of folders.
 		if (is_array($folders))
