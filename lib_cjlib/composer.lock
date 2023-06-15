@@ -8,22 +8,22 @@
     "packages": [
         {
             "name": "akeeba/s3",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeeba/s3.git",
-                "reference": "0c20807b1bfb9d955f9464c26b63f23fc17614ab"
+                "reference": "ddaaf44c07fa80d961c4317f82ef44cee00bfe17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeeba/s3/zipball/0c20807b1bfb9d955f9464c26b63f23fc17614ab",
-                "reference": "0c20807b1bfb9d955f9464c26b63f23fc17614ab",
+                "url": "https://api.github.com/repos/akeeba/s3/zipball/ddaaf44c07fa80d961c4317f82ef44cee00bfe17",
+                "reference": "ddaaf44c07fa80d961c4317f82ef44cee00bfe17",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-simplexml": "*",
-                "php": ">=7.1.0 <8.1"
+                "php": ">=7.1.0 <8.4"
             },
             "type": "library",
             "autoload": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/akeeba/s3/issues",
-                "source": "https://github.com/akeeba/s3/tree/2.1.0"
+                "source": "https://github.com/akeeba/s3/tree/2.2.0"
             },
-            "time": "2022-05-30T09:14:13+00:00"
+            "time": "2023-06-08T07:22:52+00:00"
         },
         {
             "name": "composer/ca-bundle",
