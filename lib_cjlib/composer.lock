@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "akeeba/s3",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeeba/s3.git",
-                "reference": "ddaaf44c07fa80d961c4317f82ef44cee00bfe17"
+                "reference": "3734197acc2b0987d8f92a0afb80fe914eff4722"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeeba/s3/zipball/ddaaf44c07fa80d961c4317f82ef44cee00bfe17",
-                "reference": "ddaaf44c07fa80d961c4317f82ef44cee00bfe17",
+                "url": "https://api.github.com/repos/akeeba/s3/zipball/3734197acc2b0987d8f92a0afb80fe914eff4722",
+                "reference": "3734197acc2b0987d8f92a0afb80fe914eff4722",
                 "shasum": ""
             },
             "require": {
@@ -33,7 +33,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-3.0+"
+                "GPL-3.0-or-later"
             ],
             "authors": [
                 {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/akeeba/s3/issues",
-                "source": "https://github.com/akeeba/s3/tree/2.2.0"
+                "source": "https://github.com/akeeba/s3/tree/2.2.1"
             },
-            "time": "2023-06-08T07:22:52+00:00"
+            "time": "2023-07-10T21:02:11+00:00"
         },
         {
             "name": "composer/ca-bundle",
