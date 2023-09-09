@@ -20,8 +20,8 @@ class CJLib {
 	public static function import($package, $cjprefixed = false, $force = false, $custom_tag = false){
 		
 		$lib = '';
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$document = \Joomla\CMS\Factory::getDocument();
+		$app = \Joomla\CMS\Factory::getApplication();
 		
 		switch ($package){
 				
@@ -69,7 +69,7 @@ class CJLib {
 						
 						if($cjprefixed){
 							
-							if(JFactory::getLanguage()->isRTL()){
+							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
 								
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap.rtl.min.css', $custom_tag);
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap-responsive.rtl.min.css', $custom_tag);
@@ -80,7 +80,7 @@ class CJLib {
 							}
 						} else {
 							
-							if(JFactory::getLanguage()->isRTL()){
+							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
 								
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/bootstrap.rtl.min.css', $custom_tag);
 							} else {
@@ -95,7 +95,7 @@ class CJLib {
 						$document->addScript(CJLIB_URI.'/bootstrap/js/bootstrap.min.js');
 					} else {
 	
-						JHtml::_('bootstrap.framework');
+						\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.framework');
 						JHtmlBootstrap::loadCss(true, $document->direction);
 					}
 					
@@ -117,7 +117,7 @@ class CJLib {
 				
 						if($cjprefixed){
 								
-							if(JFactory::getLanguage()->isRTL()){
+							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
 
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap.fontawesome.rtl.min.css', $custom_tag);
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap-responsive.rtl.min.css', $custom_tag);
@@ -128,7 +128,7 @@ class CJLib {
 							}
 						} else {
 								
-							if(JFactory::getLanguage()->isRTL()){
+							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
 								
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/bootstrap.fontawesome.rtl.min.css', $custom_tag);
 							} else {
@@ -145,7 +145,7 @@ class CJLib {
 						$document->addScript(CJLIB_URI.'/bootstrap/js/bootstrap.min.js');
 					} else {
 				
-						JHtml::_('bootstrap.framework');
+						\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.framework');
 						JHtmlBootstrap::loadCss(true, $document->direction);
 						CJFunctions::load_jquery(array('libs'=>array('fontawesome'), 'custom_tag'=>$custom_tag));
 					}

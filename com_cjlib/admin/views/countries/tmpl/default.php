@@ -32,15 +32,15 @@ $languages = array(
     <?php endif;?>
     <div class="<?php echo $span;?>">
     	<div id="j-main-container">
-        	<form action="<?php echo JRoute::_('index.php?option=com_cjlib&view=countries');?>" method="post" name="adminForm" id="adminForm">
+        	<form action="<?php echo \Joomla\CMS\Router\Route::_('index.php?option=com_cjlib&view=countries');?>" method="post" name="adminForm" id="adminForm">
         	
         		<div class="clearfix form-inline margin-bottom-10">
         			<div class="pull-right">
         				
-        				<span class="badge badge-important tooltip-hover" title="<?php echo JText::_('COM_CJLIB_ADD_LANGUAGE_HELP');?>">?</span>
+        				<span class="badge badge-important tooltip-hover" title="<?php echo \Joomla\CMS\Language\Text::_('COM_CJLIB_ADD_LANGUAGE_HELP');?>">?</span>
         				
         				<select id="filter_language" name="filter[language]" size="1" onchange="document.adminForm.submit();">
-        					<option value=""><?php echo JText::_('COM_CJLIB_FILTER_LANGUAGE');?></option>
+        					<option value=""><?php echo \Joomla\CMS\Language\Text::_('COM_CJLIB_FILTER_LANGUAGE');?></option>
         					<?php foreach ($languages as $code=>$language):?>
         					<option value="<?php echo $code;?>"<?php echo $code == $this->state->get('filter.language') ? ' selected="selected"' : '';?>>
         						<?php echo $this->escape($language);?>
@@ -50,7 +50,7 @@ $languages = array(
         				
         				<?php if(strlen($this->state->get('filter.language')) > 1 && count($this->items) == 0):?>
         				<button type="button" class="btn btn-danger" onclick="document.adminForm.task.value='countries.add';document.adminForm.submit();">
-        					<?php echo JText::_('COM_CJLIB_ADD_LANGUAGE');?>
+        					<?php echo \Joomla\CMS\Language\Text::_('COM_CJLIB_ADD_LANGUAGE');?>
         				</button>
         				<?php endif;?>
         				
@@ -70,17 +70,17 @@ $languages = array(
         			</div>
         			
         			<select id="filter_published" name="filter[published]" onchange="this.form.submit();" class="inputbox">
-        				<option value=""<?php echo $this->state->get('filter.published') ? '' : ' selected="selected"';?>><?php echo JText::_('JOPTION_SELECT_PUBLISHED')?></option>
-        				<option value="-2"<?php echo $this->state->get('filter.published') == '-2' ? ' selected="selected"' : '';?>><?php echo JText::_('JTRASHED')?></option>
-        				<option value="0"<?php echo $this->state->get('filter.published') == '0' ? ' selected="selected"' : '';?>><?php echo JText::_('JUNPUBLISHED')?></option>
-        				<option value="1"<?php echo $this->state->get('filter.published') == '1' ? ' selected="selected"' : '';?>><?php echo JText::_('JPUBLISHED')?></option>
-        				<option value="2"<?php echo $this->state->get('filter.published') == '2' ? ' selected="selected"' : '';?>><?php echo JText::_('JTRASHED')?></option>
-        				<option value="*"<?php echo $this->state->get('filter.published') == '*' ? ' selected="selected"' : '';?>><?php echo JText::_('JALL')?></option>
+        				<option value=""<?php echo $this->state->get('filter.published') ? '' : ' selected="selected"';?>><?php echo \Joomla\CMS\Language\Text::_('JOPTION_SELECT_PUBLISHED')?></option>
+        				<option value="-2"<?php echo $this->state->get('filter.published') == '-2' ? ' selected="selected"' : '';?>><?php echo \Joomla\CMS\Language\Text::_('JTRASHED')?></option>
+        				<option value="0"<?php echo $this->state->get('filter.published') == '0' ? ' selected="selected"' : '';?>><?php echo \Joomla\CMS\Language\Text::_('JUNPUBLISHED')?></option>
+        				<option value="1"<?php echo $this->state->get('filter.published') == '1' ? ' selected="selected"' : '';?>><?php echo \Joomla\CMS\Language\Text::_('JPUBLISHED')?></option>
+        				<option value="2"<?php echo $this->state->get('filter.published') == '2' ? ' selected="selected"' : '';?>><?php echo \Joomla\CMS\Language\Text::_('JTRASHED')?></option>
+        				<option value="*"<?php echo $this->state->get('filter.published') == '*' ? ' selected="selected"' : '';?>><?php echo \Joomla\CMS\Language\Text::_('JALL')?></option>
         			</select>
         			<input type="text" name="filter_search" id="filter_search"
-        				value="<?php echo $this->state->get('filter.search');?>" placeholder="<?php echo JText::_('COM_CJLIB_SEARCH')?>"/>
-        			<input type="submit" value="<?php echo JText::_('COM_CJLIB_SEARCH');?>" class="btn btn-primary">
-        			<input type="button" value="<?php echo JText::_('COM_CJLIB_RESET');?>" class="btn" 
+        				value="<?php echo $this->state->get('filter.search');?>" placeholder="<?php echo \Joomla\CMS\Language\Text::_('COM_CJLIB_SEARCH')?>"/>
+        			<input type="submit" value="<?php echo \Joomla\CMS\Language\Text::_('COM_CJLIB_SEARCH');?>" class="btn btn-primary">
+        			<input type="button" value="<?php echo \Joomla\CMS\Language\Text::_('COM_CJLIB_RESET');?>" class="btn" 
         				onclick="document.adminForm.filter_search.value=''; document.adminForm.filter_published.value=''; document.adminForm.submit();">
         		</div>
         
@@ -98,8 +98,8 @@ $languages = array(
         			<input type="hidden" name="filter_order_Dir" value="<?php echo $this->state->get('list.direction'); ?>" />
         			<input type="hidden" name="cjlib_page_id" id="cjlib_page_id" value="countries">
         			<img id="progress-confirm" alt="..." src="components/com_cjlib/assets/images/ui-anim_basic_16x16.gif"/>
-        			<span id="url-save-country-name"><?php echo JRoute::_('index.php?option=com_cjlib&task=country.save');?></span>
-        			<?php echo JHtml::_('form.token'); ?>
+        			<span id="url-save-country-name"><?php echo \Joomla\CMS\Router\Route::_('index.php?option=com_cjlib&task=country.save');?></span>
+        			<?php echo \Joomla\CMS\HTML\HTMLHelper::_('form.token'); ?>
         		</div>
         	</form>
         </div>

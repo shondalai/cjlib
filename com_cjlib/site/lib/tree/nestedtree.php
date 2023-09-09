@@ -1737,15 +1737,15 @@ class CjNestedTree
     		
     		if(!empty($fields['stat_field2'])){
     			
-    			$title = !empty($fields['title']) ? JText::sprintf($fields['title'], $node[$fields['stat_field']], $node[$fields['stat_field2']]) : '';
+    			$title = !empty($fields['title']) ? \Joomla\CMS\Language\Text::sprintf($fields['title'], $node[$fields['stat_field']], $node[$fields['stat_field2']]) : '';
     		} else if(!empty($fields['stat_field'])){
     			
-    			$title = !empty($fields['title']) ? JText::sprintf($fields['title'], $node[$fields['stat_field']]) : '';
+    			$title = !empty($fields['title']) ? \Joomla\CMS\Language\Text::sprintf($fields['title'], $node[$fields['stat_field']]) : '';
     		}
     		
     		$attribs = array('class'=>'tooltip-hover', 'title'=>$title);
     		$content = $content . '<li rel="'.$node['id'].'">';
-    		$content = $content . JHtml::link(JRoute::_($fields['url'].'&id='.$node['id'].':'.$node['alias'].$fields['itemid']), $value, $attribs);
+    		$content = $content . \Joomla\CMS\HTML\HTMLHelper::link(\Joomla\CMS\Router\Route::_($fields['url'].'&id='.$node['id'].':'.$node['alias'].$fields['itemid']), $value, $attribs);
     		
     		if(!empty($node['children'])) {
     			 
@@ -1797,7 +1797,7 @@ class CjNestedTree
     					
     					$url = $field['src'] . ($field['id'] ? '&id=' . $node[$this->properties['id_column']] . ':' . $node['alias'] : '');
     					
-    					$content = $content . '<td>' . str_repeat('&hellip; ', $nlevel) . JHtml::link($url, CJFunctions::escape($node[$this->properties['title_column']])) . '</td>';
+    					$content = $content . '<td>' . str_repeat('&hellip; ', $nlevel) . \Joomla\CMS\HTML\HTMLHelper::link($url, CJFunctions::escape($node[$this->properties['title_column']])) . '</td>';
     					
     					break;
     				
@@ -1830,7 +1830,7 @@ class CjNestedTree
     					if( $num > 0 ){
     					
     						$attribs = !empty($field['attribs']) ? $field['attribs'] : array();
-    						$content = $content . '<td align="' . $field['align'] . '">'.JHtml::link(JRoute::_($url), $field['value'], $attribs).'</td>';
+    						$content = $content . '<td align="' . $field['align'] . '">'.\Joomla\CMS\HTML\HTMLHelper::link(\Joomla\CMS\Router\Route::_($url), $field['value'], $attribs).'</td>';
     					} else {
     						
     						$content = $content . '<td></td>';
@@ -1845,7 +1845,7 @@ class CjNestedTree
     					if($num < count($nodes) - 1){
     							
     						$attribs = !empty($field['attribs']) ? $field['attribs'] : array();
-    						$content = $content . '<td align="' . $field['align'] . '">'.JHtml::link(JRoute::_($url), $field['value'], $attribs).'</a></td>';
+    						$content = $content . '<td align="' . $field['align'] . '">'.\Joomla\CMS\HTML\HTMLHelper::link(\Joomla\CMS\Router\Route::_($url), $field['value'], $attribs).'</a></td>';
     					} else {
     					
     						$content = $content . '<td></td>';

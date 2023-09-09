@@ -15,9 +15,9 @@ defined("T_CJ_MESSAGEQUEUE") or define("T_CJ_MESSAGEQUEUE",					"#__corejoomla_m
 
 defined('CJLIB_VER') or define('CJLIB_VER', 								'3.2.10');
 defined('CJLIB_PATH') or define('CJLIB_PATH', 								JPATH_ROOT.'/components/com_cjlib');
-defined('CJLIB_URI') or define('CJLIB_URI', 								JURI::root(true).'/components/com_cjlib');
+defined('CJLIB_URI') or define('CJLIB_URI', 								\Joomla\CMS\Uri\Uri::root(true).'/components/com_cjlib');
 defined('CJLIB_MEDIA_PATH') or define('CJLIB_MEDIA_PATH',					JPATH_ROOT.'/media/com_cjlib');
-defined('CJLIB_MEDIA_URI') or define('CJLIB_MEDIA_URI',						JURI::root(true).'/media/com_cjlib');
+defined('CJLIB_MEDIA_URI') or define('CJLIB_MEDIA_URI',					\Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib');
 defined('CJLIB_CRON_SECRET') or define('CJLIB_CRON_SECRET', 				'cron_secret');
 
 if(!defined('APP_VERSION'))

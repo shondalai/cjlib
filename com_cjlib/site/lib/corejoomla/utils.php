@@ -116,7 +116,7 @@ class CjLibUtils
 	 */
 	public static function getUrlSafeString($title)
 	{
-		if (JFactory::getConfig()->get('unicodeslugs') == 1) 
+		if (\Joomla\CMS\Factory::getConfig()->get('unicodeslugs') == 1) 
 		{
 			return JFilterOutput::stringURLUnicodeSlug($title);
 		} 
@@ -134,7 +134,7 @@ class CjLibUtils
 	 */
 	public static function getUserIpAddress() 
 	{
-	    $version = new JVersion();
+	    $version = new \Joomla\CMS\Version();
 	    if (version_compare($version->getShortVersion(), '3.9', 'lt'))
 	    {
     	    $ip = '';
@@ -225,8 +225,8 @@ class CjLibUtils
 	 */
 	public static function getCurrentUrl()
 	{
-		$absUrl = JUri::getInstance()->toString();
-		return JRoute::_($absUrl);
+		$absUrl = \Joomla\CMS\Uri\Uri::getInstance()->toString();
+		return \Joomla\CMS\Router\Route::_($absUrl);
 	}
 	
 	/**
@@ -244,12 +244,12 @@ class CjLibUtils
 	 */
 	public static function uploadFile($inputName = 'uploadfile', $targetDir = null, $targetName = null, $allowedExts = array(), $maxSize = 0)
 	{
-		$input = JFactory::getApplication()->input;
+		$input = \Joomla\CMS\Factory::getApplication()->input;
 		$tmpFile = $input->files->get($inputName);
 	
 		if($tmpFile['error'] > 0)
 		{
-			throw new Exception(JText::_('JERROR_AN_ERROR_HAS_OCCURRED') . '| RC=101', 500);
+			throw new Exception(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED') . '| RC=101', 500);
 		}
 
 		if(empty($tmpFile))
@@ -267,14 +267,14 @@ class CjLibUtils
 			$extns = explode(',', $allowedExts);
 			if(!in_array($tmpExt, $extns))
 			{
-				throw new Exception(JText::_('COM_CJLIB_ERROR_INVALID_FILE_TYPE') . '| RC=102', 403);
+				throw new Exception(\Joomla\CMS\Language\Text::_('COM_CJLIB_ERROR_INVALID_FILE_TYPE') . '| RC=102', 403);
 			}
 		}
 	
 		$maxSize = $maxSize ? $maxSize : (float) JFilesystemHelper::fileUploadMaxSize(false);
 		if($fileSize == 0 || $fileSize > $maxSize)
 		{
-			throw new Exception(JText::_('COM_CJLIB_ERROR_MAX_SIZE_FAILURE') . '| RC=3', 403);
+			throw new Exception(\Joomla\CMS\Language\Text::_('COM_CJLIB_ERROR_MAX_SIZE_FAILURE') . '| RC=3', 403);
 		}
 	
 		$fileName 	= $targetName ? $targetName : CjLibUtils::getRandomKey(25, 'abcdefghijklmnopqrstuvwxyz1234567890').'.'.$tmpExt;
@@ -291,10 +291,10 @@ class CjLibUtils
 	public static function getCategoryOptions($extension, $acl = false, $published = array(0, 1))
 	{
 		$options = array();
-		$jinput = JFactory::getApplication()->input;
+		$jinput = \Joomla\CMS\Factory::getApplication()->input;
 		$oldCat = $jinput->get('id', 0);
 		
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.id AS value, a.title AS text, a.level, a.published, a.lft, a.language');
 		
@@ -305,7 +305,7 @@ class CjLibUtils
 			->where('published IN (' . implode(',', $published) . ')');
 		
 		// Filter language
-		$languages = array(JFactory::getLanguage()->getTag(), '*');
+		$languages = array(\Joomla\CMS\Factory::getLanguage()->getTag(), '*');
 		$subQuery->where('language IN (' . implode(',', $db->quote($languages)).')');
 		
 		$query
@@ -339,7 +339,7 @@ class CjLibUtils
 		}
 		
 		// Get the current user object.
-		$user = JFactory::getUser();
+		$user = \Joomla\CMS\Factory::getUser();
 		if($acl)
 		{
 			foreach ($options as $i => $option)
@@ -447,10 +447,10 @@ class CjLibUtils
 		}
 		catch (Exception $e)
 		{
-			$user = JFactory::getUser();
+			$user = \Joomla\CMS\Factory::getUser();
 			if($user->authorise('core.admin', 'com_communitysurveys'))
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage());
+				\Joomla\CMS\Factory::getApplication()->enqueueMessage($e->getMessage());
 			}
 		}
 		
@@ -467,7 +467,7 @@ class CjLibUtils
 		if (!self::$_router)
 		{
 			// Get the router.
-			$app = JFactory::getApplication('site');
+			$app = \Joomla\CMS\Factory::getApplication('site');
 			self::$_router = $app::getRouter();
 	
 			// Make sure that we have our router
@@ -500,7 +500,7 @@ class CjLibUtils
 	
 			if (!is_array($host_port))
 			{
-				$uri2 = JUri::getInstance();
+				$uri2 = \Joomla\CMS\Uri\Uri::getInstance();
 				$host_port = array($uri2->getHost(), $uri2->getPort());
 			}
 	
@@ -532,8 +532,8 @@ class CjLibUtils
 	 */
 	public static function isSite()
 	{
-	    $version = new JVersion();
-	    $app = JFactory::getApplication();
+	    $version = new \Joomla\CMS\Version();
+	    $app = \Joomla\CMS\Factory::getApplication();
 
 	    if (version_compare($version->getShortVersion(), '3.7', 'lt'))
 	    {

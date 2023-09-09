@@ -8,18 +8,18 @@
  */
 defined('_JEXEC') or die();
 
-class CjLibViewDefault extends JViewLegacy 
+class CjLibViewDefault extends Joomla\CMS\MVC\View\HtmlView
 {
 	function display($tpl = null) 
 	{
 		CjLibHelper::addSubmenu('default');
-		JToolBarHelper::title(JText::_('TITLE_CJLIB'), 'cjlib.png');
-		JToolbarHelper::custom('config.updategeoip', 'download.png', 'download.png', JText::_('COM_CJLIB_UPDATE_GEOIP_DATABASE'), false);
+		\Joomla\CMS\Toolbar\ToolbarHelper::title(\Joomla\CMS\Language\Text::_('TITLE_CJLIB'), 'cjlib.png');
+		\Joomla\CMS\Toolbar\ToolbarHelper::custom('config.updategeoip', 'download.png', 'download.png', \Joomla\CMS\Language\Text::_('COM_CJLIB_UPDATE_GEOIP_DATABASE'), false);
 		
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')
 		{
-		    $this->sidebar = JHtmlSidebar::render();
+		    $this->sidebar = \Joomla\CMS\HTML\Helpers\Sidebar::render();
 		}
 		
 		parent::display($tpl);

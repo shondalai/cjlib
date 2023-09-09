@@ -8,15 +8,14 @@
  */
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
 /**
  * Supports an HTML select list of folder
  *
  * @since  11.1
  */
-class JFormFieldUILayouts extends JFormFieldList
+class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 {
 	/**
 	 * The form field type.
@@ -191,12 +190,12 @@ class JFormFieldUILayouts extends JFormFieldList
 		// Prepend some default options based on field attributes.
 		if (!$this->hideNone)
 		{
-			$options[] = JHtml::_('select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+			$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', '-1', \Joomla\CMS\Language\Text::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
 		}
 
 		if (!$this->hideDefault)
 		{
-			$options[] = JHtml::_('select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+			$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', '', \Joomla\CMS\Language\Text::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
 		}
 
 		// Get a list of folders in the search path with the given filter.
@@ -219,7 +218,7 @@ class JFormFieldUILayouts extends JFormFieldList
 				// Remove the root part and the leading /
 				$folder = trim(str_replace($path, '', $folder), '/');
 
-				$options[] = JHtml::_('select.option', $folder, $folder);
+				$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', $folder, $folder);
 			}
 		}
 

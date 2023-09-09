@@ -10,12 +10,11 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.controller' );
 
-class CjLibController extends JControllerLegacy {
+class CjLibController extends Joomla\CMS\MVC\Controller\BaseController {
 	
     function __construct() {
-    	
-    	JRequest::setVar('view', 'default');
+
+	    $this->input->set('view', 'default');
         parent::__construct();
     }
 }
-?>

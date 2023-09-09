@@ -8,17 +8,17 @@
  */
 defined('_JEXEC') or die;
 
-JFormHelper::loadFieldClass('editor');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('editor');
 
-class JFormFieldCjeditor extends JFormFieldEditor
+class JFormFieldCjeditor extends \Joomla\CMS\Form\Field\EditorField
 {
 	public $type = 'Cjeditor';
 	
 	protected function getEditor()
 	{
-		$jinput = JFactory::getApplication()->input;
+		$jinput = \Joomla\CMS\Factory::getApplication()->input;
 		$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
-		$params = JComponentHelper::getParams($extension);
+		$params = \Joomla\CMS\Component\ComponentHelper::getParams($extension);
 		$this->editorType = array($params->get('default_editor'));
 		
 		return parent::getEditor();

@@ -14,7 +14,7 @@ class CjMailHelper
 {
 	public static function getMessage($msgid)
 	{
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$messages = array();
 		
 		$query = $db->getQuery(true)
@@ -111,7 +111,7 @@ class CjMailHelper
 	public static function sendEmail($from, $fromname, $recipient, $subject, $body, $options = array())
 	{
 		// Get a JMail instance
-		$mail = JFactory::getMailer();
+		$mail = \Joomla\CMS\Factory::getMailer();
 	
 		$mail->setSender(array($from, $fromname));
 		$mail->setSubject($subject);

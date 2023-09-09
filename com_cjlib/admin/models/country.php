@@ -29,7 +29,7 @@ class CjLibModelCountry extends JModelAdmin
 		$db = $this->getDbo();
 		if ($table->published == 1 && (int) $table->publish_up == 0)
 		{
-			$table->publish_up = JFactory::getDate()->toSql();
+			$table->publish_up = \Joomla\CMS\Factory::getDate()->toSql();
 		}
 		
 		if ($table->published == 1 && intval($table->publish_down) == 0)
@@ -40,7 +40,7 @@ class CjLibModelCountry extends JModelAdmin
 
 	public function getTable ($type = 'Country', $prefix = 'CjLibTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return \Joomla\CMS\Table\Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getItem ($pk = null)
@@ -57,7 +57,7 @@ class CjLibModelCountry extends JModelAdmin
 		{
 			return false;
 		}
-		$jinput = JFactory::getApplication()->input;
+		$jinput = \Joomla\CMS\Factory::getApplication()->input;
 		
 		// The front end calls this model and uses t_id to avoid id clashes so
 		// we need to check for that first.
@@ -102,7 +102,7 @@ class CjLibModelCountry extends JModelAdmin
 	protected function loadFormData ()
 	{
 		// Check the session for previously entered form data.
-		$app = JFactory::getApplication();
+		$app = \Joomla\CMS\Factory::getApplication();
 		$data = $app->getUserState('com_cjlib.edit.country.data', array());
 		
 		if (empty($data))
@@ -125,7 +125,7 @@ class CjLibModelCountry extends JModelAdmin
 		$user = $this->getState('user');
 		if(empty($user))
 		{
-			$user = JFactory::getUser();
+			$user = \Joomla\CMS\Factory::getUser();
 		}
 	
 		return $user;

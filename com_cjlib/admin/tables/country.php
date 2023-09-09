@@ -8,7 +8,7 @@
  */
 defined('JPATH_PLATFORM') or die();
 
-class CjLibTableCountry extends JTable
+class CjLibTableCountry extends \Joomla\CMS\Table\Table
 {
 	public function __construct (JDatabaseDriver $db)
 	{

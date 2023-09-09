@@ -9,16 +9,16 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-class JFormFieldCountry extends JFormFieldList
+class JFormFieldCountry extends \Joomla\CMS\Form\Field\ListField
 {
 	public $type = 'country';
 	
 	protected function getOptions()
 	{
-		$db = JFactory::getDbo();
-		$language = JFactory::getLanguage();
+		$db = \Joomla\CMS\Factory::getDbo();
+		$language = \Joomla\CMS\Factory::getLanguage();
 		
 		$query = $db->getQuery(true)
 			->select('country_code as value, country_name as text')

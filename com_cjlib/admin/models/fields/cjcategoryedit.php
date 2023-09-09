@@ -8,9 +8,9 @@
  */
 defined('_JEXEC') or die;
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-class JFormFieldCjCategoryEdit extends JFormFieldList
+class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 {
 	public $type = 'CjCategoryEdit';
 
@@ -21,7 +21,7 @@ class JFormFieldCjCategoryEdit extends JFormFieldList
 		$name = (string) $this->element['name'];
 
 		// Let's get the id for the current item, either category or content item.
-		$jinput = JFactory::getApplication()->input;
+		$jinput = \Joomla\CMS\Factory::getApplication()->input;
 
 		// Load the category options for a given extension.
 		$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
@@ -38,7 +38,7 @@ class JFormFieldCjCategoryEdit extends JFormFieldList
 			$oldCat = $this->form->getValue($name, 0);
 		}
 
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.id AS value, a.title AS text, a.level, a.published, a.lft');
 		$subQuery = $db->getQuery(true)
@@ -56,7 +56,7 @@ class JFormFieldCjCategoryEdit extends JFormFieldList
 		}
 
 		// Filter language
-		$languages = array(JFactory::getLanguage()->getTag(), '*');
+		$languages = array(\Joomla\CMS\Factory::getLanguage()->getTag(), '*');
 		if (!empty($this->element['language']))
 		{
 			$languages[] = $this->element['language'];
@@ -114,7 +114,7 @@ class JFormFieldCjCategoryEdit extends JFormFieldList
 			{
 				if ($options[$i]->level == 0)
 				{
-					$options[$i]->text = JText::_('JGLOBAL_ROOT_PARENT');
+					$options[$i]->text = \Joomla\CMS\Language\Text::_('JGLOBAL_ROOT_PARENT');
 				}
 			}
 
@@ -129,7 +129,7 @@ class JFormFieldCjCategoryEdit extends JFormFieldList
 		}
 
 		// Get the current user object.
-		$user = JFactory::getUser();
+		$user = \Joomla\CMS\Factory::getUser();
 
 		// For new items we want a list of categories you are allowed to create in.
 		foreach ($options as $i => $option)
@@ -151,11 +151,11 @@ class JFormFieldCjCategoryEdit extends JFormFieldList
 			if ($row->parent_id == '1')
 			{
 				$parent = new stdClass;
-				$parent->text = JText::_('JGLOBAL_ROOT_PARENT');
+				$parent->text = \Joomla\CMS\Language\Text::_('JGLOBAL_ROOT_PARENT');
 				array_unshift($options, $parent);
 			}
 
-			array_unshift($options, JHtml::_('select.option', '0', JText::_('JGLOBAL_ROOT')));
+			array_unshift($options, \Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', \Joomla\CMS\Language\Text::_('JGLOBAL_ROOT')));
 		}
 
 		// Merge any additional options in the XML definition.

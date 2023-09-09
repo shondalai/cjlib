@@ -14,29 +14,8 @@ defined( '_JEXEC' ) or die;
 
 class CjLibBehavior {
 
-	public static function jquery( $custom_tag = true ) {
-		$app = JFactory::getApplication();
-		$doc = JFactory::getDocument();
-
-		// Load jQuery if it is not already loaded
-		if ( ! isset( $app->jquery ) )
-		{
-			if ( APP_VERSION < 3 )
-			{
-				CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.min.js', $custom_tag );
-			}
-			else
-			{
-				JHtml::_( 'jquery.framework' );
-			}
-
-			CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.noconflict.js', $custom_tag );
-			$app->jquery = true;
-		}
-	}
-
 	public static function bootstrap( $load_bsjs, $load_bscss, $local_css, $custom_tag = true ) {
-		$app = JFactory::getApplication();
+		$app = \Joomla\CMS\Factory::getApplication();
 
 		// Load Bootstrap JavaScript
 		if ( $load_bsjs && ! isset( $app->cjbsjs ) )
@@ -51,7 +30,7 @@ class CjLibBehavior {
 			}
 			else
 			{
-				JHtml::_( 'bootstrap.framework' );
+				\Joomla\CMS\HTML\HTMLHelper::_( 'bootstrap.framework' );
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/bootstrap/js/respond.min.js', $custom_tag );
@@ -61,22 +40,43 @@ class CjLibBehavior {
 		// Load Bootstrap CSS
 		if ( $load_bscss && ! isset( $app->cjbscss ) )
 		{
-			$doc = JFactory::getDocument();
-			CJFunctions::add_css_to_document( $doc, JUri::root( true ) . '/media/jui/css/bootstrap.min.css', $custom_tag );
-			CJFunctions::add_css_to_document( $doc, JUri::root( true ) . '/media/jui/css/bootstrap-responsive.min.css', $custom_tag );
+			$doc = \Joomla\CMS\Factory::getDocument();
+			CJFunctions::add_css_to_document( $doc, Uri::root( true ) . '/media/jui/css/bootstrap.min.css', $custom_tag );
+			CJFunctions::add_css_to_document( $doc, \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/css/bootstrap-responsive.min.css', $custom_tag );
 			$app->cjbscss = true;
+		}
+	}
+
+	public static function jquery( $custom_tag = true ) {
+		$app = \Joomla\CMS\Factory::getApplication();
+		$doc = \Joomla\CMS\Factory::getDocument();
+
+		// Load jQuery if it is not already loaded
+		if ( ! isset( $app->jquery ) )
+		{
+			if ( APP_VERSION < 3 )
+			{
+				CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.min.js', $custom_tag );
+			}
+			else
+			{
+				\Joomla\CMS\HTML\HTMLHelper::_( 'jquery.framework' );
+			}
+
+			CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.noconflict.js', $custom_tag );
+			$app->jquery = true;
 		}
 	}
 
 	public static function bscore( $custom_tag = true ) {
 
-		$doc = JFactory::getDocument();
+		$doc = \Joomla\CMS\Factory::getDocument();
 		CJFunctions::add_css_to_document( $doc, CJLIB_MEDIA_URI . '/bootstrap/css/bootstrap.core.min.css', $custom_tag );
 	}
 
 	public static function fontawesome( $custom_tag = true ) {
-		$app = JFactory::getApplication();
-		$doc = JFactory::getDocument();
+		$app = \Joomla\CMS\Factory::getApplication();
+		$doc = \Joomla\CMS\Factory::getDocument();
 
 		// Load FontAwesome if it not already loaded
 		if ( ! isset( $app->cjfa ) )

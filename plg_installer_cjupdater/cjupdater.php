@@ -36,7 +36,7 @@ class PlgInstallerCjupdater extends JPlugin {
             if(strpos( $url, 'www.corejoomla.com' ) !== false ) {
                 // Legacy redirect
                 JLoader::import('joomla.application.component.helper');
-                $params = JComponentHelper::getParams( $this->extension );
+                $params = \Joomla\CMS\Component\ComponentHelper::getParams( $this->extension );
                 $downloadId = $params->get('update_credentials_download_id', '');
                 
                 // bind credentials to request by appending it to the download url
@@ -50,7 +50,7 @@ class PlgInstallerCjupdater extends JPlugin {
             return true;
         }
         
-        $params = JComponentHelper::getParams( $this->extension );
+        $params = \Joomla\CMS\Component\ComponentHelper::getParams( $this->extension );
         $license_key = $params->get('license_key');
         $license_email = $params->get('license_email');
 
@@ -59,7 +59,7 @@ class PlgInstallerCjupdater extends JPlugin {
             $args = array(
                 'email'       => $license_email,
                 'key'         => $license_key,
-                'instance' 	  => JUri::getInstance()->root(),
+                'instance' 	  => \Joomla\CMS\Uri\Uri::getInstance()->root(),
                 'product'     => 'all-access-pack'
             );
             

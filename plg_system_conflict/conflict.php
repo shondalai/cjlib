@@ -13,13 +13,13 @@ class PlgSystemConflict extends JPlugin
 
 	public function onBeforeCompileHead()
     {
-    	if (JFactory::getApplication()->isClient('administrator'))
+    	if (\Joomla\CMS\Factory::getApplication()->isClient('administrator'))
     	{
     		return true;
     	}
     	
     	// Set the variables.
-    	$input = JFactory::getApplication()->input;
+    	$input = \Joomla\CMS\Factory::getApplication()->input;
     	$extension = $input->get('option', '', 'cmd');
     	
     	// Check if the highlighter is enabled.
@@ -29,7 +29,7 @@ class PlgSystemConflict extends JPlugin
     	}
     	
     	// Check if the highlighter should be activated in this environment.
-    	$document = JFactory::getDocument();
+    	$document = \Joomla\CMS\Factory::getDocument();
     	if ($document->getType() !== 'html' || $input->get('tmpl', '', 'cmd') === 'component')
     	{
     		return true;

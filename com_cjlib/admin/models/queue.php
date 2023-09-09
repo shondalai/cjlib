@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Utilities\ArrayHelper;
 
-class CjLibModelQueue extends JModelList 
+class CjLibModelQueue extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -35,7 +35,7 @@ class CjLibModelQueue extends JModelList
 	
 	protected function populateState($ordering = null, $direction = null) 
 	{
-		$app = JFactory::getApplication();
+		$app = \Joomla\CMS\Factory::getApplication();
 	
 		if ($layout = $app->input->get('layout')) 
 		{
@@ -131,7 +131,7 @@ class CjLibModelQueue extends JModelList
 	
 	protected function getListQuery() 
 	{
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 	
 		$orderCol	= $this->state->get('list.ordering', 'q.created');
 		$orderDirn	= $this->state->get('list.direction', 'desc');
@@ -145,7 +145,7 @@ class CjLibModelQueue extends JModelList
 	
 	public function delete_queue($cids)
 	{
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$cids = ArrayHelper::toInteger($cids);

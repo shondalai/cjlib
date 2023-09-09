@@ -57,7 +57,7 @@ class CjHtml
 		  'jsSocials.setDefaults("linkedin", {logo: "fa fab fa-linkedin"});'.
 		  'jsSocials.setDefaults("pinterest", {logo: "fa fab fa-pinterest"});'.
 	   '$("#cjshare").jsSocials({shares: ['.$shares.']});});';
-		JFactory::getDocument()->addScriptDeclaration($content);
+		\Joomla\CMS\Factory::getDocument()->addScriptDeclaration($content);
 		$size = isset($options['size']) ? $options['size'] : 12;
 		
 		return '<div id="cjshare" style="display: inline-block; font-size: '.$size.'px;"></div>';

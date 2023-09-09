@@ -24,8 +24,8 @@ class CjLibModelConfig extends JModelLegacy {
 
     function save() {
         
-    	$db = JFactory::getDBO();
-    	$app = JFactory::getApplication();
+    	$db = \Joomla\CMS\Factory::getDBO();
+    	$app = \Joomla\CMS\Factory::getApplication();
 
     	$manual_cron = $app->input->getInt('manual_cron', 0);
     	$cron_emails = $app->input->getInt('cron_emails', 60);

@@ -34,8 +34,8 @@ class CjLibLoader {
 		require_once JPATH_ROOT.'/components/com_cjlib/lib/corejoomla/utils.php';
 		require_once JPATH_ROOT.'/components/com_cjlib/lib/corejoomla/dateutils.php';
 		
-		JFactory::getLanguage()->load('com_cjlib.sys', JPATH_ADMINISTRATOR);
-		$document = JFactory::getDocument();
+		\Joomla\CMS\Factory::getLanguage()->load('com_cjlib.sys', JPATH_ADMINISTRATOR);
+		$document = \Joomla\CMS\Factory::getDocument();
 		
 		if(method_exists($document, 'addCustomTag') && $document->getType() != 'pdf' && $document->getType() != 'feed') {
 				

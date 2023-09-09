@@ -8,7 +8,7 @@
  */
 defined('_JEXEC') or die();
 
-class CjLibModelCountries extends JModelList 
+class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array()){
 	
@@ -27,8 +27,8 @@ class CjLibModelCountries extends JModelList
 	
 	protected function populateState($ordering = null, $direction = null) {
 	
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
+		$app = \Joomla\CMS\Factory::getApplication();
+		$session = \Joomla\CMS\Factory::getSession();
 	
 		if ($layout = $app->input->get('layout')) {
 				
@@ -63,7 +63,7 @@ class CjLibModelCountries extends JModelList
 	
 	protected function _buildQuery(){
 	
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$query = $db->getQuery(TRUE);
 	
 		$query->select('a.id, a.country_code, a.country_name, a.language, a.published, a.publish_up, a.publish_down');
@@ -74,7 +74,7 @@ class CjLibModelCountries extends JModelList
 	
 	protected function _buildWhere(&$query) {
 	
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		
 		$country_code = $this->getState('filter.country_code');
 		if(!empty($country_code)){
@@ -120,7 +120,7 @@ class CjLibModelCountries extends JModelList
 	
 	protected function getListQuery() {
 	
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 	
 		$orderCol	= $this->state->get('list.ordering', 'a.language, a.id');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
@@ -134,7 +134,7 @@ class CjLibModelCountries extends JModelList
 	
 	public function add_language($language){
 		
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$query = '
 			insert into 
 				#__corejoomla_countries (country_code, country_name, language) 
@@ -160,7 +160,7 @@ class CjLibModelCountries extends JModelList
 	
 	public function save_country_name($id, $name){
 		
-		$db = JFactory::getDbo();
+		$db = \Joomla\CMS\Factory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$query->update('#__corejoomla_countries')->set('country_name = '.$db->q($name))->where('id = '.$id);

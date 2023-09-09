@@ -68,7 +68,7 @@ class CjScript
 		
 		if(empty(self::$pluginsDir))
 		{
-		    self::$pluginsDir = JUri::root(true).'/media/com_cjlib/plugins';
+		    self::$pluginsDir = \Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/plugins';
 		}
 
 		// function name should be removed
@@ -187,11 +187,11 @@ class CjScript
 	private static function fontawesome($options = null)
 	{
 	    $custom = isset($options['custom']) ? $options['custom'] : null;
-	    $version = new JVersion();
+	    $version = new \Joomla\CMS\Version();
 	    
 	    if (version_compare($version->getShortVersion(), '4.0', 'ge'))
 	    {
-	        Joomla\CMS\HTML\HTMLHelper::_('stylesheet', 'font-awesome.css', ['version' => 'auto', 'relative' => true]);
+		    \Joomla\CMS\HTML\HTMLHelper::_('stylesheet', 'font-awesome.css', ['version' => 'auto', 'relative' => true]);
 	    }
 	    else
 	    {
@@ -374,7 +374,7 @@ class CjScript
 	private static function validate($options = null)
 	{
 	    $custom = isset($options['custom']) ? $options['custom'] : null;
-	    $lang = JFactory::getLanguage()->getTag();
+	    $lang = \Joomla\CMS\Factory::getLanguage()->getTag();
 	    $locale = strstr($lang, '-', true);
 	    
 	    static::addScript(self::$pluginsDir . '/validation/jquery.validate.min.js', $custom);
@@ -411,26 +411,26 @@ class CjScript
 	private static function form($options = null)
 	{
 		$custom = isset($options['custom']) ? $options['custom'] : null;
-		static::addScript(JUri::root(true).'/media/com_cjlib/jquery/jquery.form.min.js', $custom);
+		static::addScript(\Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/jquery/jquery.form.min.js', $custom);
 	}
 	
 	private static function message($options = null)
 	{
 		$custom = isset($options['custom']) ? $options['custom'] : null;
-		static::addScript(JUri::root(true).'/media/com_cjlib/jquery/jquery.message.min.js', $custom);
-		static::addStyleSheet(JUri::root(true).'/media/com_cjlib/jquery/jquery.message.css', $custom);
+		static::addScript(\Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/jquery/jquery.message.min.js', $custom);
+		static::addStyleSheet(\Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/jquery/jquery.message.css', $custom);
 	}
 	
 	private static function sortable($options = null)
 	{
 	    $custom = isset($options['custom']) ? $options['custom'] : null;
-	    static::addScript(JUri::root(true).'/media/com_cjlib/jquery/jquery-ui.sortable.min.js', $custom);
+	    static::addScript(\Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/jquery/jquery-ui.sortable.min.js', $custom);
 	}
 
 	private static function blockui($options = null)
 	{
 	    $custom = isset($options['custom']) ? $options['custom'] : null;
-	    static::addScript(JUri::root(true).'/media/com_cjlib/jquery/jquery.blockui.js', $custom);
+	    static::addScript(\Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/jquery/jquery.blockui.js', $custom);
 	}
 	
 	private static function mathjax($options = null)
@@ -442,7 +442,7 @@ class CjScript
 	
 	private static function addStyleSheet($css, $custom = false)
 	{
-		$document = JFactory::getDocument();
+		$document = \Joomla\CMS\Factory::getDocument();
 		if(method_exists($document, 'addCustomTag') && $document->getType() != 'feed')
 		{
 			if($custom)
@@ -458,7 +458,7 @@ class CjScript
 	
 	private static function addScript($script, $custom = false, $options = array(), $attribs = array())
 	{
-		$document = JFactory::getDocument();
+		$document = \Joomla\CMS\Factory::getDocument();
 		if(method_exists($document, 'addCustomTag') && $document->getType() != 'feed')
 		{
 			if($custom)
@@ -474,7 +474,7 @@ class CjScript
 	}
 	
 	private static function addCustomTag($tag) {
-	    $document = JFactory::getDocument();
+	    $document = \Joomla\CMS\Factory::getDocument();
 	    if(method_exists($document, 'addCustomTag') && $document->getType() != 'feed')
 	    {
 	        $document->addCustomTag($tag);

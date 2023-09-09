@@ -13,8 +13,8 @@ require_once JPATH_COMPONENT.'/controller.php';
 
 CJLib::import('corejoomla.framework.core');
 
-$app = JFactory::getApplication();
-$params = JComponentHelper::getParams('com_cjlib');
+$app = \Joomla\CMS\Factory::getApplication();
+$params = \Joomla\CMS\Component\ComponentHelper::getParams('com_cjlib');
 
 $task = $app->input->getCmd('task', '');
 $secret = $app->input->getCmd('secret', null);
@@ -33,7 +33,7 @@ if($task == 'process' && !empty($secret) && !empty($params->get('cron_secret')) 
 else if($task = 'socialcounts')
 {
 	require_once CJLIB_PATH.'/lib/misc/socialcounts.php';
-	$url = base64_decode(JFactory::getApplication()->input->getString('url'));
+	$url = base64_decode(\Joomla\CMS\Factory::getApplication()->input->getString('url'));
 	
 	if( !SocialCount::REQUIRE_LOCAL_URL || SocialCount::isLocalUrl( $url ) ) 
 	{

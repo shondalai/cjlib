@@ -8,9 +8,7 @@
  */
 defined('_JEXEC') or die();
 
-jimport( 'joomla.application.component.controller' );
-
-class CjLibController extends JControllerLegacy 
+class CjLibController extends Joomla\CMS\MVC\Controller\AdminController
 {
 	protected $default_view = 'default';
 	
@@ -18,7 +16,7 @@ class CjLibController extends JControllerLegacy
     {
     	
     	$custom_tag = true;
-    	$document = JFactory::getDocument();
+    	$document = \Joomla\CMS\Factory::getDocument();
     	
     	if(APP_VERSION < 4) {
     	    CjLib::behavior('bootstrap', array('loadcss' => false));
@@ -29,11 +27,11 @@ class CjLibController extends JControllerLegacy
     	    $wa->useStyle('fontawesome');
     	}
     	
-    	CJFunctions::add_script(JUri::base(true).'/components/com_cjlib/assets/js/cj.lib.min.js', $custom_tag);
-    	CJFunctions::add_css_to_document($document, JUri::root(true).'/media/com_cjlib/framework/cj.framework.css', $custom_tag);
-    	CJFunctions::add_css_to_document($document, JUri::base(true).'/components/com_cjlib/assets/css/styles.css', $custom_tag);
+    	CJFunctions::add_script(\Joomla\CMS\Uri\Uri::base(true).'/components/com_cjlib/assets/js/cj.lib.min.js', $custom_tag);
+    	CJFunctions::add_css_to_document($document, \Joomla\CMS\Uri\Uri::root(true).'/media/com_cjlib/framework/cj.framework.css', $custom_tag);
+    	CJFunctions::add_css_to_document($document, \Joomla\CMS\Uri\Uri::base(true).'/components/com_cjlib/assets/css/styles.css', $custom_tag);
     	
-    	JToolBarHelper::preferences('com_cjlib');
+    	\Joomla\CMS\Toolbar\ToolbarHelper::preferences('com_cjlib');
     	
     	parent::display();
     	return $this;

@@ -28,7 +28,7 @@ class com_cjlibInstallerScript
 
 	function update($parent)
 	{
-		$db = JFactory::getDBO();
+		$db = \Joomla\CMS\Factory::getDBO();
 		
 		if(method_exists($parent, 'extension_root')) 
 		{
@@ -61,7 +61,7 @@ class com_cjlibInstallerScript
 						} 
 						catch (Exception $e) 
 						{
-// 						    JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
+// 						    \Joomla\CMS\Factory::getApplication()->enqueueMessage(\Joomla\CMS\Language\Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
 // 						    return false;
 						}
 					}
@@ -82,7 +82,7 @@ class com_cjlibInstallerScript
 		// CJLib includes
 		$cjlib = JPATH_ROOT.'/components/com_cjlib/framework.php';
 		
-		$db = JFactory::getDBO();
+		$db = \Joomla\CMS\Factory::getDBO();
 		$update_queries = array ();
 
 		$update_queries[] = 'ALTER TABLE `#__corejoomla_messages` ADD COLUMN `asset_id` int(10) unsigned NOT NULL';

@@ -16,6 +16,6 @@ CJLib::import('corejoomla.framework.core');
 
 JLoader::register('CjLibHelper', __DIR__ . '/helpers/cjlib.php');
 
-$controller = JControllerLegacy::getInstance('CjLib');
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller = Joomla\CMS\MVC\Controller\BaseController::getInstance('CjLib');
+$controller->execute(\Joomla\CMS\Factory::getApplication()->input->get('task'));
 $controller->redirect();
