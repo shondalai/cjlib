@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 
-<extension method="upgrade" type="component" version="4">
+<extension method="upgrade" type="component" version="4.0">
     <name>CJLib</name>
-    <creationDate>2023-Apr-15</creationDate>
+    <creationDate>2023-Sep-24</creationDate>
     <author>Maverick</author>
     <authorEmail>support@shondalai.com</authorEmail>
     <authorUrl>http://www.corejoomla.org</authorUrl>
     <copyright>Copyright BulaSikku Technologies Private Limited. All rights reserved.</copyright>
     <license>Gnu/GPL v2 or later</license>
-    <version>3.3.3</version>
+    <version>4.0.0</version>
     <description>CoreJoomla Library.</description>
     <install>
         <sql>
