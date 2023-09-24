@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 
-<extension method="upgrade" type="package" version="3.6">
+<extension method="upgrade" type="package" version="4">
     <name>CjLib Package</name>
     <author>Maverick</author>
-    <creationDate>2023-Apr-15</creationDate>
+    <creationDate>2023-Sep-24</creationDate>
     <packagename>cjlib</packagename>
-    <version>3.3.3</version>
+    <version>4.0.0</version>
     <url>https://shondalai.com/</url>
     <packager>Maverick</packager>
     <packagerurl>https://shondalai.com/</packagerurl>
@@ -15,8 +15,8 @@
     <files folder="packages">
         <file group="corejoomla" id="cjlib" type="library">lib_cjlib.zip</file>
         <file group="corejoomla" id="cjlib" type="component">com_cjlib.zip</file>
-        <file group="installer" id="cjlib" type="plugin">plg_installer_cjupdater.zip</file>
         <file group="corejoomla" id="cjlib" type="plugin">plg_corejoomla_socials.zip</file>
+        <file group="installer" id="cjlib" type="plugin">plg_installer_cjupdater.zip</file>
     </files>
     <updateservers>
         <server name="CjLib Update Site" priority="1" type="collection">https://shondalai.com/wp-content/uploads/autoupdates/cjlib/package.xml</server>

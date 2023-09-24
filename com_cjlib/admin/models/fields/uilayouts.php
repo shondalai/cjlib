@@ -6,17 +6,25 @@
  * @copyright   Copyright (C) 2009 - 2015 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
 
-\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+defined( '_JEXEC' ) or die;
+
+FormHelper::loadFieldClass( 'list' );
 
 /**
  * Supports an HTML select list of folder
  *
  * @since  11.1
  */
-class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
-{
+class JFormFieldUILayouts extends ListField {
+
 	/**
 	 * The form field type.
 	 *
@@ -82,9 +90,8 @@ class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 	 *
 	 * @since   3.2
 	 */
-	public function __get($name)
-	{
-		switch ($name)
+	public function __get( $name ) {
+		switch ( $name )
 		{
 			case 'filter':
 			case 'exclude':
@@ -95,7 +102,7 @@ class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 				return $this->$name;
 		}
 
-		return parent::__get($name);
+		return parent::__get( $name );
 	}
 
 	/**
@@ -108,9 +115,8 @@ class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 	 *
 	 * @since   3.2
 	 */
-	public function __set($name, $value)
-	{
-		switch ($name)
+	public function __set( $name, $value ) {
+		switch ( $name )
 		{
 			case 'filter':
 			case 'directory':
@@ -121,12 +127,12 @@ class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 
 			case 'hideNone':
 			case 'hideDefault':
-				$value = (string) $value;
-				$this->$name = ($value === 'true' || $value === $name || $value === '1');
+				$value       = (string) $value;
+				$this->$name = ( $value === 'true' || $value === $name || $value === '1' );
 				break;
 
 			default:
-				parent::__set($name, $value);
+				parent::__set( $name, $value );
 		}
 	}
 
@@ -141,26 +147,25 @@ class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @see     JFormField::setup()
+	 * @see     FormField::setup()
 	 * @since   3.2
 	 */
-	public function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$return = parent::setup($element, $value, $group);
+	public function setup( SimpleXMLElement $element, $value, $group = null ) {
+		$return = parent::setup( $element, $value, $group );
 
-		if ($return)
+		if ( $return )
 		{
 			$this->filter  = (string) $this->element['filter'];
 			$this->exclude = (string) $this->element['exclude'];
 
 			$recursive       = (string) $this->element['recursive'];
-			$this->recursive = ($recursive == 'true' || $recursive == 'recursive' || $recursive == '1');
+			$this->recursive = ( $recursive == 'true' || $recursive == 'recursive' || $recursive == '1' );
 
 			$hideNone       = (string) $this->element['hide_none'];
-			$this->hideNone = ($hideNone == 'true' || $hideNone == 'hideNone' || $hideNone == '1');
+			$this->hideNone = ( $hideNone == 'true' || $hideNone == 'hideNone' || $hideNone == '1' );
 
 			$hideDefault       = (string) $this->element['hide_default'];
-			$this->hideDefault = ($hideDefault == 'true' || $hideDefault == 'hideDefault' || $hideDefault == '1');
+			$this->hideDefault = ( $hideDefault == 'true' || $hideDefault == 'hideDefault' || $hideDefault == '1' );
 
 			// Get the path in which to search for file options.
 			$this->directory = (string) $this->element['directory'];
@@ -176,55 +181,57 @@ class JFormFieldUILayouts extends \Joomla\CMS\Form\Field\ListField
 	 *
 	 * @since   11.1
 	 */
-	protected function getOptions()
-	{
-		$options = array();
+	protected function getOptions() {
+		$options = [];
 
 		$path = $this->directory;
 
-		if (!is_dir($path))
+		if ( ! is_dir( $path ) )
 		{
 			$path = JPATH_ROOT . '/' . $path;
 		}
 
 		// Prepend some default options based on field attributes.
-		if (!$this->hideNone)
+		if ( ! $this->hideNone )
 		{
-			$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', '-1', \Joomla\CMS\Language\Text::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+			$options[] = HTMLHelper::_( 'select.option', '-1',
+				Text::alt( 'JOPTION_DO_NOT_USE', preg_replace( '/[^a-zA-Z0-9_\-]/', '_', $this->fieldname ) ) );
 		}
 
-		if (!$this->hideDefault)
+		if ( ! $this->hideDefault )
 		{
-			$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', '', \Joomla\CMS\Language\Text::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+			$options[] = HTMLHelper::_( 'select.option', '',
+				Text::alt( 'JOPTION_USE_DEFAULT', preg_replace( '/[^a-zA-Z0-9_\-]/', '_', $this->fieldname ) ) );
 		}
 
 		// Get a list of folders in the search path with the given filter.
-		$folders = \Joomla\CMS\Filesystem\Folder::folders($path, $this->filter, $this->recursive, false);
+		$folders = Folder::folders( $path, $this->filter, $this->recursive, false );
 
 		// Build the options list from the list of folders.
-		if (is_array($folders))
+		if ( is_array( $folders ) )
 		{
-			foreach ($folders as $folder)
+			foreach ( $folders as $folder )
 			{
 				// Check to see if the file is in the exclude mask.
-				if ($this->exclude)
+				if ( $this->exclude )
 				{
-					if (preg_match(chr(1) . $this->exclude . chr(1), $folder))
+					if ( preg_match( chr( 1 ) . $this->exclude . chr( 1 ), $folder ) )
 					{
 						continue;
 					}
 				}
 
 				// Remove the root part and the leading /
-				$folder = trim(str_replace($path, '', $folder), '/');
+				$folder = trim( str_replace( $path, '', $folder ), '/' );
 
-				$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', $folder, $folder);
+				$options[] = HTMLHelper::_( 'select.option', $folder, $folder );
 			}
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
+		$options = array_merge( parent::getOptions(), $options );
 
 		return $options;
 	}
+
 }

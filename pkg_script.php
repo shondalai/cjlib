@@ -20,9 +20,11 @@ class pkg_cjlibInstallerScript
 		echo '<p>CjLib Package:</p> 
 		<table class="table table-hover table-striped"> 
 		<tr><td>CjLib Component</td><td>Successfully installed</td></tr>
-		<tr><td>CjLib Plugin</td><td>Successfully installed</td></tr>
+		<tr><td>CjLib Library</td><td>Successfully installed</td></tr>
+		<tr><td>CjLib Socials</td><td>Successfully installed</td></tr>
+		<tr><td>CjLib Package Updater</td><td>Successfully installed</td></tr>
 		<tr><td>CoreJoomla Socials Plugin</td><td>Successfully installed</td></tr>
 		</table>
-		<p>Thank you for using corejoomla&reg; software. Please add a rating and review at Joomla&reg; Extension Directory.</p>';
+		<p>Thank you for using Shondalai software. Please add a rating and review at Joomla&reg; Extension Directory.</p>';
 	}
 }

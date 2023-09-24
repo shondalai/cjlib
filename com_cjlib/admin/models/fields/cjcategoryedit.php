@@ -6,11 +6,18 @@
  * @copyright   Copyright (C) 2009 - 2015 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
-\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
-class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
+class JFormFieldCjCategoryEdit extends ListField
 {
 	public $type = 'CjCategoryEdit';
 
@@ -21,7 +28,7 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 		$name = (string) $this->element['name'];
 
 		// Let's get the id for the current item, either category or content item.
-		$jinput = \Joomla\CMS\Factory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		// Load the category options for a given extension.
 		$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
@@ -38,7 +45,7 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 			$oldCat = $this->form->getValue($name, 0);
 		}
 
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.id AS value, a.title AS text, a.level, a.published, a.lft');
 		$subQuery = $db->getQuery(true)
@@ -56,7 +63,7 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 		}
 
 		// Filter language
-		$languages = array(\Joomla\CMS\Factory::getLanguage()->getTag(), '*');
+		$languages = array( Factory::getLanguage()->getTag(), '*');
 		if (!empty($this->element['language']))
 		{
 			$languages[] = $this->element['language'];
@@ -103,7 +110,7 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			throw new Exception( $e->getMessage(), 500 );
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
@@ -114,7 +121,7 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 			{
 				if ($options[$i]->level == 0)
 				{
-					$options[$i]->text = \Joomla\CMS\Language\Text::_('JGLOBAL_ROOT_PARENT');
+					$options[$i]->text = Text::_('JGLOBAL_ROOT_PARENT');
 				}
 			}
 
@@ -129,7 +136,7 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 		}
 
 		// Get the current user object.
-		$user = \Joomla\CMS\Factory::getUser();
+		$user = Factory::getUser();
 
 		// For new items we want a list of categories you are allowed to create in.
 		foreach ($options as $i => $option)
@@ -151,11 +158,11 @@ class JFormFieldCjCategoryEdit extends \Joomla\CMS\Form\Field\ListField
 			if ($row->parent_id == '1')
 			{
 				$parent = new stdClass;
-				$parent->text = \Joomla\CMS\Language\Text::_('JGLOBAL_ROOT_PARENT');
+				$parent->text = Text::_('JGLOBAL_ROOT_PARENT');
 				array_unshift($options, $parent);
 			}
 
-			array_unshift($options, \Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', \Joomla\CMS\Language\Text::_('JGLOBAL_ROOT')));
+			array_unshift($options, HTMLHelper::_('select.option', '0', Text::_('JGLOBAL_ROOT')));
 		}
 
 		// Merge any additional options in the XML definition.

@@ -8,6 +8,7 @@
  */
 defined( '_JEXEC' ) or die();
 
+use GuzzleHttp\Exception\GuzzleException;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -53,7 +54,7 @@ class CjLibControllerLicense extends FormController {
 			] );
 			$data     = $response->getBody()->getContents();
 		}
-		catch ( \GuzzleHttp\Exception\GuzzleException $e )
+		catch ( GuzzleException $e )
 		{
 			$this->setRedirect( 'index.php?option=com_cjlib', Text::_( 'COM_CJLIB_ERROR_WHILE_ACTIVATING_LICENSE' ) . ' Exception: ' . $e->getMessage() );
 		}
@@ -121,7 +122,7 @@ class CjLibControllerLicense extends FormController {
 				] );
 				$data     = $response->getBody()->getContents();
 			}
-			catch ( \GuzzleHttp\Exception\GuzzleException $e )
+			catch ( GuzzleException $e )
 			{
 				$this->setRedirect( 'index.php?option=com_cjlib', Text::_( 'COM_CJLIB_ERROR_WHILE_DEACTIVATING_LICENSE' ) . ' Exception: ' . $e->getMessage() );
 			}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 
-<extension method="upgrade" type="component" version="2.5">
+<extension method="upgrade" type="component" version="4">
     <name>CJLib</name>
     <creationDate>2023-Apr-15</creationDate>
     <author>Maverick</author>
@@ -53,6 +53,11 @@
             <language tag="en-GB">language/en-GB/en-GB.com_cjlib.sys.ini</language>
         </languages>
     </administration>
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
     <scriptfile>script.php</scriptfile>
 </extension>
 

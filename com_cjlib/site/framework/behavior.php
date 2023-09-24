@@ -10,12 +10,16 @@
  */
 
 // no direct access
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 defined( '_JEXEC' ) or die;
 
 class CjLibBehavior {
 
 	public static function bootstrap( $load_bsjs, $load_bscss, $local_css, $custom_tag = true ) {
-		$app = \Joomla\CMS\Factory::getApplication();
+		$app = Factory::getApplication();
 
 		// Load Bootstrap JavaScript
 		if ( $load_bsjs && ! isset( $app->cjbsjs ) )
@@ -30,7 +34,7 @@ class CjLibBehavior {
 			}
 			else
 			{
-				\Joomla\CMS\HTML\HTMLHelper::_( 'bootstrap.framework' );
+				HTMLHelper::_( 'bootstrap.framework' );
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/bootstrap/js/respond.min.js', $custom_tag );
@@ -40,16 +44,16 @@ class CjLibBehavior {
 		// Load Bootstrap CSS
 		if ( $load_bscss && ! isset( $app->cjbscss ) )
 		{
-			$doc = \Joomla\CMS\Factory::getDocument();
+			$doc = Factory::getDocument();
 			CJFunctions::add_css_to_document( $doc, Uri::root( true ) . '/media/jui/css/bootstrap.min.css', $custom_tag );
-			CJFunctions::add_css_to_document( $doc, \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/css/bootstrap-responsive.min.css', $custom_tag );
+			CJFunctions::add_css_to_document( $doc, Uri::root( true ) . '/media/jui/css/bootstrap-responsive.min.css', $custom_tag );
 			$app->cjbscss = true;
 		}
 	}
 
 	public static function jquery( $custom_tag = true ) {
-		$app = \Joomla\CMS\Factory::getApplication();
-		$doc = \Joomla\CMS\Factory::getDocument();
+		$app = Factory::getApplication();
+		$doc = Factory::getDocument();
 
 		// Load jQuery if it is not already loaded
 		if ( ! isset( $app->jquery ) )
@@ -60,7 +64,7 @@ class CjLibBehavior {
 			}
 			else
 			{
-				\Joomla\CMS\HTML\HTMLHelper::_( 'jquery.framework' );
+				HTMLHelper::_( 'jquery.framework' );
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.noconflict.js', $custom_tag );
@@ -70,13 +74,13 @@ class CjLibBehavior {
 
 	public static function bscore( $custom_tag = true ) {
 
-		$doc = \Joomla\CMS\Factory::getDocument();
+		$doc = Factory::getDocument();
 		CJFunctions::add_css_to_document( $doc, CJLIB_MEDIA_URI . '/bootstrap/css/bootstrap.core.min.css', $custom_tag );
 	}
 
 	public static function fontawesome( $custom_tag = true ) {
-		$app = \Joomla\CMS\Factory::getApplication();
-		$doc = \Joomla\CMS\Factory::getDocument();
+		$app = Factory::getApplication();
+		$doc = Factory::getDocument();
 
 		// Load FontAwesome if it not already loaded
 		if ( ! isset( $app->cjfa ) )

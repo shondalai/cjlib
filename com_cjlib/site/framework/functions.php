@@ -9,6 +9,19 @@
 defined( '_JEXEC' ) or die;
 
 use Joomla\Archive\Archive;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Installer\InstallerHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\String\StringHelper;
 
 require_once 'api.php';
@@ -39,7 +52,7 @@ class CJFunctions {
 		{
 
 			$content = $content . '<div class="cleafix">';
-			$content = $content . '<div class="pull-right">' . sprintf( \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PAGES_COUNT' ), $current, $total ) . '</div>';
+			$content = $content . '<div class="pull-right">' . sprintf( Text::_( 'COM_CJLIB_PAGINATION_PAGES_COUNT' ), $current, $total ) . '</div>';
 			$content = $content . '<div class="pagination pagination-small hidden-phone hidden-sm hidden-xs"><ul>';
 
 			if ( $total > 0 )
@@ -50,11 +63,11 @@ class CJFunctions {
 
 					$content = $content . '
 							<li class="disabled">
-								<a href="#" onclick="return false;" title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_START' ) . '" class="tooltip-hover"><i class="icon-step-backward"></i></a>
+								<a href="#" onclick="return false;" title="' . Text::_( 'COM_CJLIB_PAGINATION_START' ) . '" class="tooltip-hover"><i class="icon-step-backward"></i></a>
 							</li>';
 					$content = $content . '
 							<li class="disabled">
-								<a href="#" onclick="return false;" title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover"><i class="icon-backward"></i></a>
+								<a href="#" onclick="return false;" title="' . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover"><i class="icon-backward"></i></a>
 							</li>';
 				}
 				else
@@ -62,20 +75,20 @@ class CJFunctions {
 
 					$content = $content . '
 							<li>
-								<a href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=0' ) . '" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_START' ) . '" class="tooltip-hover"><i class="icon-step-backward"></i></a>
+								<a href="' . Route::_( $nonSefUrl . '&start=0' ) . '" 
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_START' ) . '" class="tooltip-hover"><i class="icon-step-backward"></i></a>
 							</li>';
 					$content = $content . '
 							<li>
-								<a href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( ( $current - 2 ) * $count ) ) . '" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover"><i class="icon-backward"></i></a>
+								<a href="' . Route::_( $nonSefUrl . '&start=' . ( ( $current - 2 ) * $count ) ) . '" 
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover"><i class="icon-backward"></i></a>
 							</li>';
 				}
 
 				for ( $i = $start; $i <= $total && $i <= $start + 9; $i ++ )
 				{
 
-					$url = \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( ( $i - 1 ) * $count ) );
+					$url = Route::_( $nonSefUrl . '&start=' . ( ( $i - 1 ) * $count ) );
 
 					if ( $i == $current )
 					{
@@ -94,11 +107,11 @@ class CJFunctions {
 
 					$content = $content . '
 							<li class="disabled">
-								<a href="#" title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" onclick="return false;" class="tooltip-hover"><i class="icon-forward"></i></a>
+								<a href="#" title="' . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" onclick="return false;" class="tooltip-hover"><i class="icon-forward"></i></a>
 							</li>';
 					$content = $content . '
 							<li class="disabled">
-								<a href="#" title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_LAST' ) . '" onclick="return false;" class="tooltip-hover"><i class="icon-step-forward"></i></a>
+								<a href="#" title="' . Text::_( 'COM_CJLIB_PAGINATION_LAST' ) . '" onclick="return false;" class="tooltip-hover"><i class="icon-step-forward"></i></a>
 							</li>';
 				}
 				else
@@ -106,13 +119,13 @@ class CJFunctions {
 
 					$content = $content . '
 							<li>
-								<a href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( $current * $count ) ) . '" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" class="tooltip-hover"><i class="icon-forward"></i></a>
+								<a href="' . Route::_( $nonSefUrl . '&start=' . ( $current * $count ) ) . '" 
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" class="tooltip-hover"><i class="icon-forward"></i></a>
 							</li>';
 					$content = $content . '
 							<li>
-								<a href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( ( $total - 1 ) * $count ) ) . '" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_LAST' ) . '" class="tooltip-hover"><i class="icon-step-forward"></i></a>
+								<a href="' . Route::_( $nonSefUrl . '&start=' . ( ( $total - 1 ) * $count ) ) . '" 
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_LAST' ) . '" class="tooltip-hover"><i class="icon-step-forward"></i></a>
 							</li>';
 				}
 			}
@@ -130,8 +143,8 @@ class CJFunctions {
 					$content = $content . '
 							<li class="disabled">
 								<a href="#" onclick="return false;" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover">'
-					           . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '</i></a>
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover">'
+					           . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '</i></a>
 							</li>';
 				}
 				else
@@ -139,9 +152,9 @@ class CJFunctions {
 
 					$content = $content . '
 							<li>
-								<a href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( ( $current - 2 ) * $count ) ) . '" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover">'
-					           . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '</a>
+								<a href="' . Route::_( $nonSefUrl . '&start=' . ( ( $current - 2 ) * $count ) ) . '" 
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '" class="tooltip-hover">'
+					           . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '</a>
 							</li>';
 				}
 
@@ -150,8 +163,8 @@ class CJFunctions {
 
 					$content = $content . '
 							<li class="disabled">
-								<a href="#" title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" onclick="return false;" class="tooltip-hover">'
-					           . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '</a>
+								<a href="#" title="' . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" onclick="return false;" class="tooltip-hover">'
+					           . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '</a>
 							</li>';
 				}
 				else
@@ -159,9 +172,9 @@ class CJFunctions {
 
 					$content = $content . '
 							<li>
-								<a href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( $current * $count ) ) . '" 
-									title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" class="tooltip-hover">'
-					           . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '</a>
+								<a href="' . Route::_( $nonSefUrl . '&start=' . ( $current * $count ) ) . '" 
+									title="' . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '" class="tooltip-hover">'
+					           . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '</a>
 							</li>';
 				}
 			}
@@ -171,7 +184,7 @@ class CJFunctions {
 		{
 
 			$content = $content . '<div class="cjpagination">';
-			$content = $content . '<div class="float-right">' . sprintf( \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PAGES_COUNT' ), $current, $total ) . '</div>';
+			$content = $content . '<div class="float-right">' . sprintf( Text::_( 'COM_CJLIB_PAGINATION_PAGES_COUNT' ), $current, $total ) . '</div>';
 
 			if ( $total > 0 )
 			{
@@ -180,19 +193,19 @@ class CJFunctions {
 				$last_disabled  = ( $current == $total ) ? ' disabled' : '';
 
 				$content = $content . '<div class="page-main">';
-				$content = $content . '<a class="first' . $first_disabled . '" href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=0' ) . '" 
-										title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_START' ) . '">'
-				           . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_START' ) . '</a>';
-				$content = $content . '<a class="previous' . $first_disabled . '" href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( $current > 1 ? ( $current - 2 )
-				                                                                                                                                                   * $count : 0 ) )
+				$content = $content . '<a class="first' . $first_disabled . '" href="' . Route::_( $nonSefUrl . '&start=0' ) . '" 
+										title="' . Text::_( 'COM_CJLIB_PAGINATION_START' ) . '">'
+				           . Text::_( 'COM_CJLIB_PAGINATION_START' ) . '</a>';
+				$content = $content . '<a class="previous' . $first_disabled . '" href="' . Route::_( $nonSefUrl . '&start=' . ( $current > 1 ? ( $current - 2 )
+				                                                                                                                                * $count : 0 ) )
 				           . '" 
-										title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '">'
-				           . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '</a>';
+										title="' . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '">'
+				           . Text::_( 'COM_CJLIB_PAGINATION_PREVIOUS' ) . '</a>';
 
 				for ( $i = $start; $i <= $total && $i < $start + 10; $i ++ )
 				{
 
-					$url = \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( ( $i - 1 ) * $count ) );
+					$url = Route::_( $nonSefUrl . '&start=' . ( ( $i - 1 ) * $count ) );
 
 					if ( $i == $current )
 					{
@@ -206,12 +219,12 @@ class CJFunctions {
 					}
 				}
 
-				$content = $content . '<a class="next' . $last_disabled . '" href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( $current < $total ? $current * $count
+				$content = $content . '<a class="next' . $last_disabled . '" href="' . Route::_( $nonSefUrl . '&start=' . ( $current < $total ? $current * $count
 							: 0 ) ) . '"
-										title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '">' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_NEXT' )
+										title="' . Text::_( 'COM_CJLIB_PAGINATION_NEXT' ) . '">' . Text::_( 'COM_CJLIB_PAGINATION_NEXT' )
 				           . '</a>';
-				$content = $content . '<a class="last' . $last_disabled . '" href="' . \Joomla\CMS\Router\Route::_( $nonSefUrl . '&start=' . ( ( $total - 1 ) * $count ) ) . '" 
-										title="' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_LAST' ) . '">' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_PAGINATION_LAST' )
+				$content = $content . '<a class="last' . $last_disabled . '" href="' . Route::_( $nonSefUrl . '&start=' . ( ( $total - 1 ) * $count ) ) . '" 
+										title="' . Text::_( 'COM_CJLIB_PAGINATION_LAST' ) . '">' . Text::_( 'COM_CJLIB_PAGINATION_LAST' )
 				           . '</a>';
 				$content = $content . '</div>';
 			}
@@ -237,8 +250,8 @@ class CJFunctions {
 	 */
 	public static function load_jquery( $params = [] ) {
 
-		$app      = \Joomla\CMS\Factory::getApplication();
-		$document = \Joomla\CMS\Factory::getDocument();
+		$app      = Factory::getApplication();
+		$document = Factory::getDocument();
 
 		$plugins    = ! empty( $app->jqueryplugins ) ? $app->jqueryplugins : [];
 		$custom_tag = isset( $params['custom_tag'] ) ? true : false;
@@ -250,7 +263,7 @@ class CJFunctions {
 			$plugins[] = 'baseloc';
 		}
 
-		\Joomla\CMS\HTML\HTMLHelper::_( 'jquery.framework' );
+		HTMLHelper::_( 'jquery.framework' );
 
 		foreach ( $params['libs'] as $plugin )
 		{
@@ -262,7 +275,7 @@ class CJFunctions {
 			switch ( $plugin )
 			{
 				case 'ui':
-					\Joomla\CMS\HTML\HTMLHelper::_( 'jquery.ui', [ 'core', 'sortable' ] );
+					HTMLHelper::_( 'jquery.ui', [ 'core', 'sortable' ] );
 					break;
 
 				case 'json':
@@ -275,21 +288,21 @@ class CJFunctions {
 					break;
 
 				case 'chosen2':
-					$document->addStyleSheet( \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/css/chosen.css' );
-					$document->addScript( \Joomla\CMS\Uri\Uri::root( true ) . '/media/system/js/core.js' );
-					$document->addScript( \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/js/chosen.jquery.js' );
+					$document->addStyleSheet( Uri::root( true ) . '/media/jui/css/chosen.css' );
+					$document->addScript( Uri::root( true ) . '/media/system/js/core.js' );
+					$document->addScript( Uri::root( true ) . '/media/jui/js/chosen.jquery.js' );
 					break;
 
 				case 'chosen':
-					$document->addStyleSheet( \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/css/chosen.css' );
-					$document->addScript( \Joomla\CMS\Uri\Uri::root( true ) . '/media/system/js/core.js' );
-					$document->addScript( \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/js/chosen.jquery.js' );
-					$document->addScript( \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/js/ajax-chosen.min.js' );
+					$document->addStyleSheet( Uri::root( true ) . '/media/jui/css/chosen.css' );
+					$document->addScript( Uri::root( true ) . '/media/system/js/core.js' );
+					$document->addScript( Uri::root( true ) . '/media/jui/js/chosen.jquery.js' );
+					$document->addScript( Uri::root( true ) . '/media/jui/js/ajax-chosen.min.js' );
 					$document->addScript( CJLIB_URI . '/jquery/chosen/cj.chosentags.js' );
 					break;
 
 				case 'chosentags':
-					$document->addScript( \Joomla\CMS\Uri\Uri::root( true ) . '/media/jui/js/ajax-chosen.min.js' );
+					$document->addScript( Uri::root( true ) . '/media/jui/js/ajax-chosen.min.js' );
 					$document->addScript( CJLIB_URI . '/jquery/chosen/cj.chosentags.js' );
 					break;
 
@@ -304,7 +317,7 @@ class CJFunctions {
 					break;
 
 				case 'bootstrap':
-					\Joomla\CMS\HTML\HTMLHelper::_( 'bootstrap.framework' );
+					HTMLHelper::_( 'bootstrap.framework' );
 					CjFunctions::add_css_to_document( $document, CJLIB_MEDIA_URI . '/bootstrap/css/bootstrap.min.css', $custom_tag );
 					$document->addScriptDeclaration( '<!--[if lt IE 9]><script type="text/javascript" src="' . CJLIB_MEDIA_URI . '/bootstrap/js/respond.min.js"><![endif]-->' );
 					CJLib::$_bootstrap_loaded = true;
@@ -353,7 +366,7 @@ class CJFunctions {
 	}
 
 	public static function add_script( $script, $custom_tag ) {
-		$doc = \Joomla\CMS\Factory::getDocument();
+		$doc = Factory::getDocument();
 		if ( method_exists( $doc, 'addCustomTag' ) && $doc->getType() != 'feed' )
 		{
 			if ( $custom_tag )
@@ -398,7 +411,7 @@ class CJFunctions {
 			$content .= '<div style="width: ' . $width . ';"><textarea name="' . $name . '" id="' . $id . '" rows="' . $rows . '" cols="' . $cols . '"' . $style . $class . '>'
 			            . $html . '</textarea></div>';
 
-			$document = \Joomla\CMS\Factory::getDocument();
+			$document = Factory::getDocument();
 
 			CJFunctions::add_script_to_document( $document, 'jquery.markitup.js', $custom_tag, CJLIB_URI . '/lib/markitup/' );
 			CJFunctions::add_script_to_document( $document, 'set.js', $custom_tag, CJLIB_URI . '/lib/markitup/sets/bbcode/' );
@@ -411,13 +424,13 @@ class CJFunctions {
 		elseif ( $editor == 'wysiwyg' || $editor == 'default' )
 		{
 
-			$jeditor = \Joomla\CMS\Factory::getEditor();
+			$jeditor = Factory::getEditor();
 			$content = '<div style="overflow: hidden; clear: both;">' . $jeditor->display( $name, $html, $width, $height, $cols, $rows, true, $id ) . '</div>';
 		}
 		elseif ( $editor == 'wysiwygbb' )
 		{
 
-			$document = \Joomla\CMS\Factory::getDocument();
+			$document = Factory::getDocument();
 			CJFunctions::add_css_to_document( $document, CJLIB_MEDIA_URI . '/sceditor/minified/themes/square.min.css', $custom_tag );
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/sceditor/minified/jquery.sceditor.bbcode.min.js', $custom_tag );
 
@@ -426,12 +439,12 @@ class CJFunctions {
 					jQuery(document).ready(function($){
 						$("#' . $id . '").sceditor({
 							plugins: "bbcode", 
-							style: "' . \Joomla\CMS\Uri\Uri::root( true ) . '/media/com_cjlib/sceditor/minified/jquery.sceditor.default.min.css",
-							emoticonsRoot: "' . \Joomla\CMS\Uri\Uri::root( true ) . '/media/com_cjlib/sceditor/",
+							style: "' . Uri::root( true ) . '/media/com_cjlib/sceditor/minified/jquery.sceditor.default.min.css",
+							emoticonsRoot: "' . Uri::root( true ) . '/media/com_cjlib/sceditor/",
 							width: "98%",
 							autoUpdate: true
 						});
-						$("#' . $id . '").sceditor("instance").rtl(' . ( $document->direction == 'rtl' ? 'true' : 'false' ) . ');
+						$("#' . $id . '").sceditor("instance").rtl(' . ( $document->direction == 'rtl' ? 'true' : 'false' ) . ')
 					});
 					</script>' );
 			$content = '<textarea name="' . $name . '" id="' . $id . '" rows="5" cols="50"' . $style . $class . '>' . $html . '</textarea>';
@@ -476,7 +489,7 @@ class CJFunctions {
 		if ( $process_content_plugins )
 		{
 
-			$content = \Joomla\CMS\HTML\HTMLHelper::_( 'content.prepare', $content );
+			$content = HTMLHelper::_( 'content.prepare', $content );
 		}
 
 		return $content;
@@ -512,7 +525,7 @@ class CJFunctions {
 		if ( $process_content_plugins )
 		{
 
-			$content = \Joomla\CMS\HTML\HTMLHelper::_( 'content.prepare', $content );
+			$content = HTMLHelper::_( 'content.prepare', $content );
 		}
 
 		return $content;
@@ -539,7 +552,7 @@ class CJFunctions {
 
 		if ( $plugins )
 		{
-			$content = \Joomla\CMS\HTML\HTMLHelper::_( 'content.prepare', $content );
+			$content = HTMLHelper::_( 'content.prepare', $content );
 		}
 
 		return $content;
@@ -558,7 +571,7 @@ class CJFunctions {
 		if ( file_exists( $path ) )
 		{
 
-			$themes = \Joomla\CMS\Filesystem\Folder::folders( $path );
+			$themes = Folder::folders( $path );
 		}
 
 		return $themes;
@@ -685,22 +698,22 @@ class CJFunctions {
 		if ( $diff <= 0 )
 		{
 
-			return \Joomla\CMS\Language\Text::_( 'COM_CJLIB_NOT_COMPLETED' );
+			return Text::_( 'COM_CJLIB_NOT_COMPLETED' );
 		}
 		elseif ( $days > 0 )
 		{
 
-			return \Joomla\CMS\Language\Text::sprintf( 'COM_CJLIB_DATE_DIFF_DAYS', $days, $hours, $minutes, $seconds );
+			return Text::sprintf( 'COM_CJLIB_DATE_DIFF_DAYS', $days, $hours, $minutes, $seconds );
 		}
 		elseif ( $hours > 0 )
 		{
 
-			return \Joomla\CMS\Language\Text::sprintf( 'COM_CJLIB_DATE_DIFF_HOURS', $hours, $minutes, $seconds );
+			return Text::sprintf( 'COM_CJLIB_DATE_DIFF_HOURS', $hours, $minutes, $seconds );
 		}
 		else
 		{
 
-			return \Joomla\CMS\Language\Text::sprintf( 'COM_CJLIB_DATE_DIFF_MINUTES', $minutes, $seconds );
+			return Text::sprintf( 'COM_CJLIB_DATE_DIFF_MINUTES', $minutes, $seconds );
 		}
 	}
 
@@ -813,7 +826,7 @@ class CJFunctions {
 			}
 		}
 
-		return preg_replace( '#<p[^>]*>(\s|&nbsp;?)*</p>#', '', $text );;
+		return preg_replace( '#<p[^>]*>(\s|&nbsp;?)*</p>#', '', $text );
 	}
 
 	/**
@@ -865,10 +878,10 @@ class CJFunctions {
 	 * @return string The output of the script
 	 */
 	public static function load_module_position( $position ) {
-		if ( \Joomla\CMS\Helper\ModuleHelper::getModules( $position ) )
+		if ( ModuleHelper::getModules( $position ) )
 		{
 
-			$document = \Joomla\CMS\Factory::getDocument();
+			$document = Factory::getDocument();
 			$renderer = $document->loadRenderer( 'modules' );
 			$options  = [ 'style' => 'xhtml' ];
 
@@ -896,7 +909,7 @@ class CJFunctions {
 	}
 
 	/**
-	 * Throws new exception with message and error code for j1.6 or above, calls <code>JError::raiseError</code> otherwise.
+	 * Throws new exception with message and error code for j1.6 or above, calls <code>Exception</code> otherwise.
 	 *
 	 * @param   string  $msg   message
 	 * @param   int     $code  error code
@@ -904,17 +917,7 @@ class CJFunctions {
 	 * @throws Exception
 	 */
 	public static function throw_error( $msg, $code ) {
-
-		if ( APP_VERSION == '1.5' )
-		{
-
-			JError::raiseError( $code, $msg );
-		}
-		else
-		{
-
-			throw new Exception( $msg, $code );
-		}
+		throw new Exception( $msg, $code );
 	}
 
 	/**
@@ -928,9 +931,9 @@ class CJFunctions {
 	 */
 	public static function trigger_event( $group, $event, $params = null ) {
 
-		\Joomla\CMS\Plugin\PluginHelper::importPlugin( $group );
+		PluginHelper::importPlugin( $group );
 
-		$app = \Joomla\CMS\Factory::getApplication();
+		$app = Factory::getApplication();
 		$app->triggerEvent( $event, $params );
 	}
 
@@ -944,7 +947,7 @@ class CJFunctions {
 	 * @return Ambigous <string, number, mixed> active menu id if <code>itemid</code> not set, else return Itemid request variable or empty if not found.
 	 */
 	public static function get_active_menu_id( $itemid = true, $url = null, $cat_request = false ) {
-		$app      = \Joomla\CMS\Factory::getApplication();
+		$app      = Factory::getApplication();
 		$menu     = $app->getMenu( 'site' );
 		$active   = $menu->getActive();
 		$menuid   = 0;
@@ -1022,7 +1025,7 @@ class CJFunctions {
 	 * @return string the code to render the comments.
 	 */
 	public static function load_comments( $type, $app_name, $id = 0, $title = '', $url = '', $identifier = '', $item = null ) {
-		$app = \Joomla\CMS\Factory::getApplication();
+		$app = Factory::getApplication();
 		switch ( $type )
 		{
 
@@ -1251,8 +1254,8 @@ class CJFunctions {
 	public static function get_login_url( $redirect_url, $itemid ) {
 
 		return APP_VERSION == '1.5'
-			? \Joomla\CMS\Router\Route::_( "index.php?option=com_user&view=login" . $itemid . "&return=" . $redirect_url )
-			: \Joomla\CMS\Router\Route::_( "index.php?option=com_users&view=login" . $itemid . "&return=" . $redirect_url );
+			? Route::_( "index.php?option=com_user&view=login" . $itemid . "&return=" . $redirect_url )
+			: Route::_( "index.php?option=com_users&view=login" . $itemid . "&return=" . $redirect_url );
 	}
 
 	/**
@@ -1447,12 +1450,12 @@ class CJFunctions {
 		$path = JPATH_ROOT . '/media/com_cjlib/geoip/';
 		if ( $force && file_exists( $path . 'GeoLite2-City.mmdb' ) )
 		{
-			\Joomla\CMS\Filesystem\File::delete( $path . 'GeoLite2-City.mmdb' );
+			File::delete( $path . 'GeoLite2-City.mmdb' );
 		}
 
 		if ( ! file_exists( $path ) )
 		{
-			\Joomla\CMS\Filesystem\Folder::create( $path );
+			Folder::create( $path );
 		}
 
 		if ( file_exists( $path . 'GeoLite2-City.mmdb' ) )
@@ -1460,7 +1463,7 @@ class CJFunctions {
 			$filemtime = filemtime( $path . 'GeoLite2-City.mmdb' );
 			if ( ( time() - $filemtime ) >= 30 * 86400 )
 			{
-				\Joomla\CMS\Filesystem\File::delete( $path . 'GeoLite2-City.mmdb' );
+				File::delete( $path . 'GeoLite2-City.mmdb' );
 			}
 			else
 			{
@@ -1468,7 +1471,7 @@ class CJFunctions {
 			}
 		}
 
-		$params     = \Joomla\CMS\Component\ComponentHelper::getParams( 'com_cjlib' );
+		$params     = ComponentHelper::getParams( 'com_cjlib' );
 		$licenseKey = $params->get( 'maxmind_license_key' );
 		if ( empty( $licenseKey ) )
 		{
@@ -1477,7 +1480,7 @@ class CJFunctions {
 
 		// Download the package at the URL given.
 		$packageUrl = 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&suffix=tar.gz&license_key=' . $licenseKey;
-		$fileName   = JInstallerHelper::downloadPackage( $packageUrl );
+		$fileName   = InstallerHelper::downloadPackage( $packageUrl );
 
 		// Was the package downloaded?
 		if ( ! $fileName )
@@ -1485,7 +1488,7 @@ class CJFunctions {
 			throw new Exception( 'Unable to download GeoIP database from MaxMind.', 500 );
 		}
 
-		$config = \Joomla\CMS\Factory::getConfig();
+		$config = Factory::getConfig();
 		$tmpDir = $config->get( 'tmp_path' );
 		CJFunctions::unpackMaxMindDb( $tmpDir . '/', $fileName, $path, 'GeoLite2-City.mmdb' );
 
@@ -1499,13 +1502,13 @@ class CJFunctions {
 		$archivename = $p_filename;
 
 		// Clean the paths to use for archive extraction
-		$tarFileName = \Joomla\CMS\Filesystem\File::stripExt( $srcFile );
-		$extractname = \JPath::clean( dirname( $p_filename ) . '/' . $tarFileName );
-		$archivename = \JPath::clean( $archivename );
+		$tarFileName = File::stripExt( $srcFile );
+		$extractname = Path::clean( dirname( $p_filename ) . '/' . $tarFileName );
+		$archivename = Path::clean( $archivename );
 
 		// Temporary folder to extract the archive into
 		$tmpdir     = uniqid( 'install_' );
-		$extractdir = \JPath::clean( dirname( $p_filename ) . '/' . $tmpdir . '/' );
+		$extractdir = Path::clean( dirname( $p_filename ) . '/' . $tmpdir . '/' );
 
 		// Do the unpacking of the archive
 		try
@@ -1521,10 +1524,10 @@ class CJFunctions {
 			gzclose( $sfp );
 			fclose( $fp );
 
-			$archive = new Archive( [ 'tmp_path' => \Joomla\CMS\Factory::getConfig()->get( 'tmp_path' ) ] );
+			$archive = new Archive( [ 'tmp_path' => Factory::getConfig()->get( 'tmp_path' ) ] );
 			$extract = $archive->extract( $extractname, $extractdir );
 		}
-		catch ( \Exception $e )
+		catch ( Exception $e )
 		{
 			return false;
 		}
@@ -1534,12 +1537,12 @@ class CJFunctions {
 			return false;
 		}
 
-		$sourceFileName = \JPath::clean( $extractdir . \Joomla\CMS\Filesystem\File::stripExt( $tarFileName ) . '/' . $destFile );
-		$destFileName   = \JPath::clean( $destDir . $destFile );
-		\Joomla\CMS\Filesystem\File::move( $sourceFileName, $destFileName );
+		$sourceFileName = Path::clean( $extractdir . File::stripExt( $tarFileName ) . '/' . $destFile );
+		$destFileName   = Path::clean( $destDir . $destFile );
+		File::move( $sourceFileName, $destFileName );
 
-		\Joomla\CMS\Filesystem\Folder::delete( $extractdir );
-		\Joomla\CMS\Filesystem\File::delete( $extractname );
+		Folder::delete( $extractdir );
+		File::delete( $extractname );
 
 		return true;
 	}
@@ -1574,11 +1577,11 @@ class CJFunctions {
 	public static function download_file( $source_url, $target_folder, $target_file ) {
 		if ( file_exists( $target_file ) )
 		{
-			\Joomla\CMS\Filesystem\File::delete( $target_file );
+			File::delete( $target_file );
 		}
 		else
 		{
-			\Joomla\CMS\Filesystem\Folder::create( $target_folder );
+			Folder::create( $target_folder );
 		}
 
 		//try to connect via fopen
@@ -1795,7 +1798,7 @@ class CJFunctions {
 
 		if ( $simulated )
 		{
-			$params = \Joomla\CMS\Component\ComponentHelper::getParams( 'com_cjlib' );
+			$params = ComponentHelper::getParams( 'com_cjlib' );
 
 			if ( $params->get( 'enable_manual_cron' ) )
 			{
@@ -1815,8 +1818,8 @@ class CJFunctions {
 			}
 		}
 
-		$db  = \Joomla\CMS\Factory::getDbo();
-		$app = \Joomla\CMS\Factory::getApplication();
+		$db  = Factory::getDbo();
+		$app = Factory::getApplication();
 
 		$from        = $app->get( 'mailfrom' );
 		$fromname    = $app->get( 'fromname' );
@@ -1889,16 +1892,16 @@ class CJFunctions {
 			{
 
 				// Add logger
-				$date = \Joomla\CMS\Factory::getDate()->format( 'Y.m.d' );
-				JLog::addLogger( [ 'text_file' => 'com_cjlib.' . $date . '.log.php' ], JLog::ALL, 'com_cjlib' );
-				JLog::add( 'Send Messages From Queue - Error: ' . print_r( $e, true ), JLog::ERROR, 'com_cjlib' );
+				$date = Factory::getDate()->format( 'Y.m.d' );
+				Log::addLogger( [ 'text_file' => 'com_cjlib.' . $date . '.log.php' ], Log::ALL, 'com_cjlib' );
+				Log::add( 'Send Messages From Queue - Error: ' . print_r( $e, true ), Log::ERROR, 'com_cjlib' );
 			}
 		}
 
 		if ( ! empty( $ids ) )
 		{
 
-			$created = \Joomla\CMS\Factory::getDate()->toSql();
+			$created = Factory::getDate()->toSql();
 			$query   = $db->getQuery( true );
 
 			$query
@@ -1938,7 +1941,7 @@ class CJFunctions {
 	 * @param   string   $replyto      replyto email address
 	 * @param   string   $replytoname  reply to name
 	 *
-	 * @return mixed True if successful, a JError object otherwise
+	 * @return mixed True if successful, a Exception object otherwise
 	 */
 	public static function send_email(
 		$from,
@@ -1955,7 +1958,7 @@ class CJFunctions {
 	) {
 
 		// Get a JMail instance
-		$mail = \Joomla\CMS\Factory::getMailer();
+		$mail = Factory::getMailer();
 
 		$mail->setSender( [ $from, $fromname ] );
 		$mail->setSubject( $subject );
@@ -2003,34 +2006,34 @@ class CJFunctions {
 	public static function get_supported_avatars() {
 
 		return [
-			'NA'        => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_NONE' ),
-			'cjblog'    => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_CJBLOG' ),
-			'gravatar'  => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_GRAVATAR' ),
-			'jomsocial' => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_JOMSOCIAL' ),
-			'cb'        => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_COMMUNITY_BUILDER' ),
-			'kunena'    => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_KUNENA' ),
-			'aup'       => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_ALPHA_USERPOINTS' ),
-			'touch'     => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_MIGHTY_TOUCH' ),
+			'NA'        => Text::_( 'COM_CJLIB_NONE' ),
+			'cjblog'    => Text::_( 'COM_CJLIB_EXTENSION_CJBLOG' ),
+			'gravatar'  => Text::_( 'COM_CJLIB_EXTENSION_GRAVATAR' ),
+			'jomsocial' => Text::_( 'COM_CJLIB_EXTENSION_JOMSOCIAL' ),
+			'cb'        => Text::_( 'COM_CJLIB_EXTENSION_COMMUNITY_BUILDER' ),
+			'kunena'    => Text::_( 'COM_CJLIB_EXTENSION_KUNENA' ),
+			'aup'       => Text::_( 'COM_CJLIB_EXTENSION_ALPHA_USERPOINTS' ),
+			'touch'     => Text::_( 'COM_CJLIB_EXTENSION_MIGHTY_TOUCH' ),
 		];
 	}
 
 	public static function get_supported_streams() {
 
 		return [
-			'NA'        => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_NONE' ),
-			'jomsocial' => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_JOMSOCIAL' ),
-			'touch'     => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_MIGHTY_TOUCH' ),
+			'NA'        => Text::_( 'COM_CJLIB_NONE' ),
+			'jomsocial' => Text::_( 'COM_CJLIB_EXTENSION_JOMSOCIAL' ),
+			'touch'     => Text::_( 'COM_CJLIB_EXTENSION_MIGHTY_TOUCH' ),
 		];
 	}
 
 	public static function get_supported_point_systems() {
 
 		return [
-			'NA'        => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_NONE' ),
-			'cjblog'    => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_CJBLOG' ),
-			'jomsocial' => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_JOMSOCIAL' ),
-			'aup'       => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_ALPHA_USERPOINTS' ),
-			'touch'     => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EXTENSION_MIGHTY_TOUCH' ),
+			'NA'        => Text::_( 'COM_CJLIB_NONE' ),
+			'cjblog'    => Text::_( 'COM_CJLIB_EXTENSION_CJBLOG' ),
+			'jomsocial' => Text::_( 'COM_CJLIB_EXTENSION_JOMSOCIAL' ),
+			'aup'       => Text::_( 'COM_CJLIB_EXTENSION_ALPHA_USERPOINTS' ),
+			'touch'     => Text::_( 'COM_CJLIB_EXTENSION_MIGHTY_TOUCH' ),
 		];
 	}
 
@@ -2063,14 +2066,14 @@ class CJFunctions {
 				$table = $table . '<div class="' . $colspan . '">';
 			}
 
-			$url   = \Joomla\CMS\Router\Route::_( $base_url . '&id=' . $category->id . ':' . $category->alias . $menu_id );
+			$url   = Route::_( $base_url . '&id=' . $category->id . ':' . $category->alias . $menu_id );
 			$title = CJFunctions::escape( $category->title );
 
 			if ( ! empty( $stat_primary ) && ! empty( $stat_secondary ) )
 			{
 
 				$title            = $title . ' <small><span class="muted text-muted">(' . $category->$stat_primary . '/' . $category->$stat_secondary . ')</span></small>';
-				$attribs['title'] = ! empty( $stat_tooltip ) ? \Joomla\CMS\Language\Text::sprintf( $stat_tooltip, $category->title, $category->$stat_primary,
+				$attribs['title'] = ! empty( $stat_tooltip ) ? Text::sprintf( $stat_tooltip, $category->title, $category->$stat_primary,
 					$category->$stat_secondary ) : '';
 				$attribs['class'] = ! empty( $attribs['class'] ) ? $attribs['class'] . ' tooltip-hover' : 'tooltip-hover';
 			}
@@ -2078,12 +2081,12 @@ class CJFunctions {
 			{
 
 				$title            = $title . ' <small><span class="muted text-muted">(' . $category->$stat_primary . ')</span></small>';
-				$attribs['title'] = ! empty( $stat_tooltip ) ? \Joomla\CMS\Language\Text::sprintf( $stat_tooltip, $category->title, $category->$stat_primary ) : '';
+				$attribs['title'] = ! empty( $stat_tooltip ) ? Text::sprintf( $stat_tooltip, $category->title, $category->$stat_primary ) : '';
 				$attribs['class'] = ! empty( $attribs['class'] ) ? $attribs['class'] . ' tooltip-hover' : 'tooltip-hover';
 			}
 
 			$table = $table . '<ul class="unstyled list-unstyled no-space-left">';
-			$table = $table . '<li class="parent-item">' . \Joomla\CMS\HTML\HTMLHelper::link( $url, $title, $attribs ) . '</li>';
+			$table = $table . '<li class="parent-item">' . HTMLHelper::link( $url, $title, $attribs ) . '</li>';
 
 			if ( $max_children > 0 && count( $category->children ) > 0 )
 			{
@@ -2093,25 +2096,25 @@ class CJFunctions {
 				foreach ( $category->children as $child )
 				{
 
-					$url   = \Joomla\CMS\Router\Route::_( $base_url . '&id=' . $child['id'] . ':' . $child['alias'] . $menu_id );
+					$url   = Route::_( $base_url . '&id=' . $child['id'] . ':' . $child['alias'] . $menu_id );
 					$title = CJFunctions::escape( $child['title'] );
 
 					if ( ! empty( $stat_primary ) && ! empty( $stat_secondary ) )
 					{
 
 						$title            = $title . ' (' . $child[$stat_primary] . ' / ' . $child[$stat_secondary] . ')';
-						$attribs['title'] = ! empty( $stat_tooltip ) ? \Joomla\CMS\Language\Text::sprintf( $stat_tooltip, $child['title'], $stat_primary, $stat_secondary ) : '';
+						$attribs['title'] = ! empty( $stat_tooltip ) ? Text::sprintf( $stat_tooltip, $child['title'], $stat_primary, $stat_secondary ) : '';
 						$attribs['class'] = ! empty( $attribs['class'] ) ? $attribs['class'] . ' tooltip-hover' : 'tooltip-hover';
 					}
 					elseif ( ! empty( $stat_primary ) )
 					{
 
 						$title            = $title . ' (' . $child[$stat_primary] . ')';
-						$attribs['title'] = ! empty( $stat_tooltip ) ? \Joomla\CMS\Language\Text::sprintf( $stat_tooltip, $child['title'], $stat_primary ) : '';
+						$attribs['title'] = ! empty( $stat_tooltip ) ? Text::sprintf( $stat_tooltip, $child['title'], $stat_primary ) : '';
 						$attribs['class'] = ! empty( $attribs['class'] ) ? $attribs['class'] . ' tooltip-hover' : 'tooltip-hover';
 					}
 
-					$table = $table . '<li class="child-item">' . \Joomla\CMS\HTML\HTMLHelper::link( $url, $title, $attribs ) . '</li>';
+					$table = $table . '<li class="child-item">' . HTMLHelper::link( $url, $title, $attribs ) . '</li>';
 
 					if ( $child_count + 1 == $max_children )
 					{
@@ -2154,7 +2157,7 @@ class CJFunctions {
 	 */
 	public static function get_country_names() {
 
-		$db       = \Joomla\CMS\Factory::getDbo();
+		$db       = Factory::getDbo();
 		$query    = $db->getQuery( true );
 		$language = CJFunctions::get_country_language();
 
@@ -2178,8 +2181,8 @@ class CJFunctions {
 	 */
 	public static function get_country_language() {
 
-		$db       = \Joomla\CMS\Factory::getDbo();
-		$language = \Joomla\CMS\Factory::getLanguage();
+		$db       = Factory::getDbo();
+		$language = Factory::getLanguage();
 
 		$query = $db->getQuery( true );
 		$query
@@ -2215,14 +2218,14 @@ class CJFunctions {
 	 *
 	 * @param   unknown  $seed
 	 *
-	 * @return unknown
+	 * @return string
 	 *
 	 * @deprecated 2018-09-17
 	 */
 	public static function get_hash( $seed ) {
 
-		// replace this with JApplicationHelper::getHash when Joomla 2.5 support no more exist
-		return md5( \Joomla\CMS\Factory::getConfig()->get( 'secret' ) . $seed );
+		// replace this with \Joomla\CMS\Application\ApplicationHelper::getHash when Joomla 2.5 support no more exist
+		return md5( Factory::getConfig()->get( 'secret' ) . $seed );
 	}
 
 }

@@ -6,6 +6,12 @@
  * @copyright   Copyright (C) 2009 - 2016 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\HTML\Helpers\Bootstrap;
+use Joomla\CMS\HTML\HTMLHelper;
+
 defined('_JEXEC') or die();
 
 class CJLib {
@@ -20,8 +26,8 @@ class CJLib {
 	public static function import($package, $cjprefixed = false, $force = false, $custom_tag = false){
 		
 		$lib = '';
-		$document = \Joomla\CMS\Factory::getDocument();
-		$app = \Joomla\CMS\Factory::getApplication();
+		$document = Factory::getDocument();
+		$app = Factory::getApplication();
 		
 		switch ($package){
 				
@@ -69,7 +75,7 @@ class CJLib {
 						
 						if($cjprefixed){
 							
-							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
+							if( Factory::getLanguage()->isRTL()){
 								
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap.rtl.min.css', $custom_tag);
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap-responsive.rtl.min.css', $custom_tag);
@@ -80,7 +86,7 @@ class CJLib {
 							}
 						} else {
 							
-							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
+							if( Factory::getLanguage()->isRTL()){
 								
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/bootstrap.rtl.min.css', $custom_tag);
 							} else {
@@ -95,8 +101,8 @@ class CJLib {
 						$document->addScript(CJLIB_URI.'/bootstrap/js/bootstrap.min.js');
 					} else {
 	
-						\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.framework');
-						JHtmlBootstrap::loadCss(true, $document->direction);
+						HTMLHelper::_('bootstrap.framework');
+						Bootstrap::loadCss(true, $document->direction);
 					}
 					
 					$app->cjbootstrap = true;
@@ -117,7 +123,7 @@ class CJLib {
 				
 						if($cjprefixed){
 								
-							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
+							if( Factory::getLanguage()->isRTL()){
 
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap.fontawesome.rtl.min.css', $custom_tag);
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/cj.bootstrap-responsive.rtl.min.css', $custom_tag);
@@ -128,7 +134,7 @@ class CJLib {
 							}
 						} else {
 								
-							if(\Joomla\CMS\Factory::getLanguage()->isRTL()){
+							if( Factory::getLanguage()->isRTL()){
 								
 								CJFunctions::add_css_to_document($document, CJLIB_URI.'/bootstrap/css/bootstrap.fontawesome.rtl.min.css', $custom_tag);
 							} else {
@@ -145,8 +151,8 @@ class CJLib {
 						$document->addScript(CJLIB_URI.'/bootstrap/js/bootstrap.min.js');
 					} else {
 				
-						\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.framework');
-						JHtmlBootstrap::loadCss(true, $document->direction);
+						HTMLHelper::_('bootstrap.framework');
+						Bootstrap::loadCss(true, $document->direction);
 						CJFunctions::load_jquery(array('libs'=>array('fontawesome'), 'custom_tag'=>$custom_tag));
 					}
 
@@ -169,7 +175,7 @@ class CJLib {
 				$lib = CJLIB_PATH.'/dummy.php';
 		}
 		
-		if(\Joomla\CMS\Filesystem\File::exists($lib)) {
+		if( File::exists($lib)) {
 			
 			require_once $lib;
 		}

@@ -8,6 +8,10 @@
  * @link		https://shondalai.com/
  * @license		License GNU General Public License version 2 or later
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -15,22 +19,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
 <tr>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'q.id', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'q.id', $listDirn, $listOrder); ?></th>
 	<th width="20">
 		<?php if(APP_VERSION < 3):?>
 		<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(<?php echo count($this->items); ?>);" />
 		<?php else :?>
-		<?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.checkall'); ?>
+		<?php echo HTMLHelper::_('grid.checkall'); ?>
 		<?php endif;?>
 	</th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_SUBJECT', 'm.subject', $listDirn, $listOrder); ?></th>	
-	<th width="20%"><?php echo \Joomla\CMS\Language\Text::_('JGLOBAL_DESCRIPTION')?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_ASSET_NAME', 'm.asset_name', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_ASSET_ID', 'm.asset_id', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_TO_ADDR', 'q.to_addr', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'JDATE', 'm.created', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_PROCESSED_DATE', 'q.processed', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_HTML', 'q.html', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'JSTATUS', 'q.status', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_SUBJECT', 'm.subject', $listDirn, $listOrder); ?></th>
+	<th width="20%"><?php echo Text::_('JGLOBAL_DESCRIPTION')?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_ASSET_NAME', 'm.asset_name', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_ASSET_ID', 'm.asset_id', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_TO_ADDR', 'q.to_addr', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'JDATE', 'm.created', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_PROCESSED_DATE', 'q.processed', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_HTML', 'q.html', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'JSTATUS', 'q.status', $listDirn, $listOrder); ?></th>
 </tr>
 

@@ -11,6 +11,12 @@ defined('_JEXEC') or die;
 require_once 'utils.php';
 require_once 'dateutils.php';
 
+use CB\Plugin\Activity\Table\ActivityTable;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
 
 class CjLibApi
@@ -25,7 +31,7 @@ class CjLibApi
 			$attribs['onclick'] = 'return false;';
 		}
 		
-		return \Joomla\CMS\HTML\HTMLHelper::link($profileUrl, $avatarImage, $attribs);
+		return HTMLHelper::link($profileUrl, $avatarImage, $attribs);
 	}
 	
 	public function getUserAvatarImage($app, $userId, $email = null, $height = 48, $urlOnly = true, $alt = '', $imgAttribs = array())
@@ -175,7 +181,7 @@ class CjLibApi
 				{
 					try 
 					{
-						$db = \Joomla\CMS\Factory::getDbo();
+						$db = Factory::getDbo();
 						$query = $db->getQuery(true)->select('email')->from('#__users')->where('id = '.$userId);
 						$db->setQuery($query);
 						
@@ -188,7 +194,7 @@ class CjLibApi
 				
 				if($urlOnly == false)
 				{
-					$avatar = \Joomla\CMS\HTML\HTMLHelper::image($avatar, $alt, $imgAttribs);
+					$avatar = HTMLHelper::image($avatar, $alt, $imgAttribs);
 				}
 		
 				break;
@@ -267,11 +273,11 @@ class CjLibApi
 				break;
 				
 			case 'slogin':
-			    if (\Joomla\CMS\Plugin\PluginHelper::isEnabled('slogin_integration', 'profile'))
+			    if ( PluginHelper::isEnabled('slogin_integration', 'profile'))
 			    {
 			        include_once JPATH_ROOT . '/plugins/slogin_integration/profile/helper.php';
 			        $profile = plgProfileHelper::getProfile($userId);
-			        $avatar = \Joomla\CMS\Uri\Uri::root() . '/' . $profile->avatar;
+			        $avatar = Uri::root() . '/' . $profile->avatar;
 			        
 			        if($urlOnly == false)
 			        {
@@ -287,7 +293,7 @@ class CjLibApi
 	public function getUserProfileUrl($system, $userId, $urlOnly = true, $name = 'Guest', $attribs = array())
 	{
 		$url = '#';
-		$userId = $userId ? $userId : \Joomla\CMS\Factory::getUser()->id;
+		$userId = $userId ? $userId : Factory::getUser()->id;
 		
 		if($userId)
 		{
@@ -425,7 +431,7 @@ class CjLibApi
 		
 		if($url && ! $urlOnly)
 		{
-			$url = \Joomla\CMS\HTML\HTMLHelper::link($url, $name, $attribs);
+			$url = HTMLHelper::link($url, $name, $attribs);
 		}
 		
 		return (null == $url) ? $name : $url;
@@ -505,7 +511,7 @@ class CjLibApi
 							$act->content = $content.'
 								<div style="margin-top: 5px;">
 									<div style="float: right; font-weight: bold; font-size: 12px;">
-										<a href="'.$activity->href.'">'.\Joomla\CMS\Language\Text::_('COM_CJLIB_READ_MORE').'</a>
+										<a href="'.$activity->href.'">' . Text::_('COM_CJLIB_READ_MORE') . '</a>
 									</div>
 									<div style="clear: both;"></div>
 								</div>';
@@ -543,7 +549,7 @@ class CjLibApi
 				
 			case 'cb':
 				
-				$cbTable = new \CB\Plugin\Activity\Table\ActivityTable();
+				$cbTable = new ActivityTable();
 				$cbTable->set( 'type', $activity->type );
 				$cbTable->set( 'title', $activity->title );
 				$cbTable->set( 'message', $content );
@@ -686,8 +692,8 @@ class CjLibApi
 	
 	public function getProfileIdFromRequest($profileApp, $default = 0)
 	{
-		$app 		= \Joomla\CMS\Factory::getApplication();
-		$user		= \Joomla\CMS\Factory::getUser();
+		$app 		= Factory::getApplication();
+		$user		= Factory::getUser();
 		$option 	= $app->input->getCmd('option');
 		$view 		= $app->input->getCmd('view');
 		$pk 		= 0;
@@ -928,7 +934,7 @@ class CjLibApi
 			
 			case 'jomsocial':
 				
-				$db = \Joomla\CMS\Factory::getDbo();
+				$db = Factory::getDbo();
 				$query = 'select points from #__community_users where userid='.((int)$userId);
 				$db->setQuery($query);
 				return (int)$db->loadResult();

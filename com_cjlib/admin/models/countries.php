@@ -6,9 +6,13 @@
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
 defined('_JEXEC') or die();
 
-class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
+class CjLibModelCountries extends ListModel
 {
 	public function __construct($config = array()){
 	
@@ -27,8 +31,8 @@ class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 	
 	protected function populateState($ordering = null, $direction = null) {
 	
-		$app = \Joomla\CMS\Factory::getApplication();
-		$session = \Joomla\CMS\Factory::getSession();
+		$app = Factory::getApplication();
+		$session = Factory::getSession();
 	
 		if ($layout = $app->input->get('layout')) {
 				
@@ -63,7 +67,7 @@ class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 	
 	protected function _buildQuery(){
 	
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(TRUE);
 	
 		$query->select('a.id, a.country_code, a.country_name, a.language, a.published, a.publish_up, a.publish_down');
@@ -74,7 +78,7 @@ class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 	
 	protected function _buildWhere(&$query) {
 	
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		
 		$country_code = $this->getState('filter.country_code');
 		if(!empty($country_code)){
@@ -120,7 +124,7 @@ class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 	
 	protected function getListQuery() {
 	
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 	
 		$orderCol	= $this->state->get('list.ordering', 'a.language, a.id');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
@@ -134,7 +138,7 @@ class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 	
 	public function add_language($language){
 		
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		$query = '
 			insert into 
 				#__corejoomla_countries (country_code, country_name, language) 
@@ -160,7 +164,7 @@ class CjLibModelCountries extends \Joomla\CMS\MVC\Model\ListModel
 	
 	public function save_country_name($id, $name){
 		
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$query->update('#__corejoomla_countries')->set('country_name = '.$db->q($name))->where('id = '.$id);

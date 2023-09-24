@@ -6,6 +6,10 @@
  * @copyright   Copyright (C) 2009 - 2018 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die();
 
 $span = !empty( $this->sidebar) ? 'col-md-10' : 'col-md-12';
@@ -18,7 +22,7 @@ $span = !empty( $this->sidebar) ? 'col-md-10' : 'col-md-12';
     <?php endif;?>
     <div class="<?php echo $span;?>">
     	<div id="j-main-container">
-        	<form action="<?php echo \Joomla\CMS\Router\Route::_('index.php?option=com_cjlib&view=queue');?>" method="post" name="adminForm" id="adminForm">
+        	<form action="<?php echo Route::_('index.php?option=com_cjlib&view=queue');?>" method="post" name="adminForm" id="adminForm">
         		<table class="adminlist table table-bordered table-striped">
         			<thead><?php echo $this->loadTemplate('head');?></thead>
         			<tfoot><?php echo $this->loadTemplate('foot');?></tfoot>
@@ -30,7 +34,7 @@ $span = !empty( $this->sidebar) ? 'col-md-10' : 'col-md-12';
         			<input type="hidden" name="filter_order" value="<?php echo $this->state->get('list.ordering'); ?>" />
         			<input type="hidden" name="filter_order_Dir" value="<?php echo $this->state->get('list.direction'); ?>" />
         			<input type="hidden" name="cjlib_page_id" id="cjlib_page_id" value="queue">
-        			<?php echo \Joomla\CMS\HTML\HTMLHelper::_('form.token'); ?>
+        			<?php echo HTMLHelper::_('form.token'); ?>
         		</div>
         	</form>
         </div>

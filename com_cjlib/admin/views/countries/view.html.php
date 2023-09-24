@@ -6,6 +6,13 @@
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 defined( '_JEXEC' ) or die();
 
 class CjLibViewCountries extends Joomla\CMS\MVC\View\HtmlView {
@@ -19,7 +26,7 @@ class CjLibViewCountries extends Joomla\CMS\MVC\View\HtmlView {
 
 	function display( $tpl = null ) {
 		CjLibHelper::addSubmenu( 'countries' );
-		$this->params = \Joomla\CMS\Component\ComponentHelper::getParams( 'com_cjlib' );
+		$this->params = ComponentHelper::getParams( 'com_cjlib' );
 
 		$this->items      = $this->get( 'Items' );
 		$this->pagination = $this->get( 'Pagination' );
@@ -37,12 +44,12 @@ class CjLibViewCountries extends Joomla\CMS\MVC\View\HtmlView {
 			// Set the toolbar
 			$this->addToolBar();
 
-			$this->sidebar = \Joomla\CMS\HTML\Helpers\Sidebar::render();
+			$this->sidebar = Sidebar::render();
 		}
 
 		// Set the document
-		\Joomla\CMS\Toolbar\ToolbarHelper::title(
-			\Joomla\CMS\Language\Text::_( 'COM_CJLIB' ) . ': <small><small>[ ' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_COUNTRIES' ) . ' ]</small></small>',
+		ToolbarHelper::title(
+			Text::_( 'COM_CJLIB' ) . ': <small><small>[ ' . Text::_( 'COM_CJLIB_COUNTRIES' ) . ' ]</small></small>',
 			'cjlib.png' );
 
 		// Display the template
@@ -50,19 +57,19 @@ class CjLibViewCountries extends Joomla\CMS\MVC\View\HtmlView {
 	}
 
 	protected function addToolBar() {
-		$user = \Joomla\CMS\Factory::getUser();
+		$user = Factory::getUser();
 		if ( $user->authorise( 'core.admin', 'com_cjlib' ) )
 		{
-			\Joomla\CMS\Toolbar\ToolbarHelper::publish( 'countries.publish', 'JTOOLBAR_PUBLISH', true );
-			\Joomla\CMS\Toolbar\ToolbarHelper::unpublish( 'countries.unpublish', 'JTOOLBAR_UNPUBLISH', true );
+			ToolbarHelper::publish( 'countries.publish', 'JTOOLBAR_PUBLISH', true );
+			ToolbarHelper::unpublish( 'countries.unpublish', 'JTOOLBAR_UNPUBLISH', true );
 
 			if ( $this->state->get( 'filter.published' ) == - 2 )
 			{
-				\Joomla\CMS\Toolbar\ToolbarHelper::deleteList( '', 'countries.delete', 'JTOOLBAR_EMPTY_TRASH' );
+				ToolbarHelper::deleteList( '', 'countries.delete', 'JTOOLBAR_EMPTY_TRASH' );
 			}
 			else
 			{
-				\Joomla\CMS\Toolbar\ToolbarHelper::trash( 'countries.trash' );
+				ToolbarHelper::trash( 'countries.trash' );
 			}
 		}
 	}

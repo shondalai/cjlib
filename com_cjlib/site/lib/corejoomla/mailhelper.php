@@ -1,4 +1,6 @@
 <?php
+
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 /**
@@ -14,7 +16,7 @@ class CjMailHelper
 {
 	public static function getMessage($msgid)
 	{
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		$messages = array();
 		
 		$query = $db->getQuery(true)
@@ -106,12 +108,12 @@ class CjMailHelper
 	 * @param string $replyto replyto email address
 	 * @param string $replytoname reply to name
 	 *
-	 * @return mixed True if successful, a JError object otherwise
+	 * @return mixed True if successful, a Exception object otherwise
 	 */
 	public static function sendEmail($from, $fromname, $recipient, $subject, $body, $options = array())
 	{
 		// Get a JMail instance
-		$mail = \Joomla\CMS\Factory::getMailer();
+		$mail = Factory::getMailer();
 	
 		$mail->setSender(array($from, $fromname));
 		$mail->setSubject($subject);

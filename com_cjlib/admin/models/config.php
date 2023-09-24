@@ -3,19 +3,20 @@
  * @version		$Id: config.php 01 2012-01-11 11:37:09Z maverick $
  * @package		CoreJoomla.Cjlib
  * @subpackage	Components.models
- * @copyright	Copyright (C) 2021 BulaSikku Technologies Private Limited.
+ * @copyright	Copyright (C) 2023 BulaSikku Technologies Private Limited.
  * @author		Maverick
  * @link		https://shondalai.com/
  * @license		License GNU General Public License version 2 or later
  */
 
 // no direct access
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 defined('_JEXEC') or die('Restricted access');
 
 // Import Joomla! libraries
-jimport('joomla.application.component.model');
-
-class CjLibModelConfig extends JModelLegacy {
+class CjLibModelConfig extends BaseDatabaseModel {
 
     function __construct() {
     	
@@ -24,8 +25,8 @@ class CjLibModelConfig extends JModelLegacy {
 
     function save() {
         
-    	$db = \Joomla\CMS\Factory::getDBO();
-    	$app = \Joomla\CMS\Factory::getApplication();
+    	$db = Factory::getDBO();
+    	$app = Factory::getApplication();
 
     	$manual_cron = $app->input->getInt('manual_cron', 0);
     	$cron_emails = $app->input->getInt('cron_emails', 60);

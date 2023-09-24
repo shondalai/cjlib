@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="installer" method="upgrade">
-	<name>Shondalai Package Updater</name>
+	<name>CjLib - Package Updater</name>
 	<author>Maverick</author>
 	<creationDate>2015-08-31</creationDate>
 	<copyright>Copyright (C) 2011 BulaSikku Technologies Private Limited. All rights reserved.</copyright>

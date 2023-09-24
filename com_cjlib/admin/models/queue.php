@@ -3,7 +3,7 @@
  * @version		$Id: queue.php 2013-07-29 11:37:09Z maverick $
  * @package		CoreJoomla.Cjlib
  * @subpackage	Components.models
- * @copyright	Copyright (C) 2021 BulaSikku Technologies Private Limited.
+ * @copyright	Copyright (C) 2023 BulaSikku Technologies Private Limited.
  * @author		Maverick
  * @link		https://shondalai.com/
  * @license		License GNU General Public License version 2 or later
@@ -11,9 +11,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Utilities\ArrayHelper;
 
-class CjLibModelQueue extends \Joomla\CMS\MVC\Model\ListModel
+class CjLibModelQueue extends ListModel
 {
 	public function __construct($config = array())
 	{
@@ -35,7 +37,7 @@ class CjLibModelQueue extends \Joomla\CMS\MVC\Model\ListModel
 	
 	protected function populateState($ordering = null, $direction = null) 
 	{
-		$app = \Joomla\CMS\Factory::getApplication();
+		$app = Factory::getApplication();
 	
 		if ($layout = $app->input->get('layout')) 
 		{
@@ -131,7 +133,7 @@ class CjLibModelQueue extends \Joomla\CMS\MVC\Model\ListModel
 	
 	protected function getListQuery() 
 	{
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 	
 		$orderCol	= $this->state->get('list.ordering', 'q.created');
 		$orderDirn	= $this->state->get('list.direction', 'desc');
@@ -145,7 +147,7 @@ class CjLibModelQueue extends \Joomla\CMS\MVC\Model\ListModel
 	
 	public function delete_queue($cids)
 	{
-		$db = \Joomla\CMS\Factory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$cids = ArrayHelper::toInteger($cids);

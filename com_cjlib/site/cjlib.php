@@ -6,6 +6,10 @@
  * @copyright   Copyright (C) 2009 - 2016 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die;
 
 require_once 'framework.php';
@@ -13,8 +17,8 @@ require_once JPATH_COMPONENT.'/controller.php';
 
 CJLib::import('corejoomla.framework.core');
 
-$app = \Joomla\CMS\Factory::getApplication();
-$params = \Joomla\CMS\Component\ComponentHelper::getParams('com_cjlib');
+$app = Factory::getApplication();
+$params = ComponentHelper::getParams('com_cjlib');
 
 $task = $app->input->getCmd('task', '');
 $secret = $app->input->getCmd('secret', null);
@@ -33,7 +37,7 @@ if($task == 'process' && !empty($secret) && !empty($params->get('cron_secret')) 
 else if($task = 'socialcounts')
 {
 	require_once CJLIB_PATH.'/lib/misc/socialcounts.php';
-	$url = base64_decode(\Joomla\CMS\Factory::getApplication()->input->getString('url'));
+	$url = base64_decode( Factory::getApplication()->input->getString('url'));
 	
 	if( !SocialCount::REQUIRE_LOCAL_URL || SocialCount::isLocalUrl( $url ) ) 
 	{

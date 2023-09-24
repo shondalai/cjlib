@@ -8,58 +8,61 @@
  */
 defined( '_JEXEC' ) or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
 
-class CjLibControllerQueue extends \Joomla\CMS\MVC\Controller\FormController {
+class CjLibControllerQueue extends FormController {
 
 	public function __construct( $config = [] ) {
 		parent::__construct( $config );
 	}
 
 	function delete() {
-		$app = \Joomla\CMS\Factory::getApplication();
+		$app = Factory::getApplication();
 		$ids = $app->input->getArray( [ 'cid' => 'array' ] );
 
 		$ids['cid'] = ArrayHelper::toInteger( $ids['cid'] );
 
 		if ( empty( $ids['cid'] ) )
 		{
-			$this->setRedirect( 'index.php?option=com_cjlib&view=queue', \Joomla\CMS\Language\Text::_( 'COM_CJLIB_MSG_NO_ITEM_SELECTED' ) );
+			$this->setRedirect( 'index.php?option=com_cjlib&view=queue', Text::_( 'COM_CJLIB_MSG_NO_ITEM_SELECTED' ) );
 		}
 		else
 		{
 			$model = $this->getModel( 'queue' );
 			if ( $model->delete_queue( $ids['cid'] ) )
 			{
-				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', \Joomla\CMS\Language\Text::_( 'COM_CJLIB_MSG_COMPLETED' ) );
+				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', Text::_( 'COM_CJLIB_MSG_COMPLETED' ) );
 			}
 			else
 			{
-				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', \Joomla\CMS\Language\Text::_( 'MSG_ERROR_PROCESSING' ) );
+				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', Text::_( 'MSG_ERROR_PROCESSING' ) );
 			}
 		}
 	}
 
 	function process() {
-		$app = \Joomla\CMS\Factory::getApplication();
+		$app = Factory::getApplication();
 		$ids = $app->input->getArray( [ 'cid' => 'array' ] );
 
 		$ids['cid'] = ArrayHelper::toInteger( $ids['cid'] );
 
 		if ( empty( $ids['cid'] ) )
 		{
-			$this->setRedirect( 'index.php?option=com_cjlib&view=queue', \Joomla\CMS\Language\Text::_( 'COM_CJLIB_MSG_NO_ITEM_SELECTED' ) );
+			$this->setRedirect( 'index.php?option=com_cjlib&view=queue', Text::_( 'COM_CJLIB_MSG_NO_ITEM_SELECTED' ) );
 		}
 		else
 		{
 			$model = $this->getModel( 'queue' );
 			if ( $model->process_queue( $ids['cid'] ) )
 			{
-				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', \Joomla\CMS\Language\Text::_( 'COM_CJLIB_MSG_COMPLETED' ) );
+				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', Text::_( 'COM_CJLIB_MSG_COMPLETED' ) );
 			}
 			else
 			{
-				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', \Joomla\CMS\Language\Text::_( 'MSG_ERROR_PROCESSING' ) );
+				$this->setRedirect( 'index.php?option=com_cjlib&view=queue', Text::_( 'MSG_ERROR_PROCESSING' ) );
 			}
 		}
 	}

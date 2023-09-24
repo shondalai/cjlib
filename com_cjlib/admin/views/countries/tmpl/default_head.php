@@ -8,6 +8,10 @@
  * @link		https://shondalai.com/
  * @license		License GNU General Public License version 2 or later
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -15,15 +19,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
 <tr>
-	<th width="40"><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'q.id', $listDirn, $listOrder); ?></th>
+	<th width="40"><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'q.id', $listDirn, $listOrder); ?></th>
 	<th width="20">
-		<?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.checkall'); ?>
+		<?php echo HTMLHelper::_('grid.checkall'); ?>
 	</th>
 	<th width="1%" style="min-width: 55px" class="nowrap center">
-		<?php echo \Joomla\CMS\Language\Text::_('JSTATUS');?>
+		<?php echo Text::_('JSTATUS');?>
 	</th>
-	<th width="100"><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_COUNTRY_CODE', 'a.country_code', $listDirn, $listOrder); ?></th>	
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_COUNTRY_NAME', 'a.country_name', $listDirn, $listOrder); ?></th>
-	<th><?php echo \Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_CJLIB_LANGUAGE', 'a.language', $listDirn, $listOrder); ?></th>
+	<th width="100"><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_COUNTRY_CODE', 'a.country_code', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_COUNTRY_NAME', 'a.country_name', $listDirn, $listOrder); ?></th>
+	<th><?php echo HTMLHelper::_('grid.sort', 'COM_CJLIB_LANGUAGE', 'a.language', $listDirn, $listOrder); ?></th>
 </tr>
 

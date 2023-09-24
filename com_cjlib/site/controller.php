@@ -8,8 +8,6 @@
  */
 defined('_JEXEC') or die();
 
-jimport( 'joomla.application.component.controller' );
-
 class CjLibController extends Joomla\CMS\MVC\Controller\BaseController {
 	
     function __construct() {

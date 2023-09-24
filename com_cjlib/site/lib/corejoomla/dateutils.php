@@ -6,6 +6,11 @@
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
 class CjLibDateUtils
@@ -21,18 +26,16 @@ class CjLibDateUtils
 	{
 		if(empty($strdate) || $strdate == '0000-00-00 00:00:00')
 		{
-			return \Joomla\CMS\Language\Text::_('LBL_NA');
+			return Text::_('LBL_NA');
 		}
 	
-		jimport('joomla.utilities.date');
-	
 		// Given time
-		$date = new Joomla\CMS\Date\Date(\Joomla\CMS\HTML\HTMLHelper::date($strdate, 'Y-m-d H:i:s'));
-		$compareTo = new Joomla\CMS\Date\Date(\Joomla\CMS\HTML\HTMLHelper::date('now', 'Y-m-d H:i:s'));
+		$date = new Joomla\CMS\Date\Date( HTMLHelper::date($strdate, 'Y-m-d H:i:s'));
+		$compareTo = new Joomla\CMS\Date\Date( HTMLHelper::date('now', 'Y-m-d H:i:s'));
 	
 		$diff = $compareTo->toUnix() - $date->toUnix();
 		$futureDate = $diff < 0 ? true : false;
-		$suffix = $addSuffix ? ($futureDate ? \Joomla\CMS\Language\Text::_('COM_CJLIB_DATE_SUFFIX_FROM_NOW') : \Joomla\CMS\Language\Text::_('COM_CJLIB_DATE_SUFFIX_AGO')) : '';
+		$suffix = $addSuffix ? ($futureDate ? Text::_('COM_CJLIB_DATE_SUFFIX_FROM_NOW') : Text::_('COM_CJLIB_DATE_SUFFIX_AGO')) : '';
 	
 		$diff = abs($diff);
 		$dayDiff = floor($diff/86400);
@@ -41,59 +44,59 @@ class CjLibDateUtils
 		{
 			if($diff < 60) 
 			{
-				return \Joomla\CMS\Language\Text::_('COM_CJLIB_JUST_NOW');
+				return Text::_('COM_CJLIB_JUST_NOW');
 			} 
 			elseif($diff < 120) 
 			{
-				return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_ONE_MINUTE', $suffix);
+				return Text::sprintf('COM_CJLIB_DATE_ONE_MINUTE', $suffix);
 			} 
 			elseif($diff < 3600) 
 			{
-				return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_N_MINUTES', floor($diff/60), $suffix);
+				return Text::sprintf('COM_CJLIB_DATE_N_MINUTES', floor($diff/60), $suffix);
 			} 
 			elseif($diff < 7200) 
 			{
-				return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_ONE_HOUR', $suffix);
+				return Text::sprintf('COM_CJLIB_DATE_ONE_HOUR', $suffix);
 			} 
 			elseif($diff < 86400) 
 			{
-				return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_N_HOURS', floor($diff/3600), $suffix);
+				return Text::sprintf('COM_CJLIB_DATE_N_HOURS', floor($diff/3600), $suffix);
 			}
 		} 
 		elseif($dayDiff == 1) 
 		{
-			return $futureDate ? \Joomla\CMS\Language\Text::_('COM_CJLIB_TOMORROW') : \Joomla\CMS\Language\Text::_('COM_CJLIB_YESTERDAY');
+			return $futureDate ? Text::_('COM_CJLIB_TOMORROW') : Text::_('COM_CJLIB_YESTERDAY');
 		} 
 		elseif($dayDiff < 7) 
 		{
-			return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_N_DAYS', $dayDiff, $suffix);
+			return Text::sprintf('COM_CJLIB_DATE_N_DAYS', $dayDiff, $suffix);
 		} 
 		elseif($dayDiff == 7) 
 		{
-			return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_ONE_WEEK', $suffix);
+			return Text::sprintf('COM_CJLIB_DATE_ONE_WEEK', $suffix);
 		} 
 		elseif($dayDiff < (7*6)) 
 		{
-			return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_N_WEEKS', ceil($dayDiff/7), $suffix);
+			return Text::sprintf('COM_CJLIB_DATE_N_WEEKS', ceil($dayDiff/7), $suffix);
 		} 
 		elseif($dayDiff > 30 && $dayDiff <= 60) 
 		{
-			return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_ONE_MONTH', $suffix);
+			return Text::sprintf('COM_CJLIB_DATE_ONE_MONTH', $suffix);
 		} 
 		elseif($dayDiff < 365) 
 		{
-			return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_N_MONTHS', ceil($dayDiff/(365/12)), $suffix);
+			return Text::sprintf('COM_CJLIB_DATE_N_MONTHS', ceil($dayDiff/(365/12)), $suffix);
 		} 
 		else 
 		{
 			$years = round($dayDiff/365);
 			if($years == 1)
 			{
-				return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_ONE_YEAR', $suffix);
+				return Text::sprintf('COM_CJLIB_DATE_ONE_YEAR', $suffix);
 			}
 			else
 			{
-				return \Joomla\CMS\Language\Text::sprintf('COM_CJLIB_DATE_N_YEARS', round($dayDiff/365), $suffix);
+				return Text::sprintf('COM_CJLIB_DATE_N_YEARS', round($dayDiff/365), $suffix);
 			}
 		}
 	}
@@ -101,20 +104,18 @@ class CjLibDateUtils
 	/**
 	 * Returns date/time in short format. i.e. 6m, 6h, 6d, 6w, 6m, 6y etc
 	 * @param unknown $date
-	 * @return Ambigous <string, string, mixed, multitype:>|Ambigous <string, string, mixed>
+	 * @return string <string, string, mixed, multitype:>|Ambigous <string, string, mixed>
 	 */
 	public static function getShortDate($date)
 	{
 		if(empty($date) || $date == '0000-00-00 00:00:00')
 		{
-			return \Joomla\CMS\Language\Text::_('LBL_NA');
+			return Text::_('LBL_NA');
 		}
 	
-		jimport('joomla.utilities.date');
-	
 		// Given time
-		$date = new JDate(\Joomla\CMS\HTML\HTMLHelper::date($date, 'Y-m-d H:i:s'));
-		$compareTo = new JDate(\Joomla\CMS\HTML\HTMLHelper::date('now', 'Y-m-d H:i:s'));
+		$date = new Date( HTMLHelper::date($date, 'Y-m-d H:i:s'));
+		$compareTo = new Date( HTMLHelper::date('now', 'Y-m-d H:i:s'));
 		$diff = $compareTo->toUnix() - $date->toUnix();
 	
 		$diff = abs($diff);
@@ -163,9 +164,9 @@ class CjLibDateUtils
 	
 		if(empty($strdate) || $strdate == '0000-00-00 00:00:00'){
 	
-			return \Joomla\CMS\Language\Text::_('COM_CJLIB_NA');
+			return Text::_('COM_CJLIB_NA');
 		}
 	
-		return \Joomla\CMS\HTML\HTMLHelper::date($strdate, $format);
+		return HTMLHelper::date($strdate, $format);
 	}
 }

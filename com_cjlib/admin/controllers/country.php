@@ -6,23 +6,28 @@
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\FormController;
+
 defined( '_JEXEC' ) or die();
 
-class CjLibControllerCountry extends \Joomla\CMS\MVC\Controller\FormController {
+class CjLibControllerCountry extends FormController {
 
 	public function __construct( $config = [] ) {
 		parent::__construct( $config );
 	}
 
 	public function save( $key = null, $urlVar = null ) {
-		$user = \Joomla\CMS\Factory::getUser();
+		$user = Factory::getUser();
 		if ( ! $user->authorise( 'core.edit', 'com_cjlib' ) )
 		{
-			echo json_encode( [ 'error' => \Joomla\CMS\Language\Text::_( 'COM_CJLIB_MSG_NOT_AUTHORIZED' ) ] );
+			echo json_encode( [ 'error' => Text::_( 'COM_CJLIB_MSG_NOT_AUTHORIZED' ) ] );
 		}
 		else
 		{
-			$app   = \Joomla\CMS\Factory::getApplication();
+			$app   = Factory::getApplication();
 			$model = $this->getModel( 'countries' );
 
 			$id   = $app->input->getInt( 'id', 0 );
@@ -34,7 +39,7 @@ class CjLibControllerCountry extends \Joomla\CMS\MVC\Controller\FormController {
 			}
 			else
 			{
-				echo json_encode( [ 'error' => \Joomla\CMS\Language\Text::_( 'MSG_ERROR_PROCESSING' ) ] );
+				echo json_encode( [ 'error' => Text::_( 'MSG_ERROR_PROCESSING' ) ] );
 			}
 		}
 

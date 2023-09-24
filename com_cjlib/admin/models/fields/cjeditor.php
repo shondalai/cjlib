@@ -6,19 +6,25 @@
  * @copyright   Copyright (C) 2009 - 2015 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\EditorField;
+use Joomla\CMS\Form\FormHelper;
+
 defined('_JEXEC') or die;
 
-\Joomla\CMS\Form\FormHelper::loadFieldClass('editor');
+FormHelper::loadFieldClass('editor');
 
-class JFormFieldCjeditor extends \Joomla\CMS\Form\Field\EditorField
+class JFormFieldCjeditor extends EditorField
 {
 	public $type = 'Cjeditor';
 	
 	protected function getEditor()
 	{
-		$jinput = \Joomla\CMS\Factory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
-		$params = \Joomla\CMS\Component\ComponentHelper::getParams($extension);
+		$params = ComponentHelper::getParams($extension);
 		$this->editorType = array($params->get('default_editor'));
 		
 		return parent::getEditor();

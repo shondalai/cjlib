@@ -7,18 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+
 defined('JPATH_PLATFORM') or die;
 
-\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
-class JFormFieldCountry extends \Joomla\CMS\Form\Field\ListField
+class JFormFieldCountry extends ListField
 {
 	public $type = 'country';
 	
 	protected function getOptions()
 	{
-		$db = \Joomla\CMS\Factory::getDbo();
-		$language = \Joomla\CMS\Factory::getLanguage();
+		$db = Factory::getDbo();
+		$language = Factory::getLanguage();
 		
 		$query = $db->getQuery(true)
 			->select('country_code as value, country_name as text')

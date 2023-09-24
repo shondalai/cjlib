@@ -6,6 +6,13 @@
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 defined( '_JEXEC' ) or die();
 
 class CjLibViewQueue extends Joomla\CMS\MVC\View\HtmlView {
@@ -19,11 +26,11 @@ class CjLibViewQueue extends Joomla\CMS\MVC\View\HtmlView {
 
 	function display( $tpl = null ) {
 
-		$user = \Joomla\CMS\Factory::getUser();
-		$app  = \Joomla\CMS\Factory::getApplication();
+		$user = Factory::getUser();
+		$app  = Factory::getApplication();
 
 		CjLibHelper::addSubmenu( 'queue' );
-		$this->params = \Joomla\CMS\Component\ComponentHelper::getParams( 'com_cjlib' );
+		$this->params = ComponentHelper::getParams( 'com_cjlib' );
 
 		switch ( $this->getLayout() )
 		{
@@ -41,8 +48,8 @@ class CjLibViewQueue extends Joomla\CMS\MVC\View\HtmlView {
 		}
 
 		// Set the document
-		\Joomla\CMS\Toolbar\ToolbarHelper::title(
-			\Joomla\CMS\Language\Text::_( 'COM_CJLIB' ) . ': <small><small>[ ' . \Joomla\CMS\Language\Text::_( 'COM_CJLIB_EMAIL_QUEUE' ) . ' ]</small></small>',
+		ToolbarHelper::title(
+			Text::_( 'COM_CJLIB' ) . ': <small><small>[ ' . Text::_( 'COM_CJLIB_EMAIL_QUEUE' ) . ' ]</small></small>',
 			'cjlib.png' );
 
 		// We don't need toolbar in the modal window.
@@ -51,7 +58,7 @@ class CjLibViewQueue extends Joomla\CMS\MVC\View\HtmlView {
 			// Set the toolbar
 			$this->addToolBar();
 
-			$this->sidebar = \Joomla\CMS\HTML\Helpers\Sidebar::render();
+			$this->sidebar = Sidebar::render();
 		}
 
 		// Display the template
@@ -60,25 +67,25 @@ class CjLibViewQueue extends Joomla\CMS\MVC\View\HtmlView {
 
 	protected function addToolBar() {
 
-		$user        = \Joomla\CMS\Factory::getUser();
+		$user        = Factory::getUser();
 		$this->state = $this->get( 'State' );
 
 		if ( $user->authorise( 'core.edit.state', 'com_cjlib' ) )
 		{
 
-			\Joomla\CMS\Toolbar\ToolbarHelper::publish( 'queue.process', 'COM_CJLIB_PROCESS', true );
+			ToolbarHelper::publish( 'queue.process', 'COM_CJLIB_PROCESS', true );
 		}
 
 		if ( $user->authorise( 'core.delete', 'com_cjlib' ) )
 		{
 
-			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList( '', 'queue.delete', 'JTOOLBAR_DELETE' );
+			ToolbarHelper::deleteList( '', 'queue.delete', 'JTOOLBAR_DELETE' );
 		}
 
 		if ( $user->authorise( 'core.admin', 'com_cjlib' ) )
 		{
 
-			\Joomla\CMS\Toolbar\ToolbarHelper::divider();
+			ToolbarHelper::divider();
 		}
 	}
 
