@@ -3,7 +3,7 @@
  * Akeeba Engine
  *
  * @package   akeebaengine
- * @copyright Copyright (c)2006-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2006-2023 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -192,6 +192,8 @@ foreach ($testConfigurations as $description => $setup)
 	if (!is_null($configOptions['endpoint']))
 	{
 		$s3Configuration->setEndpoint($configOptions['endpoint']);
+		$s3Configuration->setRegion($configOptions['region']);
+		$s3Configuration->setSignatureMethod($configOptions['signature']);
 	}
 
 	// Create the connector object

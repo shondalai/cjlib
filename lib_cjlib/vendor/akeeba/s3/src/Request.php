@@ -3,7 +3,7 @@
  * Akeeba Engine
  *
  * @package   akeebaengine
- * @copyright Copyright (c)2006-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2006-2023 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -482,7 +482,7 @@ class Request
 
 					$data = $this->input->getDataReference();
 
-					if (strlen($data))
+					if (strlen($data ?? ''))
 					{
 						curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 					}
@@ -543,7 +543,13 @@ class Request
 		// Clean up file resources
 		if (!is_null($this->fp) && is_resource($this->fp))
 		{
-			fclose($this->fp);
+			try
+			{
+				@fclose($this->fp);
+			}
+			catch (\Throwable $e)
+			{
+			}
 		}
 
 		return $this->response;
@@ -592,7 +598,15 @@ class Request
 			return $strlen;
 		}
 
+		// Ignore malformed headers without a value.
+		if (strpos($data, ':') === false)
+		{
+			return $strlen;
+		}
+
 		[$header, $value] = explode(': ', trim($data), 2);
+		$header = trim($header ?? '');
+		$value  = trim($value ?? '');
 
 		switch (strtolower($header))
 		{
@@ -609,7 +623,7 @@ class Request
 				break;
 
 			case 'etag':
-				$this->response->setHeader('hash', $value[0] == '"' ? substr($value, 1, -1) : $value);
+				$this->response->setHeader('hash',  trim($value, '"'));
 				break;
 
 			default:

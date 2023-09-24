@@ -3,7 +3,7 @@
  * Akeeba Engine
  *
  * @package   akeebaengine
- * @copyright Copyright (c)2006-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2006-2023 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -23,6 +23,8 @@ define('DEFAULT_DUALSTACK', false);
 define('DEFAULT_PATH_ACCESS', false);
 // Should I use SSL by default?
 define('DEFAULT_SSL', true);
+// Create the 2100 test files in the bucket?
+define('CREATE_2100_FILES', true);
 
 /**
  * Tests for standard key pairs allowing us to read, write and delete

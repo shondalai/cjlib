@@ -3,7 +3,7 @@
  * Akeeba Engine
  *
  * @package   akeebaengine
- * @copyright Copyright (c)2006-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2006-2023 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -177,7 +177,13 @@ class Input
 	{
 		if (is_resource($this->fp))
 		{
-			@fclose($this->fp);
+			try
+			{
+				@fclose($this->fp);
+			}
+			catch (\Throwable $e)
+			{
+			}
 		}
 	}
 
@@ -258,7 +264,13 @@ class Input
 
 		if (is_resource($this->fp))
 		{
-			@fclose($this->fp);
+			try
+			{
+				@fclose($this->fp);
+			}
+			catch (\Throwable $e)
+			{
+			}
 		}
 
 		$this->fp = @fopen($file, 'r');
@@ -295,7 +307,13 @@ class Input
 
 		if (is_resource($this->fp))
 		{
-			@fclose($this->fp);
+			try
+			{
+				@fclose($this->fp);
+			}
+			catch (\Throwable $e)
+			{
+			}
 		}
 
 		$this->file = null;
@@ -329,7 +347,13 @@ class Input
 
 		if (is_resource($this->fp))
 		{
-			@fclose($this->fp);
+			try
+			{
+				@fclose($this->fp);
+			}
+			catch (\Throwable $e)
+			{
+			}
 		}
 
 		$this->file = null;
@@ -450,7 +474,7 @@ class Input
 	 */
 	public function setSha256(?string $sha256): void
 	{
-		$this->sha256 = strtolower($sha256);
+		$this->sha256 = is_null($sha256) ? null : strtolower($sha256);
 	}
 
 	/**
@@ -532,7 +556,7 @@ class Input
 		switch ($this->getInputType())
 		{
 			case self::INPUT_DATA:
-				return function_exists('mb_strlen') ? mb_strlen($this->data, '8bit') : strlen($this->data);
+				return function_exists('mb_strlen') ? mb_strlen($this->data ?? '', '8bit') : strlen($this->data ?? '');
 				break;
 
 			case self::INPUT_FILE:
