@@ -10,7 +10,7 @@
 namespace Akeeba\MiniTest\Test;
 
 
-use Akeeba\Engine\Postproc\Connector\S3v4\Connector;
+use Akeeba\S3\Connector;
 
 /**
  * Upload small files (under 1MB) using a string source
@@ -21,8 +21,8 @@ class SmallInlineFilesOnlyUpload extends SmallInlineFiles
 {
 	public static function setup(Connector $s3, array $options): void
 	{
-		self::$deleteRemote  = false;
-		self::$downloadAfter = false;
+		static::$deleteRemote  = false;
+		static::$downloadAfter = false;
 
 		parent::setup($s3, $options);
 	}

@@ -13,6 +13,7 @@ class ComposerStaticInit0fe2dec1a8b3d1d273246c08663945dd
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
         'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        '714ccd4b330431237faf946f71c4c9a4' => __DIR__ . '/..' . '/akeeba/s3/src/aliasing.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -71,7 +72,7 @@ class ComposerStaticInit0fe2dec1a8b3d1d273246c08663945dd
         ),
         'A' => 
         array (
-            'Akeeba\\Engine\\Postproc\\Connector\\S3v4\\' => 38,
+            'Akeeba\\S3\\' => 10,
         ),
     );
 
@@ -169,7 +170,7 @@ class ComposerStaticInit0fe2dec1a8b3d1d273246c08663945dd
         array (
             0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
-        'Akeeba\\Engine\\Postproc\\Connector\\S3v4\\' => 
+        'Akeeba\\S3\\' => 
         array (
             0 => __DIR__ . '/..' . '/akeeba/s3/src',
         ),

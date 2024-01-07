@@ -7,10 +7,10 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Engine\Postproc\Connector\S3v4;
+namespace Akeeba\S3;
 
-use Akeeba\Engine\Postproc\Connector\S3v4\Exception\PropertyNotFound;
-use Akeeba\Engine\Postproc\Connector\S3v4\Response\Error;
+use Akeeba\S3\Exception\PropertyNotFound;
+use Akeeba\S3\Response\Error;
 use SimpleXMLElement;
 
 // Protection against direct access
@@ -124,7 +124,7 @@ class Response
 	 *
 	 * @param   string|SimpleXMLElement|null  $body
 	 */
-	public function setBody($body): void
+	public function setBody($body, bool $rawResponse = false): void
 	{
 		$this->body = null;
 
@@ -135,7 +135,7 @@ class Response
 
 		$this->body = $body;
 
-		$this->finaliseBody();
+		$this->finaliseBody($rawResponse);
 	}
 
 	public function resetBody(): void
@@ -153,7 +153,7 @@ class Response
 		$this->body .= $data;
 	}
 
-	public function finaliseBody(): void
+	public function finaliseBody(bool $rawResponse = false): void
 	{
 		if (!$this->hasBody())
 		{
@@ -165,8 +165,14 @@ class Response
 			$this->headers['type'] = 'text/plain';
 		}
 
-		if (is_string($this->body) &&
-			(($this->headers['type'] == 'application/xml') || (substr($this->body, 0, 5) == '<?xml'))
+		if (
+			!$rawResponse
+			&& is_string($this->body)
+			&&
+			(
+				($this->headers['type'] == 'application/xml')
+				|| (substr($this->body, 0, 5) == '<?xml')
+			)
 		)
 		{
 			$this->body = simplexml_load_string($this->body);

@@ -29,5 +29,5 @@ return array(
     'GeoIp2\\' => array($vendorDir . '/geoip2/geoip2/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
-    'Akeeba\\Engine\\Postproc\\Connector\\S3v4\\' => array($vendorDir . '/akeeba/s3/src'),
+    'Akeeba\\S3\\' => array($vendorDir . '/akeeba/s3/src'),
 );
