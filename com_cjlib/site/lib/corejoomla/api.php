@@ -608,7 +608,7 @@ class CjLibApi {
 		switch ( $app )
 		{
 			case 'rewardify':
-				Factory::getApplication()->bootComponent( 'com_rewardify' )->getUserPointsService()->awardPoints(
+				Factory::getApplication()->bootComponent( 'com_rewardify' )->getUserPoints()->assign(
 					[
 						'rule'        => $options['function'],
 						'userid'      => $userId,
@@ -871,6 +871,14 @@ class CjLibApi {
 
 		switch ( $pointsApp )
 		{
+			case 'rewardify':
+				$profile = Factory::getApplication()->bootComponent( 'com_rewardify' )->getUserPoints()->getUserProfile( $userId );
+				if ( ! empty( $profile->points ) )
+				{
+					return $profile->points;
+				}
+				break;
+
 			case 'sociable':
 
 				$api = JPATH_ROOT . '/components/com_sociable/lib/api.php';
