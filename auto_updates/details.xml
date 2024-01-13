@@ -6,10 +6,10 @@
         <description>CJLib Component</description>
         <element>pkg_cjlib</element>
         <type>package</type>
-        <version>4.0.1</version>
+        <version>4.0.2</version>
         <infourl title="CoreJoomla Home">https://shondalai.com</infourl>
         <downloads>
-            <downloadurl format="zip" type="full">https://github.com/shondalai/cjlib/releases/download/4.0.1/cjlib_v4.0.1.zip</downloadurl>
+            <downloadurl format="zip" type="full">https://github.com/shondalai/cjlib/releases/download/4.0.2/cjlib_v4.0.2.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
