@@ -6,11 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Google_AccessToken_Revoke' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_AccessToken_Verify' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_AuthHandler_AuthHandlerFactory' => $vendorDir . '/google/apiclient/src/aliases.php',
-    'Google_AuthHandler_Guzzle5AuthHandler' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_AuthHandler_Guzzle6AuthHandler' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_AuthHandler_Guzzle7AuthHandler' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_Client' => $vendorDir . '/google/apiclient/src/aliases.php',
@@ -28,5 +28,9 @@ return array(
     'Google_Task_Retryable' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_Task_Runner' => $vendorDir . '/google/apiclient/src/aliases.php',
     'Google_Utils_UriTemplate' => $vendorDir . '/google/apiclient/src/aliases.php',
+    'PhpToken' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+    'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+    'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+    'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     'Zebra_Image' => $vendorDir . '/stefangabos/zebra_image/Zebra_Image.php',
 );

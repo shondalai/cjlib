@@ -9,7 +9,8 @@
 		"intervention/image" : "~2.0",
 		"hybridauth/hybridauth" : "~3.0",
 		"akeeba/s3" : "~2.0",
-		"google/apiclient": "~2.0"
+		"google/apiclient": "~2.0",
+		"chrome-php/chrome": "^1.11"
 	},
     "scripts": {
         "post-update-cmd": "Google\\Task\\Composer::cleanup"

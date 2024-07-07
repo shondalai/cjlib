@@ -38,7 +38,7 @@ class CjLibBehavior {
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/bootstrap/js/respond.min.js', $custom_tag );
-			$app->cjbsjs = true;
+			$app->set('cjbsjs', true);
 		}
 
 		// Load Bootstrap CSS
@@ -47,7 +47,7 @@ class CjLibBehavior {
 			$doc = Factory::getDocument();
 			CJFunctions::add_css_to_document( $doc, Uri::root( true ) . '/media/jui/css/bootstrap.min.css', $custom_tag );
 			CJFunctions::add_css_to_document( $doc, Uri::root( true ) . '/media/jui/css/bootstrap-responsive.min.css', $custom_tag );
-			$app->cjbscss = true;
+			$app->set('cjbscss', true);
 		}
 	}
 
@@ -68,7 +68,7 @@ class CjLibBehavior {
 			}
 
 			CJFunctions::add_script( CJLIB_MEDIA_URI . '/jquery/jquery.noconflict.js', $custom_tag );
-			$app->jquery = true;
+			$app->set('jquery', true);
 		}
 	}
 
@@ -86,7 +86,7 @@ class CjLibBehavior {
 		if ( ! isset( $app->cjfa ) )
 		{
 			$doc->addStyleSheet( CJLIB_MEDIA_URI . '/plugins/fontawesome/css/font-awesome.min.css' );
-			$app->cjfa = true;
+			$app->set('cjfa', true);
 		}
 	}
 

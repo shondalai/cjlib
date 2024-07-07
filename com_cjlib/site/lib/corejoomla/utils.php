@@ -13,6 +13,7 @@ use Joomla\CMS\Filesystem\FilesystemHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Version;
 use Joomla\Utilities\IpHelper;
@@ -480,8 +481,7 @@ class CjLibUtils {
 		if ( ! self::$_router )
 		{
 			// Get the router.
-			$app           = Factory::getApplication( 'site' );
-			self::$_router = $app::getRouter();
+			self::$_router = Factory::getContainer()->get(SiteRouter::class);
 
 			// Make sure that we have our router
 			if ( ! self::$_router )
@@ -497,7 +497,6 @@ class CjLibUtils {
 
 		// Build route.
 		$uri = self::$_router->build( $url );
-
 		$scheme = [ 'path', 'query', 'fragment' ];
 
 		/*
