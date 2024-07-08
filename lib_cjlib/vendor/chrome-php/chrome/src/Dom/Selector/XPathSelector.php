@@ -19,11 +19,18 @@ final class XPathSelector implements Selector
 
     public function expressionCount(): string
     {
-        return 'document.evaluate('.\json_encode($this->expression, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE).', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotLength';
+        return \sprintf(
+            'document.evaluate("%s", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotLength',
+            \addslashes($this->expression)
+        );
     }
 
     public function expressionFindOne(int $position): string
     {
-        return 'document.evaluate('.\json_encode($this->expression."[{$position}]", \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE).', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue';
+        return \sprintf(
+            'document.evaluate("%s[%d]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue',
+            \addslashes($this->expression),
+            $position
+        );
     }
 }

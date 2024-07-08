@@ -47,8 +47,6 @@ class Request extends \Google\Model
   protected $autoFillDataType = '';
   protected $autoResizeDimensionsType = AutoResizeDimensionsRequest::class;
   protected $autoResizeDimensionsDataType = '';
-  protected $cancelDataSourceRefreshType = CancelDataSourceRefreshRequest::class;
-  protected $cancelDataSourceRefreshDataType = '';
   protected $clearBasicFilterType = ClearBasicFilterRequest::class;
   protected $clearBasicFilterDataType = '';
   protected $copyPasteType = CopyPasteRequest::class;
@@ -347,20 +345,6 @@ class Request extends \Google\Model
   public function getAutoResizeDimensions()
   {
     return $this->autoResizeDimensions;
-  }
-  /**
-   * @param CancelDataSourceRefreshRequest
-   */
-  public function setCancelDataSourceRefresh(CancelDataSourceRefreshRequest $cancelDataSourceRefresh)
-  {
-    $this->cancelDataSourceRefresh = $cancelDataSourceRefresh;
-  }
-  /**
-   * @return CancelDataSourceRefreshRequest
-   */
-  public function getCancelDataSourceRefresh()
-  {
-    return $this->cancelDataSourceRefresh;
   }
   /**
    * @param ClearBasicFilterRequest

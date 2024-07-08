@@ -37,8 +37,6 @@ class Response extends \Google\Model
   protected $addSheetDataType = '';
   protected $addSlicerType = AddSlicerResponse::class;
   protected $addSlicerDataType = '';
-  protected $cancelDataSourceRefreshType = CancelDataSourceRefreshResponse::class;
-  protected $cancelDataSourceRefreshDataType = '';
   protected $createDeveloperMetadataType = CreateDeveloperMetadataResponse::class;
   protected $createDeveloperMetadataDataType = '';
   protected $deleteConditionalFormatRuleType = DeleteConditionalFormatRuleResponse::class;
@@ -193,20 +191,6 @@ class Response extends \Google\Model
   public function getAddSlicer()
   {
     return $this->addSlicer;
-  }
-  /**
-   * @param CancelDataSourceRefreshResponse
-   */
-  public function setCancelDataSourceRefresh(CancelDataSourceRefreshResponse $cancelDataSourceRefresh)
-  {
-    $this->cancelDataSourceRefresh = $cancelDataSourceRefresh;
-  }
-  /**
-   * @return CancelDataSourceRefreshResponse
-   */
-  public function getCancelDataSourceRefresh()
-  {
-    return $this->cancelDataSourceRefresh;
   }
   /**
    * @param CreateDeveloperMetadataResponse

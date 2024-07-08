@@ -121,7 +121,7 @@ class Client extends Configurable
     public function onData(Payload $payload): void
     {
         $this->received[] = $payload;
-        if ($callback = $this->options['on_data_callback']) {
+        if (($callback = $this->options['on_data_callback'])) {
             \call_user_func($callback, $payload);
         }
     }

@@ -105,6 +105,7 @@ class HybiFrame extends Frame
 
             if (\PHP_INT_MAX > 2147483647) {
                 $this->buffer .= \pack('NN', $this->length >> 32, $this->length);
+            // $this->buffer .= pack('I', $this->length);
             } else {
                 $this->buffer .= \pack('NN', 0, $this->length);
             }

@@ -25,10 +25,6 @@ class SpreadsheetProperties extends \Google\Model
   public $autoRecalc;
   protected $defaultFormatType = CellFormat::class;
   protected $defaultFormatDataType = '';
-  /**
-   * @var bool
-   */
-  public $importFunctionsExternalUrlAccessAllowed;
   protected $iterativeCalculationSettingsType = IterativeCalculationSettings::class;
   protected $iterativeCalculationSettingsDataType = '';
   /**
@@ -73,20 +69,6 @@ class SpreadsheetProperties extends \Google\Model
   public function getDefaultFormat()
   {
     return $this->defaultFormat;
-  }
-  /**
-   * @param bool
-   */
-  public function setImportFunctionsExternalUrlAccessAllowed($importFunctionsExternalUrlAccessAllowed)
-  {
-    $this->importFunctionsExternalUrlAccessAllowed = $importFunctionsExternalUrlAccessAllowed;
-  }
-  /**
-   * @return bool
-   */
-  public function getImportFunctionsExternalUrlAccessAllowed()
-  {
-    return $this->importFunctionsExternalUrlAccessAllowed;
   }
   /**
    * @param IterativeCalculationSettings

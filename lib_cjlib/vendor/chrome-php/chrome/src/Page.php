@@ -18,13 +18,10 @@ use HeadlessChromium\Cookies\Cookie;
 use HeadlessChromium\Cookies\CookiesCollection;
 use HeadlessChromium\Dom\Dom;
 use HeadlessChromium\Dom\Selector\CssSelector;
-use HeadlessChromium\Dom\Selector\Selector;
 use HeadlessChromium\Exception\CommunicationException;
-use HeadlessChromium\Exception\EvaluationFailed;
 use HeadlessChromium\Exception\InvalidTimezoneId;
 use HeadlessChromium\Exception\JavascriptException;
 use HeadlessChromium\Exception\NoResponseAvailable;
-use HeadlessChromium\Exception\OperationTimedOut;
 use HeadlessChromium\Exception\TargetDestroyed;
 use HeadlessChromium\Input\Keyboard;
 use HeadlessChromium\Input\Mouse;
@@ -39,12 +36,6 @@ use HeadlessChromium\PageUtils\ResponseWaiter;
 class Page
 {
     public const DOM_CONTENT_LOADED = 'DOMContentLoaded';
-    public const FIRST_CONTENTFUL_PAINT = 'firstContentfulPaint';
-    public const FIRST_IMAGE_PAINT = 'firstImagePaint';
-    public const FIRST_MEANINGFUL_PAINT = 'firstMeaningfulPaint';
-    public const FIRST_PAINT = 'firstPaint';
-    public const INIT = 'init';
-    public const INTERACTIVE_TIME = 'InteractiveTime';
     public const LOAD = 'load';
     public const NETWORK_IDLE = 'networkIdle';
 
@@ -460,16 +451,9 @@ class Page
     /**
      * Wait until page contains Node.
      *
-     * @param string|Selector $selectors
-     * @param int             $timeout
-     *
-     * @throws CommunicationException
-     * @throws EvaluationFailed
-     * @throws OperationTimedOut
-     *
-     * @return Page
+     * @throws Exception\OperationTimedOut
      */
-    public function waitUntilContainsElement($selectors, int $timeout = 30000): self
+    public function waitUntilContainsElement(string $selectors, int $timeout = 30000): self
     {
         $this->assertNotClosed();
 
@@ -479,28 +463,18 @@ class Page
     }
 
     /**
-     * @param string|Selector $selectors
-     * @param int             $position
-     *
-     * @throws CommunicationException
-     * @throws EvaluationFailed
-     *
      * @return bool|\Generator
      *
      * @internal
      */
-    public function waitForElement($selectors, int $position = 1)
+    public function waitForElement(string $selectors, int $position = 1)
     {
-        if (!($selectors instanceof Selector)) {
-            $selectors = new CssSelector($selectors);
-        }
-
         $delay = 500;
         $element = [];
 
         while (true) {
             try {
-                $element = Utils::getElementPositionFromPage($this, $selectors, $position);
+                $element = Utils::getElementPositionFromPage($this, new CssSelector($selectors), $position);
             } catch (JavascriptException $exception) {
                 yield $delay;
             }
@@ -589,8 +563,7 @@ class Page
      * $screenshot = $page->screenshot([
      *     'captureBeyondViewport' => true,
      *     'clip' => $page->getFullPageClip(),
-     *     'format' => 'jpeg', // default to 'png' - possible values: 'png', 'jpeg', 'webp'
-     *     'optimizeForSpeed' => true, // default to false - Optimize image encoding for speed, not for resulting size
+     *     'format' => 'jpeg', // default to 'png' - possible values: 'png', 'jpeg',
      * ]);
      *
      * // save the screenshot
@@ -625,15 +598,15 @@ class Page
         }
 
         // make sure format is valid
-        if (!\in_array($screenshotOptions['format'], ['png', 'jpeg', 'webp'])) {
-            throw new \InvalidArgumentException('Invalid options "format" for page screenshot. Format must be "png", "jpeg" or "webp".');
+        if (!\in_array($screenshotOptions['format'], ['png', 'jpeg'])) {
+            throw new \InvalidArgumentException('Invalid options "format" for page screenshot. Format must be "png" or "jpeg".');
         }
 
         // get quality
         if (\array_key_exists('quality', $options)) {
-            // quality requires type to be jpeg or webp
-            if (!\in_array($screenshotOptions['format'], ['jpeg', 'webp'])) {
-                throw new \InvalidArgumentException('Invalid options "quality" for page screenshot. Quality requires the image format to be "jpeg" or "webp".');
+            // quality requires type to be jpeg
+            if ('jpeg' !== $screenshotOptions['format']) {
+                throw new \InvalidArgumentException('Invalid options "quality" for page screenshot. Quality requires the image format to be "jpeg".');
             }
 
             // quality must be an integer
@@ -665,15 +638,6 @@ class Page
                 'height' => $options['clip']->getHeight(),
                 'scale' => $options['clip']->getScale(),
             ];
-        }
-
-        // optimize for speed
-        if (\array_key_exists('optimizeForSpeed', $options)) {
-            if (!\is_bool($options['optimizeForSpeed'])) {
-                throw new \InvalidArgumentException('Invalid options "optimizeForSpeed" for page screenshot. OptimizeForSpeed must be a boolean value.');
-            }
-
-            $screenshotOptions['optimizeForSpeed'] = $options['optimizeForSpeed'];
         }
 
         // request screenshot
@@ -842,7 +806,7 @@ class Page
     }
 
     /**
-     * Set timezone for the current page.
+     * Set user agent for the current page.
      *
      * @see https://source.chromium.org/chromium/chromium/deps/icu.git/+/faee8bc70570192d82d2978a71e2a615788597d1:source/data/misc/metaZones.txt | ICU’s metaZones.txt
      *
@@ -893,7 +857,7 @@ class Page
      *
      * @throws CommunicationException
      */
-    public function setHtml(string $html, int $timeout = 3000, string $eventName = self::LOAD): void
+    public function setHtml(string $html, int $timeout = 3000): void
     {
         $time = \hrtime(true) / 1000 / 1000;
 
@@ -910,27 +874,17 @@ class Page
 
         $timeout -= (int) \floor((\hrtime(true) / 1000 / 1000) - $time);
 
-        $this->waitForReload($eventName, \max(0, $timeout), '');
+        $this->waitForReload(self::LOAD, \max(0, $timeout), '');
     }
 
     /**
      * Gets the raw html of the current page.
      *
      * @throws CommunicationException
-     * @throws JavascriptException
      */
     public function getHtml(?int $timeout = null): string
     {
-        try {
-            return $this->evaluate('document.documentElement.outerHTML')->getReturnValue($timeout);
-        } catch (JavascriptException $e) {
-            if (0 === \strpos($e->getMessage(), 'Error during javascript evaluation: TypeError: Cannot read properties of null (reading \'outerHTML\')')) {
-                \usleep(1000);
-
-                return $this->evaluate('document.documentElement.outerHTML')->getReturnValue($timeout);
-            }
-            throw $e;
-        }
+        return $this->evaluate('document.documentElement.outerHTML')->getReturnValue($timeout);
     }
 
     /**
@@ -1095,23 +1049,6 @@ class Page
             ->sendMessage(
                 new Message('Network.setUserAgentOverride', ['userAgent' => $userAgent])
             );
-
-        return new ResponseWaiter($response);
-    }
-
-    /**
-     * Disable or enable JavaScript execution for the current page.
-     *
-     * @throws CommunicationException
-     */
-    public function setScriptExecution(bool $enabled): ResponseWaiter
-    {
-        // ensure target is not closed
-        $this->assertNotClosed();
-
-        $response = $this->getSession()->sendMessage(
-            new Message('Emulation.setScriptExecutionDisabled', ['value' => !$enabled])
-        );
 
         return new ResponseWaiter($response);
     }

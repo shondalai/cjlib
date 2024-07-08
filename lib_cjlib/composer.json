@@ -1,23 +1,24 @@
 {
-	"require" : {
-		"guzzlehttp/guzzle" : "~7.0",
-		"firebase/php-jwt" : "~v6.0",
-		"geoip2/geoip2" : "~2.0",
-		"league/oauth2-client" : "~2.0",
-		"djchen/oauth2-fitbit" : "~1.0",
-		"stefangabos/zebra_image" : "~2.0",
-		"intervention/image" : "~2.0",
-		"hybridauth/hybridauth" : "~3.0",
-		"akeeba/s3" : "~2.0",
-		"google/apiclient": "~2.0",
-		"chrome-php/chrome": "^1.11"
-	},
-    "scripts": {
-        "post-update-cmd": "Google\\Task\\Composer::cleanup"
-    },
-    "extra": {
-        "google/apiclient-services": [
-            "Sheets"
-        ]
-    }
+  "require": {
+    "php": ">=7.2",
+    "guzzlehttp/guzzle": "~7.0",
+    "firebase/php-jwt": "~v6.0",
+    "geoip2/geoip2": "~2.0",
+    "league/oauth2-client": "~2.0",
+    "djchen/oauth2-fitbit": "~1.0",
+    "stefangabos/zebra_image": "~2.0",
+    "intervention/image": "~2.0",
+    "hybridauth/hybridauth": "~3.0",
+    "akeeba/s3": "~2.0",
+    "google/apiclient": "~2.0",
+    "chrome-php/chrome": "^v1.0"
+  },
+  "scripts": {
+    "post-update-cmd": "Google\\Task\\Composer::cleanup"
+  },
+  "extra": {
+    "google/apiclient-services": [
+      "Sheets"
+    ]
+  }
 }
