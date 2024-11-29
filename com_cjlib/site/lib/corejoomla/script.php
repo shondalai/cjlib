@@ -143,9 +143,9 @@ class CjScript
 	private static function chartjs($options = null)
 	{
 	    $custom = isset($options['custom']) ? $options['custom'] : null;
-	    static::addScript(self::$pluginsDir . '/chartjs/chart.bundle.min.js', $custom);
-	    static::addScript(self::$pluginsDir . '/chartjs/chartjs-plugin-datalabels.min.js', $custom);
-	    static::addStyleSheet(self::$pluginsDir . '/chartjs/chart.min.css', $custom);
+	    static::addScript(self::$pluginsDir . '/chartjs/chart.umd.min.js', $custom);
+	    static::addScript(self::$pluginsDir . '/chartjs/chartjs-plugin-datalabels-v2.min.js', $custom);
+//	    static::addStyleSheet(self::$pluginsDir . '/chartjs/chart.min.css', $custom);
 	}
 	
 	private static function checkbox($options = null)
