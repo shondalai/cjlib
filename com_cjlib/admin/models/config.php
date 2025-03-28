@@ -3,7 +3,7 @@
  * @version		$Id: config.php 01 2012-01-11 11:37:09Z maverick $
  * @package		CoreJoomla.Cjlib
  * @subpackage	Components.models
- * @copyright	Copyright (C) 2023 BulaSikku Technologies Private Limited.
+ * @copyright	Copyright (C) 2009 - 2025 BulaSikku Technologies Pvt. Ltd. All rights reserved.
  * @author		Maverick
  * @link		https://shondalai.com/
  * @license		License GNU General Public License version 2 or later

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     corejoomla.site
+ * @package     extension.site
  * @subpackage  plg_cjupdater
  *
  * @copyright   Copyright (C) 2009 - 2015 BulaSikku Technologies Private Limited. All rights reserved.

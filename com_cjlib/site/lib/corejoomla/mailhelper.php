@@ -4,7 +4,7 @@ use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 /**
- * @package     corejoomla.administrator
+ * @package     extension.administrator
  * @subpackage  com_cjlib
  *
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.

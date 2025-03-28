@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     corejoomla.administrator
+ * @package     extension.administrator
  * @subpackage  com_cjforum
  *
  * @copyright   Copyright (C) 2009 - 2021 BulaSikku Technologies Private Limited. All rights reserved.

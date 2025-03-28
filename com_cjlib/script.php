@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     corejoomla.administrator
+ * @package     extension.administrator
  * @subpackage  plg_cjlib
  *
  * @copyright   Copyright (C) 2009 - 2016 BulaSikku Technologies Private Limited. All rights reserved.
