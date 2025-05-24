@@ -34,10 +34,18 @@
 				
 				<field name="allowed_services" type="list" default="email,twitter,facebook,linkedin,pinterest" multiple="true">
 					<option value="email">Email</option>
-					<option value="twitter">Twitter</option>
+					<option value="twitter">Twitter(X)</option>
 					<option value="facebook">Facebook</option>
 					<option value="linkedin">Linkedin</option>
 					<option value="pinterest">Pinterest</option>
+					<option value="stumbleupon">Stumbleupon</option>
+					<option value="pocket">Pocket</option>
+					<option value="whatsapp">WhatsApp</option>
+					<option value="viber">Viber</option>
+					<option value="messenger">Messenger</option>
+					<option value="telegram">Telegram</option>
+					<option value="line">Line</option>
+					<option value="rss">RSS</option>
 				</field>
 			</fieldset>
 		</fields>

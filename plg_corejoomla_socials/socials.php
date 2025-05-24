@@ -28,7 +28,8 @@ class PlgCorejoomlaSocials extends CMSPlugin {
 		$myparams = $this->params;
 		$size     = $myparams->get( 'jssocials_size', 12 );
 		$theme    = $myparams->get( 'jssocials_theme', 'flat' );
-		$shares   = $myparams->get( 'allowed_services', [ "email", "twitter", "facebook", "linkedin", "pinterest" ] );
+		$shares = $myparams->get( 'allowed_services',
+			[ "email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon", "pocket", "whatsapp", "viber", "messenger", "telegram", "line", "rss" ] );
 
 		return CjHtml::_( 'jssocials', [ 'size' => $size, 'theme' => $theme, 'shares' => $shares, 'custom' => true ] );
 	}
