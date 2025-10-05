@@ -10,7 +10,7 @@
 use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 
-defined('JPATH_PLATFORM') or die();
+defined( '_JEXEC' ) or die();
 
 class CjLibTableCountry extends Table
 {

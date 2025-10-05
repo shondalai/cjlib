@@ -39,6 +39,8 @@ class Request extends \Google\Model
   protected $addSheetDataType = '';
   protected $addSlicerType = AddSlicerRequest::class;
   protected $addSlicerDataType = '';
+	protected $addTableType = AddTableRequest::class;
+	protected $addTableDataType = '';
   protected $appendCellsType = AppendCellsRequest::class;
   protected $appendCellsDataType = '';
   protected $appendDimensionType = AppendDimensionRequest::class;
@@ -47,6 +49,8 @@ class Request extends \Google\Model
   protected $autoFillDataType = '';
   protected $autoResizeDimensionsType = AutoResizeDimensionsRequest::class;
   protected $autoResizeDimensionsDataType = '';
+	protected $cancelDataSourceRefreshType = CancelDataSourceRefreshRequest::class;
+	protected $cancelDataSourceRefreshDataType = '';
   protected $clearBasicFilterType = ClearBasicFilterRequest::class;
   protected $clearBasicFilterDataType = '';
   protected $copyPasteType = CopyPasteRequest::class;
@@ -81,6 +85,8 @@ class Request extends \Google\Model
   protected $deleteRangeDataType = '';
   protected $deleteSheetType = DeleteSheetRequest::class;
   protected $deleteSheetDataType = '';
+	protected $deleteTableType = DeleteTableRequest::class;
+	protected $deleteTableDataType = '';
   protected $duplicateFilterViewType = DuplicateFilterViewRequest::class;
   protected $duplicateFilterViewDataType = '';
   protected $duplicateSheetType = DuplicateSheetRequest::class;
@@ -149,6 +155,8 @@ class Request extends \Google\Model
   protected $updateSlicerSpecDataType = '';
   protected $updateSpreadsheetPropertiesType = UpdateSpreadsheetPropertiesRequest::class;
   protected $updateSpreadsheetPropertiesDataType = '';
+	protected $updateTableType = UpdateTableRequest::class;
+	protected $updateTableDataType = '';
 
   /**
    * @param AddBandingRequest
@@ -291,6 +299,20 @@ class Request extends \Google\Model
     return $this->addSlicer;
   }
   /**
+   * @param   AddTableRequest
+   */
+	public function setAddTable( AddTableRequest $addTable ) {
+		$this->addTable = $addTable;
+	}
+
+	/**
+	 * @return AddTableRequest
+	 */
+	public function getAddTable() {
+		return $this->addTable;
+	}
+
+	/**
    * @param AppendCellsRequest
    */
   public function setAppendCells(AppendCellsRequest $appendCells)
@@ -347,6 +369,20 @@ class Request extends \Google\Model
     return $this->autoResizeDimensions;
   }
   /**
+   * @param   CancelDataSourceRefreshRequest
+   */
+	public function setCancelDataSourceRefresh( CancelDataSourceRefreshRequest $cancelDataSourceRefresh ) {
+		$this->cancelDataSourceRefresh = $cancelDataSourceRefresh;
+	}
+
+	/**
+	 * @return CancelDataSourceRefreshRequest
+	 */
+	public function getCancelDataSourceRefresh() {
+		return $this->cancelDataSourceRefresh;
+	}
+
+	/**
    * @param ClearBasicFilterRequest
    */
   public function setClearBasicFilter(ClearBasicFilterRequest $clearBasicFilter)
@@ -585,6 +621,20 @@ class Request extends \Google\Model
     return $this->deleteSheet;
   }
   /**
+   * @param   DeleteTableRequest
+   */
+	public function setDeleteTable( DeleteTableRequest $deleteTable ) {
+		$this->deleteTable = $deleteTable;
+	}
+
+	/**
+	 * @return DeleteTableRequest
+	 */
+	public function getDeleteTable() {
+		return $this->deleteTable;
+	}
+
+	/**
    * @param DuplicateFilterViewRequest
    */
   public function setDuplicateFilterView(DuplicateFilterViewRequest $duplicateFilterView)
@@ -1060,6 +1110,20 @@ class Request extends \Google\Model
   {
     return $this->updateSpreadsheetProperties;
   }
+
+	/**
+	 * @param   UpdateTableRequest
+	 */
+	public function setUpdateTable( UpdateTableRequest $updateTable ) {
+		$this->updateTable = $updateTable;
+	}
+
+	/**
+	 * @return UpdateTableRequest
+	 */
+	public function getUpdateTable() {
+		return $this->updateTable;
+	}
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

@@ -56,12 +56,13 @@ abstract class Barrett extends Base
         $m_length = count($m);
 
         // if (self::compareHelper($n, $static::square($m)) >= 0) {
-        if (count($n) >= 2 * $m_length) {
+	    if ( count( $n ) > 2 * $m_length )
+	    {
             $lhs = new $class();
             $rhs = new $class();
             $lhs->value = $n;
             $rhs->value = $m;
-            list(, $temp) = $lhs->divide($rhs);
+            [, $temp] = $lhs->divide($rhs);
             return $temp->value;
         }
 
@@ -70,8 +71,16 @@ abstract class Barrett extends Base
             return self::regularBarrett($n, $m, $class);
         }
         // n = 2 * m.length
+	    $correctionNeeded = false;
+	    if ( $m_length & 1 )
+	    {
+		    $correctionNeeded = true;
+		    array_unshift( $n, 0 );
+		    array_unshift( $m, 0 );
+		    $m_length ++;
+	    }
 
-        if (($key = array_search($m, $cache[self::VARIABLE])) === false) {
+	    if (($key = array_search($m, $cache[self::VARIABLE])) === false) {
             $key = count($cache[self::VARIABLE]);
             $cache[self::VARIABLE][] = $m;
 
@@ -82,7 +91,7 @@ abstract class Barrett extends Base
             $rhs = new $class();
             $rhs->value = $m;
 
-            list($u, $m1) = $lhs->divide($rhs);
+            [$u, $m1] = $lhs->divide($rhs);
             $u = $u->value;
             $m1 = $m1->value;
 
@@ -91,8 +100,10 @@ abstract class Barrett extends Base
                 'm1' => $m1 // m.length
             ];
         } else {
-            extract($cache[self::DATA][$key]);
-        }
+		    $cacheValues = $cache[self::DATA][$key];
+		    $u           = $cacheValues['u'];
+		    $m1          = $cacheValues['m1'];
+	    }
 
         $cutoff = $m_length + ($m_length >> 1);
         $lsd = array_slice($n, 0, $cutoff); // m.length + (m.length >> 1)
@@ -109,25 +120,32 @@ abstract class Barrett extends Base
         $temp = array_slice($n[self::VALUE], $m_length - 1);
         // if even: ((m.length >> 1) + 2) + (m.length >> 1) == m.length + 2
         // if odd:  ((m.length >> 1) + 2) + (m.length >> 1) == (m.length - 1) + 2 == m.length + 1
-        $temp = $class::multiplyHelper($temp, false, $u, false);
+	    // note that these are upper bounds. let's say m.length is 2. then you'd be multiplying a
+	    // 3 digit number by a 1 digit number. if you're doing 999 * 9 (in base 10) the result will
+	    // be a 4 digit number. but if you're multiplying 111 * 1 then the result will be a 3 digit
+	    // number.
+	    $temp = $class::multiplyHelper($temp, false, $u, false);
         // if even: (m.length + 2) - ((m.length >> 1) + 1) = m.length - (m.length >> 1) + 1
         // if odd:  (m.length + 1) - ((m.length >> 1) + 1) = m.length - (m.length >> 1)
         $temp = array_slice($temp[self::VALUE], ($m_length >> 1) + 1);
         // if even: (m.length - (m.length >> 1) + 1) + m.length = 2 * m.length - (m.length >> 1) + 1
         // if odd:  (m.length - (m.length >> 1)) + m.length     = 2 * m.length - (m.length >> 1)
         $temp = $class::multiplyHelper($temp, false, $m, false);
-
-        // at this point, if m had an odd number of digits, we'd be subtracting a 2 * m.length - (m.length >> 1) digit
-        // number from a m.length + (m.length >> 1) + 1 digit number.  ie. there'd be an extra digit and the while loop
-        // following this comment would loop a lot (hence our calling _regularBarrett() in that situation).
-
+	    // at this point, if m had an odd number of digits, we'd (probably) be subtracting a 2 * m.length - (m.length >> 1)
+	    // digit number from a m.length + (m.length >> 1) + 1 digit number.  ie. there'd be an extra digit and the while loop
+	    // following this comment would loop a lot (hence our calling _regularBarrett() in that situation).
         $result = $class::subtractHelper($n[self::VALUE], false, $temp[self::VALUE], false);
 
         while (self::compareHelper($result[self::VALUE], $result[self::SIGN], $m, false) >= 0) {
             $result = $class::subtractHelper($result[self::VALUE], $result[self::SIGN], $m, false);
         }
 
-        return $result[self::VALUE];
+	    if ( $correctionNeeded )
+	    {
+		    array_shift( $result[self::VALUE] );
+	    }
+
+	    return $result[self::VALUE];
     }
 
     /**

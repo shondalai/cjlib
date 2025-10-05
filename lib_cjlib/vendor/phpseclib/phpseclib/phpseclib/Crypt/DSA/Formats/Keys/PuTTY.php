@@ -56,11 +56,14 @@ abstract class PuTTY extends Progenitor
         if (!isset($components['private'])) {
             return $components;
         }
-        extract($components);
+	    $type    = $components['type'];
+	    $comment = $components['comment'];
+	    $public  = $components['public'];
+	    $private = $components['private'];
         unset($components['public'], $components['private']);
 
-        list($p, $q, $g, $y) = Strings::unpackSSH2('iiii', $public);
-        list($x) = Strings::unpackSSH2('i', $private);
+        [$p, $q, $g, $y] = Strings::unpackSSH2('iiii', $public);
+        [$x] = Strings::unpackSSH2('i', $private);
 
         return compact('p', 'q', 'g', 'y', 'x', 'comment');
     }
@@ -68,13 +71,14 @@ abstract class PuTTY extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $p
-     * @param \phpseclib3\Math\BigInteger $q
-     * @param \phpseclib3\Math\BigInteger $g
-     * @param \phpseclib3\Math\BigInteger $y
-     * @param \phpseclib3\Math\BigInteger $x
-     * @param string $password optional
+     * @param   BigInteger  $p
+     * @param   BigInteger  $q
+     * @param   BigInteger  $g
+     * @param   BigInteger  $y
+     * @param   BigInteger  $x
+     * @param   string $password optional
      * @param array $options optional
+     *
      * @return string
      */
     public static function savePrivateKey(BigInteger $p, BigInteger $q, BigInteger $g, BigInteger $y, BigInteger $x, $password = false, array $options = [])
@@ -92,10 +96,11 @@ abstract class PuTTY extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $p
-     * @param \phpseclib3\Math\BigInteger $q
-     * @param \phpseclib3\Math\BigInteger $g
-     * @param \phpseclib3\Math\BigInteger $y
+     * @param   BigInteger  $p
+     * @param   BigInteger  $q
+     * @param   BigInteger  $g
+     * @param   BigInteger  $y
+     *
      * @return string
      */
     public static function savePublicKey(BigInteger $p, BigInteger $q, BigInteger $g, BigInteger $y)

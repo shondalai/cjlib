@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;

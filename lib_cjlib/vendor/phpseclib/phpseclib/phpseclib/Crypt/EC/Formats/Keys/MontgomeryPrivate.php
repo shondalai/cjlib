@@ -71,8 +71,9 @@ abstract class MontgomeryPrivate
     /**
      * Convert an EC public key to the appropriate format
      *
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Montgomery $curve
+     * @param   MontgomeryCurve  $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
+     *
      * @return string
      */
     public static function savePublicKey(MontgomeryCurve $curve, array $publicKey)
@@ -83,11 +84,12 @@ abstract class MontgomeryPrivate
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $privateKey
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Montgomery $curve
+     * @param   BigInteger       $privateKey
+     * @param   MontgomeryCurve  $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $secret optional
      * @param string $password optional
+     *
      * @return string
      */
     public static function savePrivateKey(BigInteger $privateKey, MontgomeryCurve $curve, array $publicKey, $secret = null, $password = '')

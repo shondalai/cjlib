@@ -529,11 +529,15 @@ abstract class PHP extends Engine
     protected function divideHelper(PHP $y)
     {
         if (count($y->value) == 1) {
-            list($q, $r) = $this->divide_digit($this->value, $y->value[0]);
+            [$q, $r] = $this->divide_digit($this->value, $y->value[0]);
             $quotient = new static();
             $remainder = new static();
             $quotient->value = $q;
-            $remainder->value = [$r];
+	        if ( $this->is_negative )
+	        {
+		        $r = $y->value[0] - $r;
+	        }
+	        $remainder->value = [$r];
             $quotient->is_negative = $this->is_negative != $y->is_negative;
             return [$this->normalize($quotient), $this->normalize($remainder)];
         }

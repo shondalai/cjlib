@@ -37,6 +37,10 @@ class Response extends \Google\Model
   protected $addSheetDataType = '';
   protected $addSlicerType = AddSlicerResponse::class;
   protected $addSlicerDataType = '';
+	protected $addTableType = AddTableResponse::class;
+	protected $addTableDataType = '';
+	protected $cancelDataSourceRefreshType = CancelDataSourceRefreshResponse::class;
+	protected $cancelDataSourceRefreshDataType = '';
   protected $createDeveloperMetadataType = CreateDeveloperMetadataResponse::class;
   protected $createDeveloperMetadataDataType = '';
   protected $deleteConditionalFormatRuleType = DeleteConditionalFormatRuleResponse::class;
@@ -193,6 +197,34 @@ class Response extends \Google\Model
     return $this->addSlicer;
   }
   /**
+   * @param   AddTableResponse
+   */
+	public function setAddTable( AddTableResponse $addTable ) {
+		$this->addTable = $addTable;
+	}
+
+	/**
+	 * @return AddTableResponse
+	 */
+	public function getAddTable() {
+		return $this->addTable;
+	}
+
+	/**
+	 * @param   CancelDataSourceRefreshResponse
+	 */
+	public function setCancelDataSourceRefresh( CancelDataSourceRefreshResponse $cancelDataSourceRefresh ) {
+		$this->cancelDataSourceRefresh = $cancelDataSourceRefresh;
+	}
+
+	/**
+	 * @return CancelDataSourceRefreshResponse
+	 */
+	public function getCancelDataSourceRefresh() {
+		return $this->cancelDataSourceRefresh;
+	}
+
+	/**
    * @param CreateDeveloperMetadataResponse
    */
   public function setCreateDeveloperMetadata(CreateDeveloperMetadataResponse $createDeveloperMetadata)

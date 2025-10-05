@@ -51,7 +51,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
     /**
      * Private Exponent
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $privateExponent;
 
@@ -60,7 +60,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-5.1.2 RFC3447#section-5.1.2}.
      *
-     * @return bool|\phpseclib3\Math\BigInteger
+     * @return bool|BigInteger
      */
     private function rsadp(BigInteger $c)
     {
@@ -75,7 +75,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-5.2.1 RFC3447#section-5.2.1}.
      *
-     * @return bool|\phpseclib3\Math\BigInteger
+     * @return bool|BigInteger
      */
     private function rsasp1(BigInteger $m)
     {
@@ -88,8 +88,9 @@ final class PrivateKey extends RSA implements Common\PrivateKey
     /**
      * Exponentiate
      *
-     * @param \phpseclib3\Math\BigInteger $x
-     * @return \phpseclib3\Math\BigInteger
+     * @param   BigInteger  $x
+     *
+     * @return BigInteger
      */
     protected function exponentiate(BigInteger $x)
     {
@@ -112,7 +113,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
             ];
             $h = $m_i[1]->subtract($m_i[2]);
             $h = $h->multiply($this->coefficients[2]);
-            list(, $h) = $h->divide($this->primes[1]);
+            [, $h] = $h->divide($this->primes[1]);
             $m = $m_i[2]->add($h->multiply($this->primes[2]));
 
             $r = $this->primes[1];
@@ -123,7 +124,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
 
                 $h = $m_i->subtract($m);
                 $h = $h->multiply($this->coefficients[$i]);
-                list(, $h) = $h->divide($this->primes[$i]);
+                [, $h] = $h->divide($this->primes[$i]);
 
                 $m = $m->add($r->multiply($h));
             }
@@ -143,7 +144,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
             ];
             $h = $m_i[1]->subtract($m_i[2]);
             $h = $h->multiply($this->coefficients[2]);
-            list(, $h) = $h->divide($this->primes[1]);
+            [, $h] = $h->divide($this->primes[1]);
             $m = $m_i[2]->add($h->multiply($this->primes[2]));
 
             $r = $this->primes[1];
@@ -154,7 +155,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
 
                 $h = $m_i->subtract($m);
                 $h = $h->multiply($this->coefficients[$i]);
-                list(, $h) = $h->divide($this->primes[$i]);
+                [, $h] = $h->divide($this->primes[$i]);
 
                 $m = $m->add($r->multiply($h));
             }
@@ -169,10 +170,11 @@ final class PrivateKey extends RSA implements Common\PrivateKey
      * Protects against timing attacks by employing RSA Blinding.
      * Returns $x->modPow($this->exponents[$i], $this->primes[$i])
      *
-     * @param \phpseclib3\Math\BigInteger $x
-     * @param \phpseclib3\Math\BigInteger $r
-     * @param int $i
-     * @return \phpseclib3\Math\BigInteger
+     * @param   BigInteger  $x
+     * @param   BigInteger  $r
+     * @param   int $i
+     *
+     * @return BigInteger
      */
     private function blind(BigInteger $x, BigInteger $r, $i)
     {
@@ -181,7 +183,7 @@ final class PrivateKey extends RSA implements Common\PrivateKey
 
         $r = $r->modInverse($this->primes[$i]);
         $x = $x->multiply($r);
-        list(, $x) = $x->divide($this->primes[$i]);
+        [, $x] = $x->divide($this->primes[$i]);
 
         return $x;
     }

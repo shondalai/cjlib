@@ -316,11 +316,9 @@ abstract class Engine implements \JsonSerializable
             return $this->normalize($n->subtract($temp));
         }
 
-        extract($this->extendedGCD($n));
-        /**
-         * @var Engine $gcd
-         * @var Engine $x
-         */
+	    $extended = $this->extendedGCD( $n );
+	    $gcd      = $extended['gcd'];
+	    $x        = $extended['x'];
 
         if (!$gcd->equals(static::$one[static::class])) {
             return false;
@@ -644,8 +642,9 @@ abstract class Engine implements \JsonSerializable
             return $this->normalize($temp->powModInner($e, $n));
         }
 
-        if ($this->compare($n) > 0) {
-            list(, $temp) = $this->divide($n);
+	    if ( $this->compare( $n ) > 0 || $this->isNegative() )
+	    {
+            [, $temp] = $this->divide($n);
             return $temp->powModInner($e, $n);
         }
 
@@ -740,12 +739,11 @@ abstract class Engine implements \JsonSerializable
      */
     public static function random($size)
     {
-        extract(static::minMaxBits($size));
-        /**
-         * @var BigInteger $min
-         * @var BigInteger $max
-         */
-        return static::randomRange($min, $max);
+	    $minMax = static::minMaxBits( $size );
+	    $min    = $minMax['min'];
+	    $max    = $minMax['max'];
+
+	    return static::randomRange($min, $max);
     }
 
     /**
@@ -758,12 +756,11 @@ abstract class Engine implements \JsonSerializable
      */
     public static function randomPrime($size)
     {
-        extract(static::minMaxBits($size));
-        /**
-         * @var static $min
-         * @var static $max
-         */
-        return static::randomRangePrime($min, $max);
+	    $minMax = static::minMaxBits( $size );
+	    $min    = $minMax['min'];
+	    $max    = $minMax['max'];
+
+	    return static::randomRangePrime($min, $max);
     }
 
     /**
@@ -848,7 +845,7 @@ abstract class Engine implements \JsonSerializable
         $random_max = new static(chr(1) . str_repeat("\0", $size), 256);
         $random = new static(Random::string($size), 256);
 
-        list($max_multiple) = $random_max->divide($max);
+        [$max_multiple] = $random_max->divide($max);
         $max_multiple = $max_multiple->multiply($max);
 
         while ($random->compare($max_multiple) >= 0) {
@@ -857,10 +854,10 @@ abstract class Engine implements \JsonSerializable
             $random = $random->bitwise_leftShift(8);
             $random = $random->add(new static(Random::string(1), 256));
             $random_max = $random_max->bitwise_leftShift(8);
-            list($max_multiple) = $random_max->divide($max);
+            [$max_multiple] = $random_max->divide($max);
             $max_multiple = $max_multiple->multiply($max);
         }
-        list(, $random) = $random->divide($max);
+        [, $random] = $random->divide($max);
 
         return $random->add($min);
     }
@@ -1191,7 +1188,7 @@ abstract class Engine implements \JsonSerializable
         $d = clone $one;
 
         while (!$v->equals($zero)) {
-            list($q) = $u->divide($v);
+            [$q] = $u->divide($v);
 
             $temp = $u;
             $u = $v;

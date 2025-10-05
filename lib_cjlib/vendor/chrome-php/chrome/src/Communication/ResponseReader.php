@@ -103,13 +103,13 @@ class ResponseReader
      *
      * @return Response
      */
-    public function waitForResponse(int $timeout = null): Response
+	public function waitForResponse( ?int $timeout = null ): Response
     {
         if ($this->hasResponse()) {
             return $this->getResponse();
         }
 
-        $timeout = $timeout ?? $this->connection->getSendSyncDefaultTimeout();
+	    $timeout ??= $this->connection->getSendSyncDefaultTimeout();
 
         return Utils::tryWithTimeout($timeout * 1000, $this->waitForResponseGenerator());
     }

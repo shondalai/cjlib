@@ -123,13 +123,14 @@ abstract class XML
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
-     * @param \phpseclib3\Math\BigInteger $d
+     * @param   BigInteger  $n
+     * @param   BigInteger  $e
+     * @param   BigInteger  $d
      * @param array $primes
      * @param array $exponents
      * @param array $coefficients
      * @param string $password optional
+     *
      * @return string
      */
     public static function savePrivateKey(BigInteger $n, BigInteger $e, BigInteger $d, array $primes, array $exponents, array $coefficients, $password = '')
@@ -157,8 +158,9 @@ abstract class XML
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
+     * @param   BigInteger  $n
+     * @param   BigInteger  $e
+     *
      * @return string
      */
     public static function savePublicKey(BigInteger $n, BigInteger $e)

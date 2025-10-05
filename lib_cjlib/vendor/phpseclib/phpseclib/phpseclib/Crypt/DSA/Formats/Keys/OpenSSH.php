@@ -45,17 +45,17 @@ abstract class OpenSSH extends Progenitor
         $parsed = parent::load($key, $password);
 
         if (isset($parsed['paddedKey'])) {
-            list($type) = Strings::unpackSSH2('s', $parsed['paddedKey']);
+            [$type] = Strings::unpackSSH2('s', $parsed['paddedKey']);
             if ($type != $parsed['type']) {
                 throw new \RuntimeException("The public and private keys are not of the same type ($type vs $parsed[type])");
             }
 
-            list($p, $q, $g, $y, $x, $comment) = Strings::unpackSSH2('i5s', $parsed['paddedKey']);
+            [$p, $q, $g, $y, $x, $comment] = Strings::unpackSSH2('i5s', $parsed['paddedKey']);
 
             return compact('p', 'q', 'g', 'y', 'x', 'comment');
         }
 
-        list($p, $q, $g, $y) = Strings::unpackSSH2('iiii', $parsed['publicKey']);
+        [$p, $q, $g, $y] = Strings::unpackSSH2('iiii', $parsed['publicKey']);
 
         $comment = $parsed['comment'];
 
@@ -65,11 +65,12 @@ abstract class OpenSSH extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $p
-     * @param \phpseclib3\Math\BigInteger $q
-     * @param \phpseclib3\Math\BigInteger $g
-     * @param \phpseclib3\Math\BigInteger $y
-     * @param array $options optional
+     * @param   BigInteger  $p
+     * @param   BigInteger  $q
+     * @param   BigInteger  $g
+     * @param   BigInteger  $y
+     * @param   array $options optional
+     *
      * @return string
      */
     public static function savePublicKey(BigInteger $p, BigInteger $q, BigInteger $g, BigInteger $y, array $options = [])
@@ -99,13 +100,14 @@ abstract class OpenSSH extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $p
-     * @param \phpseclib3\Math\BigInteger $q
-     * @param \phpseclib3\Math\BigInteger $g
-     * @param \phpseclib3\Math\BigInteger $y
-     * @param \phpseclib3\Math\BigInteger $x
+     * @param   BigInteger  $p
+     * @param   BigInteger  $q
+     * @param   BigInteger  $g
+     * @param   BigInteger  $y
+     * @param   BigInteger  $x
      * @param string $password optional
      * @param array $options optional
+     *
      * @return string
      */
     public static function savePrivateKey(BigInteger $p, BigInteger $q, BigInteger $g, BigInteger $y, BigInteger $x, $password = '', array $options = [])

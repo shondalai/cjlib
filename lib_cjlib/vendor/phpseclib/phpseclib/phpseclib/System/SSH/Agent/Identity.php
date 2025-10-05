@@ -79,6 +79,13 @@ class Identity implements PrivateKey
      */
     private $flags = 0;
 
+	/**
+	 * Comment
+	 *
+	 * @var null|string
+	 */
+	private $comment;
+
     /**
      * Curve Aliases
      *
@@ -106,7 +113,7 @@ class Identity implements PrivateKey
      *
      * Called by \phpseclib3\System\SSH\Agent::requestIdentities()
      *
-     * @param \phpseclib3\Crypt\Common\PublicKey $key
+     * @param   PublicKey  $key
      */
     public function withPublicKey(PublicKey $key)
     {
@@ -141,10 +148,9 @@ class Identity implements PrivateKey
      *
      * Wrapper for $this->key->getPublicKey()
      *
-     * @param string $type optional
      * @return mixed
      */
-    public function getPublicKey($type = 'PKCS8')
+	public function getPublicKey()
     {
         return $this->key;
     }
@@ -259,9 +265,10 @@ class Identity implements PrivateKey
      * See "2.6.2 Protocol 2 private key signature request"
      *
      * @param string $message
+     *
      * @return string
      * @throws \RuntimeException on connection errors
-     * @throws \phpseclib3\Exception\UnsupportedAlgorithmException if the algorithm is unsupported
+     * @throws UnsupportedAlgorithmException if the algorithm is unsupported
      */
     public function sign($message)
     {
@@ -281,7 +288,7 @@ class Identity implements PrivateKey
         $length = current(unpack('N', $this->readBytes(4)));
         $packet = $this->readBytes($length);
 
-        list($type, $signature_blob) = Strings::unpackSSH2('Cs', $packet);
+        [$type, $signature_blob] = Strings::unpackSSH2('Cs', $packet);
         if ($type != Agent::SSH_AGENT_SIGN_RESPONSE) {
             throw new \RuntimeException('Unable to retrieve signature');
         }
@@ -290,7 +297,7 @@ class Identity implements PrivateKey
             return $signature_blob;
         }
 
-        list($type, $signature_blob) = Strings::unpackSSH2('ss', $signature_blob);
+        [$type, $signature_blob] = Strings::unpackSSH2('ss', $signature_blob);
 
         return $signature_blob;
     }
@@ -317,4 +324,24 @@ class Identity implements PrivateKey
     {
         throw new \RuntimeException('ssh-agent does not provide a mechanism to get the private key');
     }
+
+	/**
+	 * Sets the comment
+	 */
+	public function withComment( $comment = null ) {
+		$new          = clone $this;
+		$new->comment = $comment;
+
+		return $new;
+	}
+
+	/**
+	 * Returns the comment
+	 *
+	 * @return null|string
+	 */
+	public function getComment() {
+		return $this->comment;
+	}
+
 }

@@ -50,14 +50,14 @@ abstract class OpenSSH extends Progenitor
         $parsed = parent::load($key, $password);
 
         if (isset($parsed['paddedKey'])) {
-            list($type) = Strings::unpackSSH2('s', $parsed['paddedKey']);
+            [$type] = Strings::unpackSSH2('s', $parsed['paddedKey']);
             if ($type != $parsed['type']) {
                 throw new \RuntimeException("The public and private keys are not of the same type ($type vs $parsed[type])");
             }
 
             $primes = $coefficients = [];
 
-            list(
+            [
                 $modulus,
                 $publicExponent,
                 $privateExponent,
@@ -65,7 +65,7 @@ abstract class OpenSSH extends Progenitor
                 $primes[1],
                 $primes[2],
                 $comment,
-            ) = Strings::unpackSSH2('i6s', $parsed['paddedKey']);
+            ] = Strings::unpackSSH2('i6s', $parsed['paddedKey']);
 
             $temp = $primes[1]->subtract($one);
             $exponents = [1 => $publicExponent->modInverse($temp)];
@@ -77,7 +77,7 @@ abstract class OpenSSH extends Progenitor
             return compact('publicExponent', 'modulus', 'privateExponent', 'primes', 'coefficients', 'exponents', 'comment', 'isPublicKey');
         }
 
-        list($publicExponent, $modulus) = Strings::unpackSSH2('ii', $parsed['publicKey']);
+        [$publicExponent, $modulus] = Strings::unpackSSH2('ii', $parsed['publicKey']);
 
         return [
             'isPublicKey' => true,
@@ -90,9 +90,10 @@ abstract class OpenSSH extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
-     * @param array $options optional
+     * @param   BigInteger  $n
+     * @param   BigInteger  $e
+     * @param   array $options optional
+     *
      * @return string
      */
     public static function savePublicKey(BigInteger $n, BigInteger $e, array $options = [])
@@ -112,14 +113,15 @@ abstract class OpenSSH extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
-     * @param \phpseclib3\Math\BigInteger $d
+     * @param   BigInteger  $n
+     * @param   BigInteger  $e
+     * @param   BigInteger  $d
      * @param array $primes
      * @param array $exponents
      * @param array $coefficients
      * @param string $password optional
      * @param array $options optional
+     *
      * @return string
      */
     public static function savePrivateKey(BigInteger $n, BigInteger $e, BigInteger $d, array $primes, array $exponents, array $coefficients, $password = '', array $options = [])

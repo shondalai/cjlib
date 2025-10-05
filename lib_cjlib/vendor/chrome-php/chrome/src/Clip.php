@@ -13,20 +13,24 @@ namespace HeadlessChromium;
 
 class Clip
 {
+
+	/** @var int|float */
     protected $x;
+	/** @var int|float */
     protected $y;
+	/** @var int|float */
     protected $height;
+	/** @var int|float */
     protected $width;
+	/** @var float */
     protected $scale;
 
     /**
-     * Clip constructor.
-     *
-     * @param int   $x
-     * @param int   $y
-     * @param int   $height
-     * @param int   $width
-     * @param float $scale
+     * @param   int|float  $x
+     * @param   int|float  $y
+     * @param   int|float  $height
+     * @param   int|float  $width
+     * @param   float      $scale
      */
     public function __construct($x, $y, $width, $height, $scale = 1.0)
     {
@@ -38,7 +42,7 @@ class Clip
     }
 
     /**
-     * @return mixed
+     * @return int|float
      */
     public function getX()
     {
@@ -46,7 +50,7 @@ class Clip
     }
 
     /**
-     * @return mixed
+     * @return int|float
      */
     public function getY()
     {
@@ -54,7 +58,7 @@ class Clip
     }
 
     /**
-     * @return mixed
+     * @return int|float
      */
     public function getHeight()
     {
@@ -62,7 +66,7 @@ class Clip
     }
 
     /**
-     * @return mixed
+     * @return int|float
      */
     public function getWidth()
     {
@@ -70,7 +74,7 @@ class Clip
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getScale()
     {
@@ -78,7 +82,7 @@ class Clip
     }
 
     /**
-     * @param mixed $x
+     * @param   int|float  $x
      */
     public function setX($x): void
     {
@@ -86,7 +90,7 @@ class Clip
     }
 
     /**
-     * @param mixed $y
+     * @param   int|float  $y
      */
     public function setY($y): void
     {
@@ -94,7 +98,7 @@ class Clip
     }
 
     /**
-     * @param mixed $height
+     * @param   int  $height
      */
     public function setHeight($height): void
     {
@@ -102,7 +106,7 @@ class Clip
     }
 
     /**
-     * @param mixed $width
+     * @param   int  $width
      */
     public function setWidth($width): void
     {
@@ -110,7 +114,7 @@ class Clip
     }
 
     /**
-     * @param mixed $scale
+     * @param   float  $scale
      */
     public function setScale($scale): void
     {

@@ -8,9 +8,11 @@
  */
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -86,7 +88,8 @@ $span = !empty( $this->sidebar) ? 'col-md-10' : 'col-md-12';
     					<div class="panel-body card-body">
     						<?php
     						$component = ComponentHelper::getComponent('com_cjlib');
-    						$extension = Table::getInstance('extension');
+                            $db = Factory::getDbo();
+                            $extension = new Extension( $db );
     						$extension->load($component->id);
     						$manifest = new Registry($extension->manifest_cache);
     						

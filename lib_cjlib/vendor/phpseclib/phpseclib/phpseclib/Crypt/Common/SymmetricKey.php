@@ -1077,13 +1077,14 @@ abstract class SymmetricKey
      *
      * {@link https://tools.ietf.org/html/rfc7292#appendix-B}
      *
-     * @see self::setPassword()
      * @param int $n
-     * @param \phpseclib3\Crypt\Hash $hashObj
-     * @param string $i
+     * @param Hash $hashObj
+     * @param   string  $i
      * @param string $d
      * @param int $count
+     *
      * @return string $a
+     *@see self::setPassword()
      */
     private static function pkcs12helper($n, $hashObj, $i, $d, $count)
     {

@@ -10,9 +10,10 @@ defined( '_JEXEC' ) or die();
 
 use GuzzleHttp\Exception\GuzzleException;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Uri\Uri;
 
 class CjLibControllerLicense extends FormController {
@@ -74,7 +75,8 @@ class CjLibControllerLicense extends FormController {
 
 				// saving params to database
 				$component_id = ComponentHelper::getComponent( 'com_cjlib' )->id;
-				$table        = Table::getInstance( 'extension' );
+				$db = Factory::getDbo();
+				$table = new Extension( $db );
 				$table->load( $component_id );
 				$table->bind( [ 'params' => $params->toString() ] );
 
@@ -142,7 +144,7 @@ class CjLibControllerLicense extends FormController {
 
 					// saving params to database
 					$component_id = ComponentHelper::getComponent( 'com_cjlib' )->id;
-					$table        = Table::getInstance( 'extension' );
+					$table = Factory::getApplication()->bootComponent( '...' )->getMVCFactory()->createTable( 'extension' );
 					$table->load( $component_id );
 					$table->bind( [ 'params' => $params->toString() ] );
 

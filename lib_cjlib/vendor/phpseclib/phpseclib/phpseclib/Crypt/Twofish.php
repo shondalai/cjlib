@@ -49,16 +49,16 @@ class Twofish extends BlockCipher
     /**
      * The mcrypt specific name of the cipher
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::cipher_name_mcrypt
      * @var string
+     * @see Common\SymmetricKey::cipher_name_mcrypt
      */
     protected $cipher_name_mcrypt = 'twofish';
 
     /**
      * Optimizing value while CFB-encrypting
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::cfb_init_len
      * @var int
+     * @see Common\SymmetricKey::cfb_init_len
      */
     protected $cfb_init_len = 800;
 
@@ -431,7 +431,7 @@ class Twofish extends BlockCipher
     /**
      * Setup the key (expansion)
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::_setupKey()
+     * @see Common\SymmetricKey::_setupKey()
      */
     protected function setupKey()
     {
@@ -455,8 +455,8 @@ class Twofish extends BlockCipher
 
         switch (strlen($this->key)) {
             case 16:
-                list($s7, $s6, $s5, $s4) = $this->mdsrem($le_longs[1], $le_longs[2]);
-                list($s3, $s2, $s1, $s0) = $this->mdsrem($le_longs[3], $le_longs[4]);
+                [$s7, $s6, $s5, $s4] = $this->mdsrem($le_longs[1], $le_longs[2]);
+                [$s3, $s2, $s1, $s0] = $this->mdsrem($le_longs[3], $le_longs[4]);
                 for ($i = 0, $j = 1; $i < 40; $i += 2, $j += 2) {
                     $A = $m0[$q0[$q0[$i] ^ $key[ 9]] ^ $key[1]] ^
                          $m1[$q0[$q1[$i] ^ $key[10]] ^ $key[2]] ^
@@ -480,9 +480,9 @@ class Twofish extends BlockCipher
                 }
                 break;
             case 24:
-                list($sb, $sa, $s9, $s8) = $this->mdsrem($le_longs[1], $le_longs[2]);
-                list($s7, $s6, $s5, $s4) = $this->mdsrem($le_longs[3], $le_longs[4]);
-                list($s3, $s2, $s1, $s0) = $this->mdsrem($le_longs[5], $le_longs[6]);
+                [$sb, $sa, $s9, $s8] = $this->mdsrem($le_longs[1], $le_longs[2]);
+                [$s7, $s6, $s5, $s4] = $this->mdsrem($le_longs[3], $le_longs[4]);
+                [$s3, $s2, $s1, $s0] = $this->mdsrem($le_longs[5], $le_longs[6]);
                 for ($i = 0, $j = 1; $i < 40; $i += 2, $j += 2) {
                     $A = $m0[$q0[$q0[$q1[$i] ^ $key[17]] ^ $key[ 9]] ^ $key[1]] ^
                          $m1[$q0[$q1[$q1[$i] ^ $key[18]] ^ $key[10]] ^ $key[2]] ^
@@ -506,10 +506,10 @@ class Twofish extends BlockCipher
                 }
                 break;
             default: // 32
-                list($sf, $se, $sd, $sc) = $this->mdsrem($le_longs[1], $le_longs[2]);
-                list($sb, $sa, $s9, $s8) = $this->mdsrem($le_longs[3], $le_longs[4]);
-                list($s7, $s6, $s5, $s4) = $this->mdsrem($le_longs[5], $le_longs[6]);
-                list($s3, $s2, $s1, $s0) = $this->mdsrem($le_longs[7], $le_longs[8]);
+                [$sf, $se, $sd, $sc] = $this->mdsrem($le_longs[1], $le_longs[2]);
+                [$sb, $sa, $s9, $s8] = $this->mdsrem($le_longs[3], $le_longs[4]);
+                [$s7, $s6, $s5, $s4] = $this->mdsrem($le_longs[5], $le_longs[6]);
+                [$s3, $s2, $s1, $s0] = $this->mdsrem($le_longs[7], $le_longs[8]);
                 for ($i = 0, $j = 1; $i < 40; $i += 2, $j += 2) {
                     $A = $m0[$q0[$q0[$q1[$q1[$i] ^ $key[25]] ^ $key[17]] ^ $key[ 9]] ^ $key[1]] ^
                          $m1[$q0[$q1[$q1[$q0[$i] ^ $key[26]] ^ $key[18]] ^ $key[10]] ^ $key[2]] ^
@@ -700,9 +700,9 @@ class Twofish extends BlockCipher
     /**
      * Setup the performance-optimized function for de/encrypt()
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::_setupInlineCrypt()
+     * @see Common\SymmetricKey::_setupInlineCrypt()
      */
-    protected function setupInlineCrypt()
+	protected function setupInlineCrypt()
     {
         $K = $this->K;
         $init_crypt = '

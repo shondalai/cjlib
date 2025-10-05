@@ -130,15 +130,15 @@ final class PrivateKey extends EC implements Common\PrivateKey
             $r = $hash->hash($dom . $secret . $message);
             $r = strrev($r);
             $r = new BigInteger($r, 256);
-            list(, $r) = $r->divide($order);
+            [, $r] = $r->divide($order);
             $R = $curve->multiplyPoint($curve->getBasePoint(), $r);
             $R = $curve->encodePoint($R);
             $k = $hash->hash($dom . $R . $A . $message);
             $k = strrev($k);
             $k = new BigInteger($k, 256);
-            list(, $k) = $k->divide($order);
+            [, $k] = $k->divide($order);
             $S = $k->multiply($dA)->add($r);
-            list(, $S) = $S->divide($order);
+            [, $S] = $S->divide($order);
             $S = str_pad(strrev($S->toBytes()), $curve::SIZE, "\0");
             return $shortFormat == 'SSH2' ? Strings::packSSH2('ss', 'ssh-' . strtolower($this->getCurve()), $R . $S) : $R . $S;
         }
@@ -157,9 +157,11 @@ final class PrivateKey extends EC implements Common\PrivateKey
                     return $signature;
                 }
 
-                extract(ASN1Signature::load($signature));
+	            $loaded = ASN1Signature::load( $signature );
+	            $r      = $loaded['r'];
+	            $s      = $loaded['s'];
 
-                return $shortFormat == 'SSH2' ? $format::save($r, $s, $this->getCurve()) : $format::save($r, $s);
+	            return $this->formatSignature( $r, $s );
             }
         }
 
@@ -171,16 +173,16 @@ final class PrivateKey extends EC implements Common\PrivateKey
 
         while (true) {
             $k = BigInteger::randomRange(self::$one, $order->subtract(self::$one));
-            list($x, $y) = $this->curve->multiplyPoint($this->curve->getBasePoint(), $k);
+            [$x, $y] = $this->curve->multiplyPoint($this->curve->getBasePoint(), $k);
             $x = $x->toBigInteger();
-            list(, $r) = $x->divide($order);
+            [, $r] = $x->divide($order);
             if ($r->equals(self::$zero)) {
                 continue;
             }
             $kinv = $k->modInverse($order);
             $temp = $z->add($dA->multiply($r));
             $temp = $kinv->multiply($temp);
-            list(, $s) = $temp->divide($order);
+            [, $s] = $temp->divide($order);
             if (!$s->equals(self::$zero)) {
                 break;
             }
@@ -208,11 +210,11 @@ final class PrivateKey extends EC implements Common\PrivateKey
         list(, $s) = $temp->divide($this->q);
         */
 
-        return $shortFormat == 'SSH2' ? $format::save($r, $s, $this->getCurve()) : $format::save($r, $s);
+        return $this->formatSignature( $r, $s );
     }
 
-    /**
-     * Returns the private key
+	/**
+	 * Returns the private key
      *
      * @param string $type
      * @param array $options optional
@@ -253,4 +255,32 @@ final class PrivateKey extends EC implements Common\PrivateKey
         }
         return $key;
     }
+
+    /**
+     * Returns a signature in the appropriate format
+     *
+     * @return string
+     */
+	private function formatSignature( BigInteger $r, BigInteger $s ) {
+		$format = $this->sigFormat;
+
+		$temp       = new \ReflectionMethod( $format, 'save' );
+		$paramCount = $temp->getNumberOfRequiredParameters();
+
+		// @codingStandardsIgnoreStart
+		switch ( $paramCount )
+		{
+			case 2:
+				return $format::save( $r, $s );
+			case 3:
+				return $format::save( $r, $s, $this->getCurve() );
+			case 4:
+				return $format::save( $r, $s, $this->getCurve(), $this->getLength() );
+		}
+		// @codingStandardsIgnoreEnd
+
+		// presumably the only way you could get to this is if you were using a custom plugin
+		throw new UnsupportedOperationException( "$format::save() has $paramCount parameters - the only valid parameter counts are 2 or 3" );
+	}
+
 }

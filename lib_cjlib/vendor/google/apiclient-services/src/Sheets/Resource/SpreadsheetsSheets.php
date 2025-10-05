@@ -39,7 +39,9 @@ class SpreadsheetsSheets extends \Google\Service\Resource
    * @param int $sheetId The ID of the sheet to copy.
    * @param CopySheetToAnotherSpreadsheetRequest $postBody
    * @param array $optParams Optional parameters.
+   *
    * @return SheetProperties
+   * @throws \Google\Service\Exception
    */
   public function copyTo($spreadsheetId, $sheetId, CopySheetToAnotherSpreadsheetRequest $postBody, $optParams = [])
   {

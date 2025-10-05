@@ -74,7 +74,7 @@ abstract class PuTTY extends Progenitor
             $components['dA'] = $arr['dA'];
             $components['secret'] = $arr['secret'];
         } else {
-            list($components['dA']) = Strings::unpackSSH2('i', $private);
+            [$components['dA']] = Strings::unpackSSH2('i', $private);
             $components['curve']->rangeCheck($components['dA']);
         }
 
@@ -84,12 +84,13 @@ abstract class PuTTY extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $privateKey
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param   BigInteger                                  $privateKey
+     * @param   BaseCurve                                   $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $secret optional
      * @param string $password optional
      * @param array $options optional
+     *
      * @return string
      */
     public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $secret = null, $password = false, array $options = [])
@@ -99,7 +100,7 @@ abstract class PuTTY extends Progenitor
         $public = explode(' ', OpenSSH::savePublicKey($curve, $publicKey));
         $name = $public[0];
         $public = Strings::base64_decode($public[1]);
-        list(, $length) = unpack('N', Strings::shift($public, 4));
+        [, $length] = unpack('N', Strings::shift($public, 4));
         Strings::shift($public, $length);
 
         // PuTTY pads private keys with a null byte per the following:
@@ -121,8 +122,9 @@ abstract class PuTTY extends Progenitor
     /**
      * Convert an EC public key to the appropriate format
      *
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param   BaseCurve                           $curve
      * @param \phpseclib3\Math\Common\FiniteField[] $publicKey
+     *
      * @return string
      */
     public static function savePublicKey(BaseCurve $curve, array $publicKey)
@@ -130,7 +132,7 @@ abstract class PuTTY extends Progenitor
         $public = explode(' ', OpenSSH::savePublicKey($curve, $publicKey));
         $type = $public[0];
         $public = Strings::base64_decode($public[1]);
-        list(, $length) = unpack('N', Strings::shift($public, 4));
+        [, $length] = unpack('N', Strings::shift($public, 4));
         Strings::shift($public, $length);
 
         return self::wrapPublicKey($public, $type);

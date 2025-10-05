@@ -40,6 +40,10 @@ class ProtectedRange extends \Google\Collection
    * @var bool
    */
   public $requestingUserCanEdit;
+	/**
+	 * @var string
+	 */
+	public $tableId;
   protected $unprotectedRangesType = GridRange::class;
   protected $unprotectedRangesDataType = 'array';
   /**
@@ -132,6 +136,20 @@ class ProtectedRange extends \Google\Collection
     return $this->requestingUserCanEdit;
   }
   /**
+   * @param   string
+   */
+	public function setTableId( $tableId ) {
+		$this->tableId = $tableId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTableId() {
+		return $this->tableId;
+	}
+
+	/**
    * @param GridRange[]
    */
   public function setUnprotectedRanges($unprotectedRanges)

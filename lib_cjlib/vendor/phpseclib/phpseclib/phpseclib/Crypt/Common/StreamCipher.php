@@ -26,16 +26,16 @@ abstract class StreamCipher extends SymmetricKey
      *
      * Stream ciphers do not have a block size
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::block_size
      * @var int
+     * @see SymmetricKey::block_size
      */
     protected $block_size = 0;
 
     /**
      * Default Constructor.
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::__construct()
-     * @return \phpseclib3\Crypt\Common\StreamCipher
+     * @return StreamCipher
+     *@see \phpseclib3\Crypt\Common\SymmetricKey::__construct()
      */
     public function __construct()
     {

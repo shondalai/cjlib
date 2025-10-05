@@ -71,6 +71,11 @@ abstract class XML
 
         $use_errors = libxml_use_internal_errors(true);
 
+	    if ( substr( $key, 0, 5 ) != '<?xml' )
+	    {
+		    $key = '<xml>' . $key . '</xml>';
+	    }
+
         $temp = self::isolateNamespace($key, 'http://www.w3.org/2009/xmldsig11#');
         if ($temp) {
             $key = $temp;
@@ -82,9 +87,6 @@ abstract class XML
         }
 
         $dom = new \DOMDocument();
-        if (substr($key, 0, 5) != '<?xml') {
-            $key = '<xml>' . $key . '</xml>';
-        }
 
         if (!$dom->loadXML($key)) {
             libxml_use_internal_errors($use_errors);
@@ -171,7 +173,8 @@ abstract class XML
      * Extract points from an XML document
      *
      * @param \DOMXPath $xpath
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param   BaseCurve  $curve
+     *
      * @return object[]
      */
     private static function extractPointRFC4050(\DOMXPath $xpath, BaseCurve $curve)
@@ -198,8 +201,9 @@ abstract class XML
      * Returns an instance of \phpseclib3\Crypt\EC\BaseCurves\Base based
      * on the curve parameters
      *
-     * @param \DomXPath $xpath
-     * @return \phpseclib3\Crypt\EC\BaseCurves\Base|false
+     * @param \DomXPath  $xpath
+     *
+     * @return BaseCurve|false
      */
     private static function loadCurveByParam(\DOMXPath $xpath)
     {
@@ -278,8 +282,9 @@ abstract class XML
      * Returns an instance of \phpseclib3\Crypt\EC\BaseCurves\Base based
      * on the curve parameters
      *
-     * @param \DomXPath $xpath
-     * @return \phpseclib3\Crypt\EC\BaseCurves\Base|false
+     * @param \DomXPath  $xpath
+     *
+     * @return BaseCurve|false
      */
     private static function loadCurveByParamRFC4050(\DOMXPath $xpath)
     {
@@ -366,9 +371,10 @@ abstract class XML
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param   BaseCurve $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param array $options optional
+     *
      * @return string
      */
     public static function savePublicKey(BaseCurve $curve, array $publicKey, array $options = [])
@@ -407,9 +413,10 @@ abstract class XML
     /**
      * Encode Parameters
      *
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param BaseCurve $curve
      * @param string $pre
      * @param array $options optional
+     *
      * @return string|false
      */
     private static function encodeXMLParameters(BaseCurve $curve, $pre, array $options = [])
@@ -434,7 +441,7 @@ abstract class XML
                            '</' . $pre . 'PrimeFieldParamsType>' . "\r\n";
                     $a = $curve->getA();
                     $b = $curve->getB();
-                    list($x, $y) = $curve->getBasePoint();
+                    [$x, $y] = $curve->getBasePoint();
                     break;
                 default:
                     throw new UnsupportedCurveException('Field Type of ' . $temp['fieldID']['fieldType'] . ' is not supported');

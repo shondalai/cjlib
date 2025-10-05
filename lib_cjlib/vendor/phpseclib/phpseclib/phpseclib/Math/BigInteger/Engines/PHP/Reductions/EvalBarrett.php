@@ -74,6 +74,15 @@ abstract class EvalBarrett extends Base
             return $func;
         }
 
+	    $correctionNeeded = false;
+	    if ( $m_length & 1 )
+	    {
+		    $correctionNeeded = true;
+		    $m                = clone $m;
+		    array_unshift( $m->value, 0 );
+		    $m_length ++;
+	    }
+
         $lhs = new $class();
         $lhs_value = &$lhs->value;
 
@@ -81,7 +90,7 @@ abstract class EvalBarrett extends Base
         $lhs_value[] = 1;
         $rhs = new $class();
 
-        list($u, $m1) = $lhs->divide($m);
+        [$u, $m1] = $lhs->divide($m);
 
         if ($class::BASE != 26) {
             $u = $u->value;
@@ -90,7 +99,7 @@ abstract class EvalBarrett extends Base
             $lhs_value[] = 1;
             $rhs = new $class();
 
-            list($u) = $lhs->divide($m);
+            [$u] = $lhs->divide($m);
             $u = $u->value;
         }
 
@@ -99,8 +108,14 @@ abstract class EvalBarrett extends Base
 
         $cutoff = count($m) + (count($m) >> 1);
 
-        $code = '
-            if (count($n) >= ' . (2 * count($m)) . ') {
+	    $code = $correctionNeeded
+		    ?
+		    'array_unshift($n, 0);'
+		    :
+		    '';
+
+	    $code .= '
+            if (count($n) > ' . ( 2 * count( $m ) ) . ') {
                 $lhs = new ' . $class . '();
                 $rhs = new ' . $class . '();
                 $lhs->value = $n;
@@ -141,7 +156,12 @@ abstract class EvalBarrett extends Base
 
         $code .= self::generateInlineCompare($m, 'temp', $subcode);
 
-        $code .= 'return $temp;';
+	    if ( $correctionNeeded )
+	    {
+		    $code .= 'array_shift($temp);';
+	    }
+
+	    $code .= 'return $temp;';
 
         eval('$func = function ($n) { ' . $code . '};');
 

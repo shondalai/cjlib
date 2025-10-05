@@ -53,7 +53,7 @@ abstract class DSA extends AsymmetricKey
     /**
      * DSA Prime P
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $p;
 
@@ -62,21 +62,21 @@ abstract class DSA extends AsymmetricKey
      *
      * Prime divisor of p-1
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $q;
 
     /**
      * DSA Group Generator G
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $g;
 
     /**
      * DSA public key value y
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $y;
 
@@ -99,7 +99,8 @@ abstract class DSA extends AsymmetricKey
      *
      * @param int $L
      * @param int $N
-     * @return \phpseclib3\Crypt\DSA|bool
+     *
+     * @return DSA|bool
      */
     public static function createParameters($L = 2048, $N = 224)
     {
@@ -142,12 +143,12 @@ abstract class DSA extends AsymmetricKey
 
         do {
             $x = BigInteger::random($L);
-            list(, $c) = $x->divide($divisor);
+            [, $c] = $x->divide($divisor);
             $p = $x->subtract($c->subtract(self::$one));
         } while ($p->getLength() != $L || !$p->isPrime());
 
         $p_1 = $p->subtract(self::$one);
-        list($e) = $p_1->divide($q);
+        [$e] = $p_1->divide($q);
 
         // quoting http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf#page=50 ,
         // "h could be obtained from a random number generator or from a counter that
@@ -179,7 +180,8 @@ abstract class DSA extends AsymmetricKey
      * Returns the private key, from which the publickey can be extracted
      *
      * @param int[] ...$args
-     * @return DSA\PrivateKey
+     *
+     * @return PrivateKey
      */
     public static function createKey(...$args)
     {

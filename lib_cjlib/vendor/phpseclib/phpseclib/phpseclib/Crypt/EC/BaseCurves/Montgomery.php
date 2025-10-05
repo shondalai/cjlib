@@ -39,7 +39,7 @@ class Montgomery extends Base
     /**
      * Prime Field Integer factory
      *
-     * @var \phpseclib3\Math\PrimeField
+     * @var PrimeField
      */
     protected $factory;
 
@@ -180,8 +180,8 @@ class Montgomery extends Base
             throw new \RuntimeException('Affine coordinates need to be manually converted to XZ coordinates');
         }
 
-        list($x2, $z2) = $p;
-        list($x3, $z3) = $q;
+        [$x2, $z2] = $p;
+        [$x3, $z3] = $q;
 
         $a = $x2->add($z2);
         $aa = $a->multiply($a);
@@ -219,8 +219,8 @@ class Montgomery extends Base
     public function multiplyPoint(array $p, BigInteger $d)
     {
         $p1 = [$this->one, $this->zero];
-        $alreadyInternal = isset($x[1]);
-        $p2 = $this->convertToInternal($p);
+	    $alreadyInternal = isset( $p[1] );
+	    $p2 = $this->convertToInternal($p);
         $x = $p[0];
 
         $b = $d->toBits();
@@ -228,9 +228,9 @@ class Montgomery extends Base
         for ($i = 0; $i < strlen($b); $i++) {
             $b_i = (int) $b[$i];
             if ($b_i) {
-                list($p2, $p1) = $this->doubleAndAddPoint($p2, $p1, $x);
+                [$p2, $p1] = $this->doubleAndAddPoint($p2, $p1, $x);
             } else {
-                list($p1, $p2) = $this->doubleAndAddPoint($p1, $p2, $x);
+                [$p1, $p2] = $this->doubleAndAddPoint($p1, $p2, $x);
             }
         }
 
@@ -246,9 +246,9 @@ class Montgomery extends Base
      *
      *   x=X/Z
      *
-     * @return \phpseclib3\Math\PrimeField\Integer[]
+     * @return PrimeInteger[]
      */
-    public function convertToInternal(array $p)
+	public function convertToInternal(array $p)
     {
         if (empty($p)) {
             return [clone $this->zero, clone $this->one];
@@ -266,14 +266,14 @@ class Montgomery extends Base
     /**
      * Returns the affine point
      *
-     * @return \phpseclib3\Math\PrimeField\Integer[]
+     * @return PrimeInteger[]
      */
-    public function convertToAffine(array $p)
+	public function convertToAffine(array $p)
     {
         if (!isset($p[1])) {
             return $p;
         }
-        list($x, $z) = $p;
+        [$x, $z] = $p;
         return [$x->divide($z)];
     }
 }

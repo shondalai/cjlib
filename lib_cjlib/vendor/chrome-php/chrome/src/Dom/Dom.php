@@ -11,16 +11,18 @@ class Dom extends Node
 {
     public function __construct(Page $page)
     {
-        $message = new Message('DOM.getDocument');
-        $response = $page->getSession()->sendMessageSync($message);
-
-        $rootNodeId = $response->getResultData('root')['nodeId'];
+	    $rootNodeId = $this->getRootNodeId( $page );
 
         parent::__construct($page, $rootNodeId);
     }
 
+	/**
+	 * @return Node[]
+	 */
     public function search(string $selector): array
     {
+	    $this->prepareForRequest();
+
         $message = new Message('DOM.performSearch', [
             'query' => $selector,
         ]);
@@ -52,4 +54,22 @@ class Dom extends Node
 
         return $nodes;
     }
+
+	public function prepareForRequest( bool $throw = true ): void {
+		$this->page->assertNotClosed();
+
+		$this->page->getSession()->getConnection()->processAllEvents();
+
+		if ( $this->isStale )
+		{
+			$this->nodeId = $this->getRootNodeId( $this->page );
+		}
+	}
+
+	public function getRootNodeId( Page $page ) {
+		$message  = new Message( 'DOM.getDocument' );
+		$response = $page->getSession()->sendMessageSync( $message );
+
+		return $response->getResultData( 'root' )['nodeId'];
+	}
 }

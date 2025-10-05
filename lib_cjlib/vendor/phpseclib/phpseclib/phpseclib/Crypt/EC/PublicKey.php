@@ -56,7 +56,7 @@ final class PublicKey extends EC implements Common\PublicKey
 
         if ($this->curve instanceof TwistedEdwardsCurve) {
             if ($shortFormat == 'SSH2') {
-                list(, $signature) = Strings::unpackSSH2('ss', $signature);
+                [, $signature] = Strings::unpackSSH2('ss', $signature);
             }
 
             if ($this->curve instanceof Ed25519 && self::$engines['libsodium'] && !isset($this->context)) {
@@ -99,7 +99,7 @@ final class PublicKey extends EC implements Common\PublicKey
             $k = $hash->hash($dom2 . substr($signature, 0, $curve::SIZE) . $A . $message);
             $k = strrev($k);
             $k = new BigInteger($k, 256);
-            list(, $k) = $k->divide($order);
+            [, $k] = $k->divide($order);
 
             $qa = $curve->convertToInternal($this->QA);
 
@@ -115,9 +115,10 @@ final class PublicKey extends EC implements Common\PublicKey
         if ($params === false || count($params) != 2) {
             return false;
         }
-        extract($params);
+	    $r = $params['r'];
+	    $s = $params['s'];
 
-        if (self::$engines['OpenSSL'] && in_array($this->hash->getHash(), openssl_get_md_methods())) {
+	    if (self::$engines['OpenSSL'] && in_array($this->hash->getHash(), openssl_get_md_methods())) {
             $sig = $format != 'ASN1' ? ASN1Signature::save($r, $s) : $signature;
 
             $result = openssl_verify($message, $sig, $this->toString('PKCS8', ['namedCurve' => false]), $this->hash->getHash());
@@ -139,19 +140,19 @@ final class PublicKey extends EC implements Common\PublicKey
         $z = $Ln > 0 ? $e->bitwise_rightShift($Ln) : $e;
 
         $w = $s->modInverse($order);
-        list(, $u1) = $z->multiply($w)->divide($order);
-        list(, $u2) = $r->multiply($w)->divide($order);
+        [, $u1] = $z->multiply($w)->divide($order);
+        [, $u2] = $r->multiply($w)->divide($order);
 
         $u1 = $this->curve->convertInteger($u1);
         $u2 = $this->curve->convertInteger($u2);
 
-        list($x1, $y1) = $this->curve->multiplyAddPoints(
+        [$x1, $y1] = $this->curve->multiplyAddPoints(
             [$this->curve->getBasePoint(), $this->QA],
             [$u1, $u2]
         );
 
         $x1 = $x1->toBigInteger();
-        list(, $x1) = $x1->divide($order);
+        [, $x1] = $x1->divide($order);
 
         return $x1->equals($r);
     }

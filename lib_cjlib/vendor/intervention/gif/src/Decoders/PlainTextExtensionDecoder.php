@@ -1,0 +1,65 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace Intervention\Gif\Decoders;
+
+use Intervention\Gif\Blocks\PlainTextExtension;
+use Intervention\Gif\Exceptions\DecoderException;
+
+class PlainTextExtensionDecoder extends AbstractDecoder {
+
+	/**
+	 * Decode current source
+	 *
+	 * @return PlainTextExtension
+	 * @throws DecoderException
+	 */
+	public function decode(): PlainTextExtension {
+		$extension = new PlainTextExtension();
+
+		// skip marker & label
+		$this->getNextBytesOrFail( 2 );
+
+		// skip info block
+		$this->getNextBytesOrFail( $this->getInfoBlockSize() );
+
+		// text blocks
+		$extension->setText( $this->decodeTextBlocks() );
+
+		return $extension;
+	}
+
+	/**
+	 * Get number of bytes in header block
+	 *
+	 * @return int
+	 * @throws DecoderException
+	 */
+	protected function getInfoBlockSize(): int {
+		return unpack( 'C', $this->getNextByteOrFail() )[1];
+	}
+
+	/**
+	 * Decode text sub blocks
+	 *
+	 * @return array<string>
+	 * @throws DecoderException
+	 */
+	protected function decodeTextBlocks(): array {
+		$blocks = [];
+
+		do
+		{
+			$char = $this->getNextByteOrFail();
+			$size = (int) unpack( 'C', $char )[1];
+			if ( $size > 0 )
+			{
+				$blocks[] = $this->getNextBytesOrFail( $size );
+			}
+		} while ( $char !== PlainTextExtension::TERMINATOR );
+
+		return $blocks;
+	}
+
+}

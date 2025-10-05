@@ -187,8 +187,8 @@ class Prime extends Base
      */
     protected function jacobianAddPointMixedXY(array $p, array $q)
     {
-        list($u1, $s1) = $p;
-        list($u2, $s2) = $q;
+        [$u1, $s1] = $p;
+        [$u2, $s2] = $q;
         if ($u1->equals($u2)) {
             if (!$s1->equals($s2)) {
                 return [];
@@ -219,8 +219,8 @@ class Prime extends Base
      */
     protected function jacobianAddPointMixedX(array $p, array $q)
     {
-        list($u1, $s1, $z1) = $p;
-        list($x2, $y2) = $q;
+        [$u1, $s1, $z1] = $p;
+        [$x2, $y2] = $q;
 
         $z12 = $z1->multiply($z1);
 
@@ -255,8 +255,8 @@ class Prime extends Base
      */
     protected function jacobianAddPoint(array $p, array $q)
     {
-        list($x1, $y1, $z1) = $p;
-        list($x2, $y2, $z2) = $q;
+        [$x1, $y1, $z1] = $p;
+        [$x2, $y2, $z2] = $q;
 
         $z12 = $z1->multiply($z1);
         $z22 = $z2->multiply($z2);
@@ -330,7 +330,7 @@ class Prime extends Base
             if (!$p[1]->equals($q[1])) {
                 return [];
             } else { // eg. doublePoint
-                list($numerator, $denominator) = $this->doublePointHelper($p);
+                [$numerator, $denominator] = $this->doublePointHelper($p);
             }
         } else {
             $numerator = $q[1]->subtract($p[1]);
@@ -362,7 +362,7 @@ class Prime extends Base
      */
     protected function jacobianDoublePoint(array $p)
     {
-        list($x, $y, $z) = $p;
+        [$x, $y, $z] = $p;
         $x2 = $x->multiply($x);
         $y2 = $y->multiply($y);
         $z2 = $z->multiply($z);
@@ -385,7 +385,7 @@ class Prime extends Base
      */
     protected function jacobianDoublePointMixed(array $p)
     {
-        list($x, $y) = $p;
+        [$x, $y] = $p;
         $x2 = $x->multiply($x);
         $y2 = $y->multiply($y);
         $s = $this->four->multiply($x)->multiply($y2);
@@ -422,7 +422,7 @@ class Prime extends Base
             return $this->jacobianDoublePoint($p);
         }
 
-        list($numerator, $denominator) = $this->doublePointHelper($p);
+        [$numerator, $denominator] = $this->doublePointHelper($p);
 
         $slope = $numerator->divide($denominator);
 
@@ -471,7 +471,7 @@ class Prime extends Base
      */
     public function verifyPoint(array $p)
     {
-        list($x, $y) = $p;
+        [$x, $y] = $p;
         $lhs = $y->multiply($y);
         $temp = $x->multiply($this->a);
         $temp = $x->multiply($x)->multiply($x)->add($temp);
@@ -483,31 +483,28 @@ class Prime extends Base
     /**
      * Returns the modulo
      *
-     * @return \phpseclib3\Math\BigInteger
+     * @return BigInteger
      */
-    public function getModulo()
-    {
+    public function getModulo() {
         return $this->modulo;
     }
 
     /**
      * Returns the a coefficient
      *
-     * @return \phpseclib3\Math\PrimeField\Integer
+     * @return PrimeInteger
      */
-    public function getA()
-    {
-        return $this->a;
+    public function getA() {
+	    return $this->a;
     }
 
     /**
      * Returns the a coefficient
      *
-     * @return \phpseclib3\Math\PrimeField\Integer
+     * @return PrimeInteger
      */
-    public function getB()
-    {
-        return $this->b;
+    public function getB() {
+	    return $this->b;
     }
 
     /**
@@ -751,14 +748,14 @@ class Prime extends Base
      * To convert a Jacobian Coordinate to an Affine Point
      * you do (x / z^2, y / z^3)
      *
-     * @return \phpseclib3\Math\PrimeField\Integer[]
+     * @return PrimeInteger[]
      */
     public function convertToAffine(array $p)
     {
         if (!isset($p[2])) {
             return $p;
         }
-        list($x, $y, $z) = $p;
+        [$x, $y, $z] = $p;
         $z = $this->one->divide($z);
         $z2 = $z->multiply($z);
         return [
@@ -770,9 +767,9 @@ class Prime extends Base
     /**
      * Converts an affine point to a jacobian coordinate
      *
-     * @return \phpseclib3\Math\PrimeField\Integer[]
+     * @return PrimeInteger[]
      */
-    public function convertToInternal(array $p)
+    public function convertToInternal( array $p)
     {
         if (isset($p[2])) {
             return $p;

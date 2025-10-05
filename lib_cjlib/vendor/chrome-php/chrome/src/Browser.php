@@ -98,7 +98,7 @@ class Browser
      *
      * @param string|null $script
      */
-    public function setPagePreScript(string $script = null): void
+	public function setPagePreScript( ?string $script = null ): void
     {
         $this->pagePreScript = $script;
     }
@@ -186,6 +186,24 @@ class Browser
     {
         return \array_values($this->targets);
     }
+
+	/**
+	 * Find a target matching the type and title.
+	 *
+	 * @param   string  $type
+	 * @param   string  $title
+	 */
+	public function findTarget( string $type, string $title ): ?Target {
+		foreach ( $this->targets as $target )
+		{
+			if ( $target->getTargetInfo( 'type' ) === $type && $target->getTargetInfo( 'title' ) === $title )
+			{
+				return $target;
+			}
+		}
+
+		return null;
+	}
 
     /**
      * @param string $targetId

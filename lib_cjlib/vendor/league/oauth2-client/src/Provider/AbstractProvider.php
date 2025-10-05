@@ -17,6 +17,7 @@ namespace League\OAuth2\Client\Provider;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 use League\OAuth2\Client\Grant\AbstractGrant;
 use League\OAuth2\Client\Grant\GrantFactory;
@@ -404,7 +405,9 @@ abstract class AbstractProvider
      * Returns authorization parameters based on provided options.
      *
      * @param  array $options
+     *
      * @return array Authorization parameters
+     * @throws InvalidArgumentException
      */
     protected function getAuthorizationParameters(array $options)
     {
@@ -475,7 +478,9 @@ abstract class AbstractProvider
      * Builds the authorization URL.
      *
      * @param  array $options
+     *
      * @return string Authorization URL
+     * @throws InvalidArgumentException
      */
     public function getAuthorizationUrl(array $options = [])
     {
@@ -491,11 +496,13 @@ abstract class AbstractProvider
      *
      * @param  array $options
      * @param  callable|null $redirectHandler
+     *
      * @return mixed
+     * @throws InvalidArgumentException
      */
     public function authorize(
-        array $options = [],
-        callable $redirectHandler = null
+	    array $options = [],
+	    ?callable $redirectHandler = null,
     ) {
         $url = $this->getAuthorizationUrl($options);
         if ($redirectHandler) {
@@ -612,13 +619,22 @@ abstract class AbstractProvider
      * Requests an access token using a specified grant and option set.
      *
      * @param  mixed                $grant
-     * @param  array<string, mixed> $options
-     * @throws IdentityProviderException
+     * @param  array<string, mixed>  $options
+     *
      * @return AccessTokenInterface
+     * @throws IdentityProviderException
+     * @throws UnexpectedValueException
+     * @throws GuzzleException
      */
     public function getAccessToken($grant, array $options = [])
     {
-        $grant = $this->verifyGrant($grant);
+        $grant = $this->verifyGrant( $grant );
+
+	    if ( isset( $options['scope'] ) && is_array( $options['scope'] ) )
+	    {
+		    $separator        = $this->getScopeSeparator();
+		    $options['scope'] = implode( $separator, $options['scope']);
+        }
 
         $params = [
             'client_id'     => $this->clientId,
@@ -699,7 +715,9 @@ abstract class AbstractProvider
      * errors! It is recommended to wrap this method in a try/catch block.
      *
      * @param  RequestInterface $request
+     *
      * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function getResponse(RequestInterface $request)
     {
@@ -709,9 +727,12 @@ abstract class AbstractProvider
     /**
      * Sends a request and returns the parsed response.
      *
-     * @param  RequestInterface $request
-     * @throws IdentityProviderException
+     * @param  RequestInterface  $request
+     *
      * @return mixed
+     * @throws IdentityProviderException
+     * @throws UnexpectedValueException
+     * @throws GuzzleException
      */
     public function getParsedResponse(RequestInterface $request)
     {
@@ -755,9 +776,8 @@ abstract class AbstractProvider
      * @param  ResponseInterface $response
      * @return string Semi-colon separated join of content-type headers.
      */
-    protected function getContentType(ResponseInterface $response)
-    {
-        return join(';', (array) $response->getHeader('content-type'));
+    protected function getContentType( ResponseInterface $response ) {
+	    return implode( ';', $response->getHeader('content-type'));
     }
 
     /**
@@ -815,7 +835,8 @@ abstract class AbstractProvider
      * Custom mapping of expiration, etc should be done here. Always call the
      * parent method when overloading this method.
      *
-     * @param  mixed $result
+     * @param  array<string, mixed> $result
+     *
      * @return array
      */
     protected function prepareAccessTokenResponse(array $result)
@@ -857,8 +878,12 @@ abstract class AbstractProvider
     /**
      * Requests and returns the resource owner of given access token.
      *
-     * @param  AccessToken $token
+     * @param  AccessToken  $token
+     *
      * @return ResourceOwnerInterface
+     * @throws IdentityProviderException
+     * @throws UnexpectedValueException
+     * @throws GuzzleException
      */
     public function getResourceOwner(AccessToken $token)
     {
@@ -870,8 +895,12 @@ abstract class AbstractProvider
     /**
      * Requests resource owner details.
      *
-     * @param  AccessToken $token
+     * @param   AccessToken  $token
+     *
      * @return mixed
+     * @throws IdentityProviderException
+     * @throws UnexpectedValueException
+     * @throws GuzzleException
      */
     protected function fetchResourceOwnerDetails(AccessToken $token)
     {

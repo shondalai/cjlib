@@ -35,7 +35,7 @@ class Binary extends Base
     /**
      * Binary Field Integer factory
      *
-     * @var \phpseclib3\Math\BinaryField
+     * @var BinaryField
      */
     protected $factory;
 
@@ -179,8 +179,8 @@ class Binary extends Base
 
         // formulas from http://hyperelliptic.org/EFD/g12o/auto-shortw-jacobian.html
 
-        list($x1, $y1, $z1) = $p;
-        list($x2, $y2, $z2) = $q;
+        [$x1, $y1, $z1] = $p;
+        [$x2, $y2, $z2] = $q;
 
         $o1 = $z1->multiply($z1);
         $b = $x2->multiply($o1);
@@ -242,7 +242,7 @@ class Binary extends Base
 
         // formulas from http://hyperelliptic.org/EFD/g12o/auto-shortw-jacobian.html
 
-        list($x1, $y1, $z1) = $p;
+        [$x1, $y1, $z1] = $p;
 
         $a = $x1->multiply($x1);
         $b = $a->multiply($a);
@@ -292,7 +292,7 @@ class Binary extends Base
      */
     public function verifyPoint(array $p)
     {
-        list($x, $y) = $p;
+        [$x, $y] = $p;
         $lhs = $y->multiply($y);
         $lhs = $lhs->add($x->multiply($y));
         $x2 = $x->multiply($x);
@@ -305,9 +305,9 @@ class Binary extends Base
     /**
      * Returns the modulo
      *
-     * @return \phpseclib3\Math\BigInteger
+     * @return BigInteger
      */
-    public function getModulo()
+	public function getModulo()
     {
         return $this->modulo;
     }
@@ -346,7 +346,7 @@ class Binary extends Base
         if (!isset($p[2])) {
             return $p;
         }
-        list($x, $y, $z) = $p;
+        [$x, $y, $z] = $p;
         $z = $this->one->divide($z);
         $z2 = $z->multiply($z);
         return [

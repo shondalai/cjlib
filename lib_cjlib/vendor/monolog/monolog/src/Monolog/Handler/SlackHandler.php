@@ -12,31 +12,28 @@
 namespace Monolog\Handler;
 
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Logger;
+use Monolog\Level;
 use Monolog\Utils;
 use Monolog\Handler\Slack\SlackRecord;
+use Monolog\LogRecord;
 
 /**
  * Sends notifications through Slack API
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @see    https://api.slack.com/
- *
- * @phpstan-import-type FormattedRecord from AbstractProcessingHandler
  */
 class SlackHandler extends SocketHandler
 {
     /**
      * Slack API token
-     * @var string
      */
-    private $token;
+	private string $token;
 
     /**
      * Instance of the SlackRecord util class preparing data for Slack API.
-     * @var SlackRecord
      */
-    private $slackRecord;
+	private SlackRecord $slackRecord;
 
     /**
      * @param  string                    $token                  Slack API token
@@ -55,18 +52,19 @@ class SlackHandler extends SocketHandler
         ?string $username = null,
         bool $useAttachment = true,
         ?string $iconEmoji = null,
-        $level = Logger::CRITICAL,
+	    $level = Level::Critical,
         bool $bubble = true,
         bool $useShortAttachment = false,
         bool $includeContextAndExtra = false,
-        array $excludeFields = array(),
+	    array $excludeFields = [],
         bool $persistent = false,
         float $timeout = 0.0,
         float $writingTimeout = 10.0,
         ?float $connectionTimeout = null,
         ?int $chunkSize = null
     ) {
-        if (!extension_loaded('openssl')) {
+	    if ( ! \extension_loaded( 'openssl' ) )
+	    {
             throw new MissingExtensionException('The OpenSSL PHP extension is required to use the SlackHandler');
         }
 
@@ -105,9 +103,9 @@ class SlackHandler extends SocketHandler
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function generateDataStream(array $record): string
+	protected function generateDataStream( LogRecord $record ): string
     {
         $content = $this->buildContent($record);
 
@@ -116,10 +114,8 @@ class SlackHandler extends SocketHandler
 
     /**
      * Builds the body of API call
-     *
-     * @phpstan-param FormattedRecord $record
      */
-    private function buildContent(array $record): string
+	private function buildContent( LogRecord $record ): string
     {
         $dataArray = $this->prepareContentData($record);
 
@@ -127,15 +123,15 @@ class SlackHandler extends SocketHandler
     }
 
     /**
-     * @phpstan-param FormattedRecord $record
      * @return string[]
      */
-    protected function prepareContentData(array $record): array
+	protected function prepareContentData( LogRecord $record ): array
     {
         $dataArray = $this->slackRecord->getSlackData($record);
         $dataArray['token'] = $this->token;
 
-        if (!empty($dataArray['attachments'])) {
+	    if ( isset( $dataArray['attachments'] ) && \is_array( $dataArray['attachments'] ) && \count( $dataArray['attachments'] ) > 0 )
+	    {
             $dataArray['attachments'] = Utils::jsonEncode($dataArray['attachments']);
         }
 
@@ -150,16 +146,16 @@ class SlackHandler extends SocketHandler
         $header = "POST /api/chat.postMessage HTTP/1.1\r\n";
         $header .= "Host: slack.com\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: " . strlen($content) . "\r\n";
+	    $header .= "Content-Length: " . \strlen( $content ) . "\r\n";
         $header .= "\r\n";
 
         return $header;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function write(array $record): void
+	protected function write( LogRecord $record ): void
     {
         parent::write($record);
         $this->finalizeWrite();
@@ -174,7 +170,8 @@ class SlackHandler extends SocketHandler
     protected function finalizeWrite(): void
     {
         $res = $this->getResource();
-        if (is_resource($res)) {
+	    if ( \is_resource( $res ) )
+	    {
             @fread($res, 2048);
         }
         $this->closeSocket();
@@ -198,6 +195,8 @@ class SlackHandler extends SocketHandler
 
     /**
      * Channel used by the bot when posting
+     *
+     * @return $this
      */
     public function setChannel(string $channel): self
     {
@@ -208,6 +207,8 @@ class SlackHandler extends SocketHandler
 
     /**
      * Username used by the bot when posting
+     *
+     * @return $this
      */
     public function setUsername(string $username): self
     {
@@ -216,6 +217,9 @@ class SlackHandler extends SocketHandler
         return $this;
     }
 
+	/**
+	 * @return $this
+	 */
     public function useAttachment(bool $useAttachment): self
     {
         $this->slackRecord->useAttachment($useAttachment);
@@ -223,6 +227,9 @@ class SlackHandler extends SocketHandler
         return $this;
     }
 
+	/**
+	 * @return $this
+	 */
     public function setIconEmoji(string $iconEmoji): self
     {
         $this->slackRecord->setUserIcon($iconEmoji);
@@ -230,6 +237,9 @@ class SlackHandler extends SocketHandler
         return $this;
     }
 
+	/**
+	 * @return $this
+	 */
     public function useShortAttachment(bool $useShortAttachment): self
     {
         $this->slackRecord->useShortAttachment($useShortAttachment);
@@ -237,6 +247,9 @@ class SlackHandler extends SocketHandler
         return $this;
     }
 
+	/**
+	 * @return $this
+	 */
     public function includeContextAndExtra(bool $includeContextAndExtra): self
     {
         $this->slackRecord->includeContextAndExtra($includeContextAndExtra);
@@ -245,7 +258,9 @@ class SlackHandler extends SocketHandler
     }
 
     /**
-     * @param string[] $excludeFields
+     * @param   string[]  $excludeFields
+     *
+     * @return $this
      */
     public function excludeFields(array $excludeFields): self
     {

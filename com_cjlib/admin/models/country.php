@@ -10,7 +10,6 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Table\Table;
 
 defined( '_JEXEC' ) or die();
 
@@ -42,8 +41,8 @@ class CjLibModelCountry extends AdminModel {
 		}
 	}
 
-	public function getTable( $type = 'Country', $prefix = 'CjLibTable', $config = [] ) {
-		return Table::getInstance( $type, $prefix, $config );
+	public function getTable( $name = 'Country', $prefix = 'CjLibTable', $options = [] ) {
+		return parent::getTable( $name, $prefix, $options );
 	}
 
 	public function getItem( $pk = null ) {

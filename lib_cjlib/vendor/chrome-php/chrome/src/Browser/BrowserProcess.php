@@ -11,7 +11,6 @@
 
 namespace HeadlessChromium\Browser;
 
-use HeadlessChromium\Browser;
 use HeadlessChromium\Communication\Connection;
 use HeadlessChromium\Exception\OperationTimedOut;
 use HeadlessChromium\Utils;
@@ -79,7 +78,7 @@ class BrowserProcess implements LoggerAwareInterface
      *
      * @param LoggerInterface|null $logger
      */
-    public function __construct(LoggerInterface $logger = null)
+	public function __construct( ?LoggerInterface $logger = null )
     {
         // set or create logger
         $this->setLogger($logger ?? new NullLogger());
@@ -294,6 +293,9 @@ class BrowserProcess implements LoggerAwareInterface
             // auto debug port
             '--remote-debugging-port=0',
 
+	        // allow remote access
+	        '--remote-allow-origins=*',
+
             // disable undesired features
             '--disable-background-networking',
             '--disable-background-timer-throttling',
@@ -315,6 +317,12 @@ class BrowserProcess implements LoggerAwareInterface
             '--password-store=basic',
             '--use-mock-keychain', // osX only
         ];
+
+	    // disable browser notifications
+	    if ( \array_key_exists( 'disableNotifications', $options ) && ( true === $options['disableNotifications'] ) )
+	    {
+		    $args[] = '--disable-notifications';
+	    }
 
         // enable headless mode
         if (!\array_key_exists('headless', $options) || $options['headless']) {
@@ -343,6 +351,12 @@ class BrowserProcess implements LoggerAwareInterface
 
             $args[] = '--window-size='.\implode(',', $options['windowSize']);
         }
+
+	    if ( \array_key_exists( 'userCrashDumpsDir', $options ) )
+	    {
+		    $args[] = '--enable-crash-reporter';
+		    $args[] = '--crash-dumps-dir=' . $options['userCrashDumpsDir'];
+	    }
 
         // sandbox mode - useful if you want to use chrome headless inside docker
         if (\array_key_exists('noSandbox', $options) && $options['noSandbox']) {
@@ -377,6 +391,12 @@ class BrowserProcess implements LoggerAwareInterface
 
         // add user data dir to args
         $args[] = '--user-data-dir='.$options['userDataDir'];
+
+	    // remove some arguments
+	    if ( \array_key_exists( 'excludedSwitches', $options ) && \is_array( $options['excludedSwitches'] ) )
+	    {
+		    $args = \array_diff( $args, $options['excludedSwitches'] );
+	    }
 
         return $args;
     }

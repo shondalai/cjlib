@@ -69,11 +69,16 @@ class JWT
      * Decodes a JWT string into a PHP object.
      *
      * @param string                 $jwt            The JWT
-     * @param Key|array<string,Key> $keyOrKeyArray  The Key or associative array of key IDs (kid) to Key objects.
-     *                                               If the algorithm used is asymmetric, this is the public key
-     *                                               Each Key object contains an algorithm and matching key.
-     *                                               Supported algorithms are 'ES384','ES256', 'HS256', 'HS384',
-     *                                               'HS512', 'RS256', 'RS384', and 'RS512'
+     * @param   Key|ArrayAccess<string,Key>|array<string,Key>  $keyOrKeyArray  The Key or associative array of key IDs
+     *                                                                         (kid) to Key objects.
+     *                                                                         If the algorithm used is asymmetric, this is
+     *                                                                         the public key.
+     *                                                                         Each Key object contains an algorithm and
+     *                                                                         matching key.
+     *                                                                         Supported algorithms are 'ES384','ES256',
+     *                                                                         'HS256', 'HS384', 'HS512', 'RS256', 'RS384'
+     *                                                                         and 'RS512'.
+     * @param   stdClass                                       $headers        Optional. Populates stdClass with headers.
      *
      * @return stdClass The JWT's payload as a PHP object
      *
@@ -90,7 +95,8 @@ class JWT
      */
     public static function decode(
         string $jwt,
-        $keyOrKeyArray
+	    $keyOrKeyArray,
+	    ?stdClass &$headers = null,
     ): stdClass {
         // Validate JWT
         $timestamp = \is_null(static::$timestamp) ? \time() : static::$timestamp;
@@ -102,12 +108,16 @@ class JWT
         if (\count($tks) !== 3) {
             throw new UnexpectedValueException('Wrong number of segments');
         }
-        list($headb64, $bodyb64, $cryptob64) = $tks;
+        [$headb64, $bodyb64, $cryptob64] = $tks;
         $headerRaw = static::urlsafeB64Decode($headb64);
         if (null === ($header = static::jsonDecode($headerRaw))) {
             throw new UnexpectedValueException('Invalid header encoding');
         }
-        $payloadRaw = static::urlsafeB64Decode($bodyb64);
+	    if ( $headers !== null )
+	    {
+		    $headers = $header;
+	    }
+	    $payloadRaw = static::urlsafeB64Decode($bodyb64);
         if (null === ($payload = static::jsonDecode($payloadRaw))) {
             throw new UnexpectedValueException('Invalid claims encoding');
         }
@@ -143,24 +153,32 @@ class JWT
 
         // Check the nbf if it is defined. This is the time that the
         // token can actually be used. If it's not yet that time, abort.
-        if (isset($payload->nbf) && $payload->nbf > ($timestamp + static::$leeway)) {
-            throw new BeforeValidException(
-                'Cannot handle token prior to ' . \date(DateTime::ISO8601, $payload->nbf)
-            );
-        }
+	    if ( isset( $payload->nbf ) && floor( $payload->nbf ) > ( $timestamp + static::$leeway ) )
+	    {
+		    $ex = new BeforeValidException(
+			    'Cannot handle token with nbf prior to ' . \date( DateTime::ISO8601, (int) floor( $payload->nbf ) ),
+		    );
+		    $ex->setPayload( $payload );
+		    throw $ex;
+	    }
 
         // Check that this token has been created before 'now'. This prevents
         // using tokens that have been created for later use (and haven't
         // correctly used the nbf claim).
-        if (isset($payload->iat) && $payload->iat > ($timestamp + static::$leeway)) {
-            throw new BeforeValidException(
-                'Cannot handle token prior to ' . \date(DateTime::ISO8601, $payload->iat)
-            );
-        }
+	    if ( ! isset( $payload->nbf ) && isset( $payload->iat ) && floor( $payload->iat ) > ( $timestamp + static::$leeway ) )
+	    {
+		    $ex = new BeforeValidException(
+			    'Cannot handle token with iat prior to ' . \date( DateTime::ISO8601, (int) floor( $payload->iat ) ),
+		    );
+		    $ex->setPayload( $payload );
+		    throw $ex;
+	    }
 
         // Check if this token has expired.
         if (isset($payload->exp) && ($timestamp - static::$leeway) >= $payload->exp) {
-            throw new ExpiredException('Expired token');
+	        $ex = new ExpiredException( 'Expired token' );
+	        $ex->setPayload( $payload );
+	        throw $ex;
         }
 
         return $payload;
@@ -185,15 +203,17 @@ class JWT
         array $payload,
         $key,
         string $alg,
-        string $keyId = null,
-        array $head = null
+	    ?string $keyId = null,
+	    ?array $head = null,
     ): string {
-        $header = ['typ' => 'JWT', 'alg' => $alg];
-        if ($keyId !== null) {
+	    $header = [ 'typ' => 'JWT' ];
+	    if ( isset( $head ) )
+	    {
+		    $header = \array_merge( $header, $head );
+	    }
+	    $header['alg'] = $alg;
+	    if ($keyId !== null) {
             $header['kid'] = $keyId;
-        }
-        if (isset($head) && \is_array($head)) {
-            $header = \array_merge($head, $header);
         }
         $segments = [];
         $segments[] = static::urlsafeB64Encode((string) static::jsonEncode($header));
@@ -211,7 +231,7 @@ class JWT
      *
      * @param string $msg  The message to sign
      * @param string|resource|OpenSSLAsymmetricKey|OpenSSLCertificate  $key  The secret key.
-     * @param string $alg  Supported algorithms are 'ES384','ES256', 'ES256K', 'HS256',
+     * @param   string  $alg  Supported algorithms are 'EdDSA', 'ES384', 'ES256', 'ES256K', 'HS256',
      *                    'HS384', 'HS512', 'RS256', 'RS384', and 'RS512'
      *
      * @return string An encrypted message
@@ -226,7 +246,7 @@ class JWT
         if (empty(static::$supported_algs[$alg])) {
             throw new DomainException('Algorithm not supported');
         }
-        list($function, $algorithm) = static::$supported_algs[$alg];
+        [$function, $algorithm] = static::$supported_algs[$alg];
         switch ($function) {
             case 'hash_hmac':
                 if (!\is_string($key)) {
@@ -235,7 +255,11 @@ class JWT
                 return \hash_hmac($algorithm, $msg, $key, true);
             case 'openssl':
                 $signature = '';
-                $success = \openssl_sign($msg, $signature, $key, $algorithm); // @phpstan-ignore-line
+	            if ( ! \is_resource( $key ) && ! openssl_pkey_get_private( $key ) )
+	            {
+		            throw new DomainException( 'OpenSSL unable to validate key' );
+	            }
+	            $success = \openssl_sign($msg, $signature, $key, $algorithm); // @phpstan-ignore-line
                 if (!$success) {
                     throw new DomainException('OpenSSL unable to sign data');
                 }
@@ -274,7 +298,7 @@ class JWT
      *
      * @param string $msg         The original message (header and body)
      * @param string $signature   The original signature
-     * @param string|resource|OpenSSLAsymmetricKey|OpenSSLCertificate  $keyMaterial For HS*, a string key works. for RS*, must be an instance of OpenSSLAsymmetricKey
+     * @param   string|resource|OpenSSLAsymmetricKey|OpenSSLCertificate  $keyMaterial  For Ed*, ES*, HS*, a string key works. for RS*, must be an instance of OpenSSLAsymmetricKey
      * @param string $alg         The algorithm
      *
      * @return bool
@@ -291,7 +315,7 @@ class JWT
             throw new DomainException('Algorithm not supported');
         }
 
-        list($function, $algorithm) = static::$supported_algs[$alg];
+        [$function, $algorithm] = static::$supported_algs[$alg];
         switch ($function) {
             case 'openssl':
                 $success = \openssl_verify($msg, $signature, $keyMaterial, $algorithm); // @phpstan-ignore-line
@@ -368,16 +392,12 @@ class JWT
      */
     public static function jsonEncode(array $input): string
     {
-        if (PHP_VERSION_ID >= 50400) {
-            $json = \json_encode($input, \JSON_UNESCAPED_SLASHES);
-        } else {
-            // PHP 5.3 only
-            $json = \json_encode($input);
-        }
-        if ($errno = \json_last_error()) {
+        $json = \json_encode( $input, \JSON_UNESCAPED_SLASHES );
+	    if ($errno = \json_last_error()) {
             self::handleJsonError($errno);
-        } elseif ($json === 'null' && $input !== null) {
-            throw new DomainException('Null result with non-null input');
+        } elseif ( $json === 'null' )
+	    {
+		    throw new DomainException('Null result with non-null input');
         }
         if ($json === false) {
             throw new DomainException('Provided object could not be encoded to valid JSON');
@@ -396,15 +416,29 @@ class JWT
      */
     public static function urlsafeB64Decode(string $input): string
     {
-        $remainder = \strlen($input) % 4;
+        return \base64_decode( self::convertBase64UrlToBase64( $input ) );
+    }
+
+	/**
+	 * Convert a string in the base64url (URL-safe Base64) encoding to standard base64.
+	 *
+	 * @param   string  $input  A Base64 encoded string with URL-safe characters (-_ and no padding)
+	 *
+	 * @return string A Base64 encoded string with standard characters (+/) and padding (=), when
+	 * needed.
+	 *
+	 * @see https://www.rfc-editor.org/rfc/rfc4648
+	 */
+	public static function convertBase64UrlToBase64( string $input ): string {
+		$remainder = \strlen($input) % 4;
         if ($remainder) {
             $padlen = 4 - $remainder;
             $input .= \str_repeat('=', $padlen);
         }
-        return \base64_decode(\strtr($input, '-_', '+/'));
-    }
+        return \strtr( $input, '-_', '+/' );
+	}
 
-    /**
+	/**
      * Encode a string with URL-safe Base64.
      *
      * @param string $input The string you want encoded
@@ -435,8 +469,9 @@ class JWT
             return $keyOrKeyArray;
         }
 
-        if (empty($kid)) {
-            throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
+        if ( empty( $kid ) && $kid !== '0' )
+        {
+	        throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
         }
 
         if ($keyOrKeyArray instanceof CachedKeySet) {
@@ -522,7 +557,7 @@ class JWT
     {
         // Separate the signature into r-value and s-value
         $length = max(1, (int) (\strlen($sig) / 2));
-        list($r, $s) = \str_split($sig, $length);
+        [$r, $s] = \str_split($sig, $length);
 
         // Trim leading zeros
         $r = \ltrim($r, "\x00");
@@ -579,9 +614,9 @@ class JWT
     private static function signatureFromDER(string $der, int $keySize): string
     {
         // OpenSSL returns the ECDSA signatures as a binary ASN.1 DER SEQUENCE
-        list($offset, $_) = self::readDER($der);
-        list($offset, $r) = self::readDER($der, $offset);
-        list($offset, $s) = self::readDER($der, $offset);
+        [$offset, $_] = self::readDER($der);
+        [$offset, $r] = self::readDER($der, $offset);
+        [$offset, $s] = self::readDER($der, $offset);
 
         // Convert r-value and s-value from signed two's compliment to unsigned
         // big-endian integers

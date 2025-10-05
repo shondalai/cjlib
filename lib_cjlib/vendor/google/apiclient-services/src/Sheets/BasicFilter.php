@@ -28,6 +28,10 @@ class BasicFilter extends \Google\Collection
   protected $rangeDataType = '';
   protected $sortSpecsType = SortSpec::class;
   protected $sortSpecsDataType = 'array';
+	/**
+	 * @var string
+	 */
+	public $tableId;
 
   /**
    * @param FilterCriteria[]
@@ -85,6 +89,20 @@ class BasicFilter extends \Google\Collection
   {
     return $this->sortSpecs;
   }
+
+	/**
+	 * @param   string
+	 */
+	public function setTableId( $tableId ) {
+		$this->tableId = $tableId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTableId() {
+		return $this->tableId;
+	}
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

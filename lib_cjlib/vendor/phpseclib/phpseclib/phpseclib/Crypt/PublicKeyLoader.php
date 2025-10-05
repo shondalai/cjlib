@@ -29,9 +29,11 @@ abstract class PublicKeyLoader
     /**
      * Loads a public or private key
      *
-     * @return AsymmetricKey
      * @param string|array $key
      * @param string $password optional
+     *
+     * @return AsymmetricKey
+     * @throws NoKeyLoadedException if key is not valid
      */
     public static function load($key, $password = false)
     {

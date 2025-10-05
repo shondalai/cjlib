@@ -75,7 +75,7 @@ abstract class Raw
                 ['prime1', 'prime2']
             ];
             foreach ($indices as $index) {
-                list($i0, $i1) = $index;
+                [$i0, $i1] = $index;
                 if (isset($key[$i0]) && isset($key[$i1])) {
                     $components['primes'] = [1 => $key[$i0], $key[$i1]];
                 }
@@ -90,7 +90,7 @@ abstract class Raw
                 ['exponent1', 'exponent2']
             ];
             foreach ($indices as $index) {
-                list($i0, $i1) = $index;
+                [$i0, $i1] = $index;
                 if (isset($key[$i0]) && isset($key[$i1])) {
                     $components['exponents'] = [1 => $key[$i0], $key[$i1]];
                 }
@@ -138,14 +138,15 @@ abstract class Raw
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
-     * @param \phpseclib3\Math\BigInteger $d
-     * @param array $primes
+     * @param   BigInteger  $n
+     * @param   BigInteger  $e
+     * @param   BigInteger  $d
+     * @param   array $primes
      * @param array $exponents
      * @param array $coefficients
      * @param string $password optional
      * @param array $options optional
+     *
      * @return array
      */
     public static function savePrivateKey(BigInteger $n, BigInteger $e, BigInteger $d, array $primes, array $exponents, array $coefficients, $password = '', array $options = [])
@@ -173,8 +174,9 @@ abstract class Raw
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
+     * @param   BigInteger  $n
+     * @param   BigInteger  $e
+     *
      * @return array
      */
     public static function savePublicKey(BigInteger $n, BigInteger $e)

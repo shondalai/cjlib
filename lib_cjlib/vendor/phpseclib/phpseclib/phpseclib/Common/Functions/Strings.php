@@ -116,7 +116,7 @@ abstract class Strings
                     $result[] = ord(self::shift($data)) != 0;
                     continue 2;
                 case 'N':
-                    list(, $temp) = unpack('N', self::shift($data, 4));
+                    [, $temp] = unpack('N', self::shift($data, 4));
                     $result[] = $temp;
                     continue 2;
                 case 'Q':
@@ -126,14 +126,16 @@ abstract class Strings
                     // 64-bit floats can be used to get larger numbers then 32-bit signed ints would allow
                     // for. sure, you're not gonna get the full precision of 64-bit numbers but just because
                     // you need > 32-bit precision doesn't mean you need the full 64-bit precision
-                    extract(unpack('Nupper/Nlower', self::shift($data, 8)));
-                    $temp = $upper ? 4294967296 * $upper : 0;
+	                $unpacked = unpack( 'Nupper/Nlower', self::shift( $data, 8 ) );
+	                $upper    = $unpacked['upper'];
+	                $lower    = $unpacked['lower'];
+	                $temp = $upper ? 4294967296 * $upper : 0;
                     $temp += $lower < 0 ? ($lower & 0x7FFFFFFFF) + 0x80000000 : $lower;
                     // $temp = hexdec(bin2hex(self::shift($data, 8)));
                     $result[] = $temp;
                     continue 2;
             }
-            list(, $length) = unpack('N', self::shift($data, 4));
+            [, $length] = unpack('N', self::shift($data, 4));
             if (strlen($data) < $length) {
                 throw new \LengthException("$length bytes needed; " . strlen($data) . ' bytes available');
             }
@@ -473,8 +475,9 @@ abstract class Strings
         // return str_replace(['+', '/'], ['-', '_'], self::base64_encode($data));
 
         return function_exists('sodium_bin2base64') ?
-            sodium_bin2base64($data, SODIUM_BASE64_VARIANT_URLSAFE) :
-            Base64UrlSafe::encode($data);
+	        sodium_bin2base64( $data, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING )
+	        :
+	        Base64UrlSafe::encode($data);
     }
 
     /**

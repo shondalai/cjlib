@@ -64,8 +64,7 @@ class Reader
      * Constructs a Reader for the MaxMind DB format. The file passed to it must
      * be a valid MaxMind DB file such as a GeoIp2 database file.
      *
-     * @param string $database
-     *                         the MaxMind DB file to use
+     * @param   string  $database  the MaxMind DB file to use
      *
      * @throws \InvalidArgumentException for invalid database path or unknown arguments
      * @throws InvalidDatabaseException
@@ -76,7 +75,15 @@ class Reader
     {
         if (\func_num_args() !== 1) {
             throw new \ArgumentCountError(
-                sprintf('%s() expects exactly 1 parameter, %d given', __METHOD__, \func_num_args())
+	            \sprintf( '%s() expects exactly 1 parameter, %d given', __METHOD__, \func_num_args() ),
+            );
+        }
+
+	    if ( is_dir( $database ) )
+	    {
+		    // This matches the error that the C extension throws.
+		    throw new InvalidDatabaseException(
+			    "Error opening database file ($database). Is this a valid MaxMind DB file?",
             );
         }
 
@@ -110,22 +117,21 @@ class Reader
     /**
      * Retrieves the record for the IP address.
      *
-     * @param string $ipAddress
-     *                          the IP address to look up
+     * @param   string  $ipAddress  the IP address to look up
      *
-     * @throws \BadMethodCallException   if this method is called on a closed database
-     * @throws \InvalidArgumentException if something other than a single IP address is passed to the method
+     * @return mixed the record for the IP address
+     *@throws \InvalidArgumentException if something other than a single IP address is passed to the method
      * @throws InvalidDatabaseException
      *                                   if the database is invalid or there is an error reading
      *                                   from it
      *
-     * @return mixed the record for the IP address
+     * @throws \BadMethodCallException   if this method is called on a closed database
      */
     public function get(string $ipAddress)
     {
         if (\func_num_args() !== 1) {
             throw new \ArgumentCountError(
-                sprintf('%s() expects exactly 1 parameter, %d given', __METHOD__, \func_num_args())
+	            \sprintf( '%s() expects exactly 1 parameter, %d given', __METHOD__, \func_num_args() ),
             );
         }
         [$record] = $this->getWithPrefixLen($ipAddress);
@@ -136,23 +142,22 @@ class Reader
     /**
      * Retrieves the record for the IP address and its associated network prefix length.
      *
-     * @param string $ipAddress
-     *                          the IP address to look up
+     * @param   string  $ipAddress  the IP address to look up
      *
-     * @throws \BadMethodCallException   if this method is called on a closed database
-     * @throws \InvalidArgumentException if something other than a single IP address is passed to the method
+     * @return array{0:mixed, 1:int} an array where the first element is the record and the
+     *                               second the network prefix length for the record
+     *@throws \InvalidArgumentException if something other than a single IP address is passed to the method
      * @throws InvalidDatabaseException
      *                                   if the database is invalid or there is an error reading
      *                                   from it
      *
-     * @return array an array where the first element is the record and the
-     *               second the network prefix length for the record
+     * @throws \BadMethodCallException   if this method is called on a closed database
      */
     public function getWithPrefixLen(string $ipAddress): array
     {
         if (\func_num_args() !== 1) {
             throw new \ArgumentCountError(
-                sprintf('%s() expects exactly 1 parameter, %d given', __METHOD__, \func_num_args())
+	            \sprintf( '%s() expects exactly 1 parameter, %d given', __METHOD__, \func_num_args() ),
             );
         }
 
@@ -170,7 +175,10 @@ class Reader
         return [$this->resolveDataPointer($pointer), $prefixLen];
     }
 
-    private function findAddressInTree(string $ipAddress): array
+	/**
+	 * @return array{0:int, 1:int}
+	 */
+	private function findAddressInTree(string $ipAddress): array
     {
         $packedAddr = @inet_pton($ipAddress);
         if ($packedAddr === false) {
@@ -349,8 +357,8 @@ class Reader
         }
 
         throw new InvalidDatabaseException(
-            "Error opening database file ($filename). " .
-            'Is this a valid MaxMind DB file?'
+	        "Error opening database file ($filename). "
+	        . 'Is this a valid MaxMind DB file?',
         );
     }
 
@@ -364,7 +372,7 @@ class Reader
     {
         if (\func_num_args()) {
             throw new \ArgumentCountError(
-                sprintf('%s() expects exactly 0 parameters, %d given', __METHOD__, \func_num_args())
+	            \sprintf( '%s() expects exactly 0 parameters, %d given', __METHOD__, \func_num_args() ),
             );
         }
 
@@ -389,7 +397,7 @@ class Reader
     {
         if (\func_num_args()) {
             throw new \ArgumentCountError(
-                sprintf('%s() expects exactly 0 parameters, %d given', __METHOD__, \func_num_args())
+	            \sprintf( '%s() expects exactly 0 parameters, %d given', __METHOD__, \func_num_args() ),
             );
         }
 

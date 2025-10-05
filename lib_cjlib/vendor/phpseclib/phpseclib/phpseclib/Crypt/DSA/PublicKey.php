@@ -40,7 +40,8 @@ final class PublicKey extends DSA implements Common\PublicKey
         if ($params === false || count($params) != 2) {
             return false;
         }
-        extract($params);
+	    $r = $params['r'];
+	    $s = $params['s'];
 
         if (self::$engines['OpenSSL'] && in_array($this->hash->getHash(), openssl_get_md_methods())) {
             $sig = $format != 'ASN1' ? ASN1Signature::save($r, $s) : $signature;
@@ -60,12 +61,12 @@ final class PublicKey extends DSA implements Common\PublicKey
         $w = $s->modInverse($this->q);
         $h = $this->hash->hash($message);
         $h = $this->bits2int($h);
-        list(, $u1) = $h->multiply($w)->divide($this->q);
-        list(, $u2) = $r->multiply($w)->divide($this->q);
+        [, $u1] = $h->multiply($w)->divide($this->q);
+        [, $u2] = $r->multiply($w)->divide($this->q);
         $v1 = $this->g->powMod($u1, $this->p);
         $v2 = $this->y->powMod($u2, $this->p);
-        list(, $v) = $v1->multiply($v2)->divide($this->p);
-        list(, $v) = $v->divide($this->q);
+        [, $v] = $v1->multiply($v2)->divide($this->p);
+        [, $v] = $v->divide($this->q);
 
         return $v->equals($r);
     }

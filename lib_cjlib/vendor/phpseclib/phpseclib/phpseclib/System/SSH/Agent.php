@@ -33,6 +33,7 @@
 namespace phpseclib3\System\SSH;
 
 use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Exception\BadConfigurationException;
@@ -110,8 +111,8 @@ class Agent
     /**
      * Default Constructor
      *
-     * @return \phpseclib3\System\SSH\Agent
-     * @throws \phpseclib3\Exception\BadConfigurationException if SSH_AUTH_SOCK cannot be found
+     * @return Agent
+     * @throws BadConfigurationException if SSH_AUTH_SOCK cannot be found
      * @throws \RuntimeException on connection errors
      */
     public function __construct($address = null)
@@ -169,16 +170,16 @@ class Agent
         $length = current(unpack('N', $this->readBytes(4)));
         $packet = $this->readBytes($length);
 
-        list($type, $keyCount) = Strings::unpackSSH2('CN', $packet);
+        [$type, $keyCount] = Strings::unpackSSH2('CN', $packet);
         if ($type != self::SSH_AGENT_IDENTITIES_ANSWER) {
             throw new \RuntimeException('Unable to request identities');
         }
 
         $identities = [];
         for ($i = 0; $i < $keyCount; $i++) {
-            list($key_blob, $comment) = Strings::unpackSSH2('ss', $packet);
+            [$key_blob, $comment] = Strings::unpackSSH2('ss', $packet);
             $temp = $key_blob;
-            list($key_type) = Strings::unpackSSH2('s', $temp);
+            [$key_type] = Strings::unpackSSH2('s', $temp);
             switch ($key_type) {
                 case 'ssh-rsa':
                 case 'ssh-dss':
@@ -192,8 +193,9 @@ class Agent
             if (isset($key)) {
                 $identity = (new Identity($this->fsock))
                     ->withPublicKey($key)
-                    ->withPublicKeyBlob($key_blob);
-                $identities[] = $identity;
+	                ->withPublicKeyBlob( $key_blob )
+	                ->withComment( $comment );
+	            $identities[] = $identity;
                 unset($key);
             }
         }
@@ -202,7 +204,26 @@ class Agent
     }
 
     /**
-     * Signal that agent forwarding should
+     * Returns the SSH Agent identity matching a given public key or null if no identity is found
+     *
+     * @return ?Identity
+     */
+	public function findIdentityByPublicKey( PublicKey $key ) {
+		$identities = $this->requestIdentities();
+		$key        = (string) $key;
+		foreach ( $identities as $identity )
+		{
+			if ( ( (string) $identity->getPublicKey() ) == $key )
+			{
+				return $identity;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Signal that agent forwarding should
      * be requested when a channel is opened
      *
      * @return void
@@ -217,7 +238,8 @@ class Agent
     /**
      * Request agent forwarding of remote server
      *
-     * @param \phpseclib3\Net\SSH2 $ssh
+     * @param   SSH2  $ssh
+     *
      * @return bool
      */
     private function request_forwarding(SSH2 $ssh)
@@ -238,7 +260,7 @@ class Agent
      * open to give the SSH Agent an opportunity
      * to take further action. i.e. request agent forwarding
      *
-     * @param \phpseclib3\Net\SSH2 $ssh
+     * @param   SSH2  $ssh
      */
     public function registerChannelOpen(SSH2 $ssh)
     {
