@@ -16,7 +16,7 @@ defined("T_CJ_RATING_DETAILS") or define("T_CJ_RATING_DETAILS",				"#__corejooml
 defined("T_CJ_MESSAGES") or define("T_CJ_MESSAGES",							"#__corejoomla_messages");
 defined("T_CJ_MESSAGEQUEUE") or define("T_CJ_MESSAGEQUEUE",					"#__corejoomla_messagequeue");
 
-defined('CJLIB_VER') or define('CJLIB_VER', 								'3.2.10');
+defined( 'CJLIB_VER' ) or define( 'CJLIB_VER', '@version@' );
 defined('CJLIB_PATH') or define('CJLIB_PATH', 								JPATH_ROOT.'/components/com_cjlib');
 defined('CJLIB_URI') or define('CJLIB_URI', 								Uri::root(true).'/components/com_cjlib');
 defined('CJLIB_MEDIA_PATH') or define('CJLIB_MEDIA_PATH',					JPATH_ROOT.'/media/com_cjlib');
