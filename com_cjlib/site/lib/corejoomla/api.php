@@ -47,14 +47,22 @@ class CjLibApi {
 					require_once $api;
 					$profileApi = SociableApi::getProfileApi();
 					$avatar     = $profileApi->getUserAvatarImage( $userId, $height );
+				}
+				else
+				{
+					$sociable = Joomla\Component\Sociable\Administrator\SDK\Sociable::getInstance();
+					$avatar   = $sociable->avatars()->image( $userId, 'lg', [
+						'class'   => 'rounded-circle',
+						'loading' => 'lazy',
+					] );
+				}
 
-					if ( $urlOnly == false )
-					{
-						$imgAttribs['height'] = $height . 'px';
-						$imgAttribs['style']  = 'max-height: ' . $height . 'px; max-width: ' . $height . 'px;';
-						$avatar               = '<img src="' . $avatar . '" alt="' . $alt . '" ' . ( is_array( $imgAttribs ) ? ArrayHelper::toString( $imgAttribs ) : $imgAttribs )
-						                        . ' />';
-					}
+				if ( $urlOnly == false )
+				{
+					$imgAttribs['height'] = $height . 'px';
+					$imgAttribs['style']  = 'max-height: ' . $height . 'px; max-width: ' . $height . 'px;';
+					$avatar               = '<img src="' . $avatar . '" alt="' . $alt . '" ' . ( is_array( $imgAttribs ) ? ArrayHelper::toString( $imgAttribs ) : $imgAttribs )
+					                        . ' />';
 				}
 
 				break;
@@ -315,6 +323,11 @@ class CjLibApi {
 						require_once $api;
 						$profileApi = SociableApi::getProfileApi();
 						$url        = $profileApi->getUserProfileLink( $userId, 'name', true );
+					}
+					else
+					{
+						$sociable = Joomla\Component\Sociable\Administrator\SDK\Sociable::getInstance();
+						$url      = $sociable->profiles()->getUrl( $userId );
 					}
 					break;
 
